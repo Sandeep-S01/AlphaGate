@@ -187,7 +187,12 @@ func (o *Orchestrator) run(ctx context.Context, candle marketdata.Candle, correl
 		return fmt.Errorf("publish signal: %w", err)
 	}
 
-	decision := o.evaluateRisk(ctx, signal)
+	price, account, err := o.executionContext(ctx, signal)
+	if err != nil {
+		return err
+	}
+
+	decision := o.evaluateRisk(ctx, signal, price, account)
 	decision.ID, err = o.deps.DecisionStore.Save(ctx, decision)
 	if err != nil {
 		return fmt.Errorf("save risk decision: %w", err)
@@ -208,14 +213,6 @@ func (o *Orchestrator) run(ctx context.Context, candle marketdata.Candle, correl
 		}
 	}
 
-	price, err := o.deps.PriceReader.LatestPrice(ctx, candle.Symbol, candle.Interval)
-	if err != nil {
-		return fmt.Errorf("read latest price: %w", err)
-	}
-	account, err := o.deps.AccountStore.Get(ctx)
-	if err != nil {
-		return fmt.Errorf("read paper account: %w", err)
-	}
 	result, updatedAccount, err := o.deps.ExecutionEngine.Execute(decision, price, account)
 	if err != nil {
 		return o.recordFailedExecution(ctx, decision, price, err, correlationID)
@@ -272,12 +269,31 @@ func (o *Orchestrator) recordFailedExecution(ctx context.Context, decision risk.
 	return nil
 }
 
-func (o *Orchestrator) evaluateRisk(ctx context.Context, signal strategy.Signal) risk.Decision {
+func (o *Orchestrator) executionContext(ctx context.Context, signal strategy.Signal) (float64, execution.Account, error) {
+	if signal.Side != strategy.SideBuy && signal.Side != strategy.SideSell {
+		return 0, execution.Account{}, nil
+	}
+	price, err := o.deps.PriceReader.LatestPrice(ctx, signal.Symbol, signal.Interval)
+	if err != nil {
+		return 0, execution.Account{}, fmt.Errorf("read latest price: %w", err)
+	}
+	account, err := o.deps.AccountStore.Get(ctx)
+	if err != nil {
+		return 0, execution.Account{}, fmt.Errorf("read paper account: %w", err)
+	}
+	return price, account, nil
+}
+
+func (o *Orchestrator) evaluateRisk(ctx context.Context, signal strategy.Signal, price float64, account execution.Account) risk.Decision {
 	contextual, ok := o.deps.RiskEvaluator.(ContextualRiskEvaluator)
 	if !ok {
 		return o.deps.RiskEvaluator.Evaluate(signal)
 	}
-	riskContext := risk.Context{QuoteAmount: o.cfg.QuoteOrderAmount}
+	riskContext := risk.Context{
+		QuoteAmount: o.cfg.QuoteOrderAmount,
+		Price:       price,
+		BaseBalance: account.BaseBalance,
+	}
 	if o.deps.ExecutionStats != nil {
 		if stats, err := o.deps.ExecutionStats.DailyStats(ctx, signal.Symbol, time.Now().UTC()); err == nil {
 			riskContext.DailyTrades = stats.TradeCount

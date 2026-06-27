@@ -237,3 +237,43 @@ Safety:
 - Execution mode: paper
 - Exchange adapter: `binance_disabled`
 - Live trading enabled: false
+
+## Checkpoint 7 - 2026-06-28 01:13 IST
+
+Status: PASS with pre-execution balance risk guard
+
+Defect addressed:
+- Risk approved a `sell` when the paper account did not have enough BTC to satisfy the configured `$100` quote order.
+- Execution could record the failure, but the stronger control is to reject the order before execution.
+
+Fix:
+- Risk context now includes latest price and paper base balance.
+- Risk evaluator rejects `sell` signals when `base_balance < quote_order_amount / latest_price`.
+- Orchestrator and manual paper runner now read latest price/account before risk evaluation for executable buy/sell signals.
+- Approved decisions reuse the same price/account for paper execution.
+
+Verification:
+- Tests added:
+  - `TestEvaluatorRejectsSellWhenBaseBalanceIsInsufficient`
+  - `TestOrchestratorRejectsSellBeforeExecutionWhenBaseBalanceIsInsufficient`
+  - `TestManualRunnerRejectsSellBeforeExecutionWhenBaseBalanceIsInsufficient`
+- Full verification: `go test ./...`
+
+Runtime evidence:
+- API process running: yes
+- Worker process running: yes
+- Worker market-data interval: `15m`
+- Latest risk decision: `ed71974f-ed5c-4d45-b8d0-98c5add5f00f`
+- Signal side: `sell`
+- Risk decision: `rejected`
+- Risk reason: `base balance 0.000006 is below required 0.001662`
+- No new order was created after the previous failed order `953e3785-02fe-4c12-b50c-932e8a316eab`.
+- Paper account remained unchanged: `0.000006165398438465414 BTC`, `9999.8 USDT`
+- Reconciliation run: `456d4df2-dabc-4b0b-9136-2204d222a8ff`
+- Reconciliation status: `matched`
+- Reconciliation mismatches: `0`
+
+Safety:
+- Execution mode: paper
+- Exchange adapter: `binance_disabled`
+- Live trading enabled: false

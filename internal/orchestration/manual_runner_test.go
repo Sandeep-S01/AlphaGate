@@ -107,6 +107,52 @@ func TestManualRunnerBlocksExecutionWhenKillSwitchActive(t *testing.T) {
 	}
 }
 
+func TestManualRunnerRejectsSellBeforeExecutionWhenBaseBalanceIsInsufficient(t *testing.T) {
+	fixture := newFixture()
+	fixture.candleReader.candles = manualRunnerRSIOverboughtCandles()
+	fixture.accounts.account = execution.Account{BaseBalance: 0.001, QuoteBalance: 1000}
+	settings := strategy.DefaultSettings()
+	settings.StrategyName = strategy.StrategyRSIMeanReversion
+	settings.RSIPeriod = 3
+	settings.RSIOversold = 30
+	settings.RSIOverbought = 70
+	settings.LookbackLimit = 5
+	runner := NewManualRunner(ManualRunnerDependencies{
+		CandleReader:     fixture.candleReader,
+		StrategySettings: fixtureStrategySettings{settings: settings},
+		SignalStore:      fixture.signals,
+		RiskSettings:     fixtureRiskSettings{settings: risk.DefaultSettings()},
+		DecisionStore:    fixture.decisions,
+		PriceReader:      fixture.prices,
+		AccountStore:     fixture.accounts,
+		ExecutionStore:   fixture.executions,
+		ExecutionStats:   fixture.executions,
+		Publisher:        fixture.publisher,
+		ExecutionEngine: execution.NewPaperEngine(execution.Config{
+			Enabled:          true,
+			Symbol:           "BTCUSDT",
+			BaseAsset:        "BTC",
+			QuoteAsset:       "USDT",
+			QuoteOrderAmount: 100,
+			FeeRate:          0.001,
+		}),
+	}, Config{QuoteOrderAmount: 100})
+
+	result, err := runner.RunOnce(context.Background(), ManualRunRequest{Symbol: "BTCUSDT", Interval: "1m"})
+	if err != nil {
+		t.Fatalf("RunOnce returned error: %v", err)
+	}
+	if result.Status != "risk_rejected" {
+		t.Fatalf("expected risk_rejected, got %+v", result)
+	}
+	if result.Decision.Reason != "base balance 0.001000 is below required 0.002000" {
+		t.Fatalf("expected insufficient base balance reason, got %+v", result.Decision)
+	}
+	if len(fixture.executions.saved) != 0 {
+		t.Fatalf("expected no execution after risk rejection, got %d", len(fixture.executions.saved))
+	}
+}
+
 type fixtureStrategySettings struct {
 	settings strategy.Settings
 }
@@ -138,6 +184,15 @@ func (f *fakeExecutionStore) DailyStats(ctx context.Context, symbol string, day 
 func manualRunnerCandles() []marketdata.Candle {
 	base := time.Unix(100, 0).UTC()
 	closes := []string{"100", "100", "100", "100", "80", "130"}
+	return manualRunnerCandlesWithCloses(base, closes)
+}
+
+func manualRunnerRSIOverboughtCandles() []marketdata.Candle {
+	base := time.Unix(200, 0).UTC()
+	return manualRunnerCandlesWithCloses(base, []string{"80", "85", "90", "95", "100"})
+}
+
+func manualRunnerCandlesWithCloses(base time.Time, closes []string) []marketdata.Candle {
 	candles := make([]marketdata.Candle, 0, len(closes))
 	for index, closeValue := range closes {
 		openTime := base.Add(time.Duration(index) * time.Minute)

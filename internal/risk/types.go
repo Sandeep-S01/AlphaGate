@@ -52,6 +52,8 @@ type Settings struct {
 
 type Context struct {
 	QuoteAmount              float64
+	Price                    float64
+	BaseBalance              float64
 	DailyTrades              int
 	DailyLoss                float64
 	LastTradeAt              time.Time

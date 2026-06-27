@@ -109,8 +109,12 @@ func (r *ManualRunner) RunOnce(ctx context.Context, request ManualRunRequest) (M
 	if err != nil {
 		return ManualRunResult{}, fmt.Errorf("read risk settings: %w", err)
 	}
+	price, account, err := r.executionContext(ctx, signal)
+	if err != nil {
+		return ManualRunResult{}, err
+	}
 	riskEvaluator := risk.NewEvaluator(riskSettings.Config())
-	decision := riskEvaluator.EvaluateWithContext(signal, r.riskContext(ctx, signal.Symbol))
+	decision := riskEvaluator.EvaluateWithContext(signal, r.riskContext(ctx, signal.Symbol, price, account))
 	decision.ID, err = r.deps.DecisionStore.Save(ctx, decision)
 	if err != nil {
 		return ManualRunResult{}, fmt.Errorf("save risk decision: %w", err)
@@ -133,14 +137,6 @@ func (r *ManualRunner) RunOnce(ctx context.Context, request ManualRunRequest) (M
 			result.Status = "safety_blocked"
 			return result, nil
 		}
-	}
-	price, err := r.deps.PriceReader.LatestPrice(ctx, signal.Symbol, signal.Interval)
-	if err != nil {
-		return ManualRunResult{}, fmt.Errorf("read latest price: %w", err)
-	}
-	account, err := r.deps.AccountStore.Get(ctx)
-	if err != nil {
-		return ManualRunResult{}, fmt.Errorf("read paper account: %w", err)
 	}
 	executionResult, updatedAccount, err := r.deps.ExecutionEngine.Execute(decision, price, account)
 	if err != nil {
@@ -166,8 +162,27 @@ func (r *ManualRunner) RunOnce(ctx context.Context, request ManualRunRequest) (M
 	return result, nil
 }
 
-func (r *ManualRunner) riskContext(ctx context.Context, symbol string) risk.Context {
-	riskContext := risk.Context{QuoteAmount: r.cfg.QuoteOrderAmount}
+func (r *ManualRunner) executionContext(ctx context.Context, signal strategy.Signal) (float64, execution.Account, error) {
+	if signal.Side != strategy.SideBuy && signal.Side != strategy.SideSell {
+		return 0, execution.Account{}, nil
+	}
+	price, err := r.deps.PriceReader.LatestPrice(ctx, signal.Symbol, signal.Interval)
+	if err != nil {
+		return 0, execution.Account{}, fmt.Errorf("read latest price: %w", err)
+	}
+	account, err := r.deps.AccountStore.Get(ctx)
+	if err != nil {
+		return 0, execution.Account{}, fmt.Errorf("read paper account: %w", err)
+	}
+	return price, account, nil
+}
+
+func (r *ManualRunner) riskContext(ctx context.Context, symbol string, price float64, account execution.Account) risk.Context {
+	riskContext := risk.Context{
+		QuoteAmount: r.cfg.QuoteOrderAmount,
+		Price:       price,
+		BaseBalance: account.BaseBalance,
+	}
 	if r.deps.ExecutionStats == nil {
 		return riskContext
 	}
