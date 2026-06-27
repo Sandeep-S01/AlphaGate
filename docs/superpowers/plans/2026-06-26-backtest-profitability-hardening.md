@@ -1,6 +1,6 @@
 # Backtest Profitability Hardening Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Make Sentra backtests explain why strategies lose, model trading costs fairly, reduce destructive overtrading defaults, and expose enough diagnostics to tune strategies toward positive net expectancy.
 
@@ -60,7 +60,7 @@ The current negative PnL pattern is mostly caused by weak starter strategy rules
 - Modify: `internal/backtest/engine_test.go`
 - Modify: `internal/backtest/engine.go`
 
-- [ ] **Step 1: Write the failing cost-field test**
+- [x] **Step 1: Write the failing cost-field test**
 
 Add this test to `internal/backtest/engine_test.go` near existing fee/slippage tests:
 
@@ -108,7 +108,7 @@ func TestEngineReportsCostDiagnostics(t *testing.T) {
 }
 ```
 
-- [ ] **Step 2: Run the test and verify it fails**
+- [x] **Step 2: Run the test and verify it fails**
 
 Run:
 
@@ -118,7 +118,7 @@ go test ./internal/backtest -run TestEngineReportsCostDiagnostics -count=1
 
 Expected: build failure because `Run.TotalFees`, `Run.EstimatedSlippageCost`, `Run.GrossProfitLoss`, `Run.RoundTripCostPercent`, and `Run.BreakEvenMovePercent` do not exist.
 
-- [ ] **Step 3: Add fields to `Run`**
+- [x] **Step 3: Add fields to `Run`**
 
 In `internal/backtest/types.go`, add these fields after `ProfitLoss`:
 
@@ -130,7 +130,7 @@ RoundTripCostPercent  float64 `json:"round_trip_cost_percent"`
 BreakEvenMovePercent  float64 `json:"break_even_move_percent"`
 ```
 
-- [ ] **Step 4: Track costs in engine**
+- [x] **Step 4: Track costs in engine**
 
 In `internal/backtest/engine.go`, initialize these variables near the existing balance variables:
 
@@ -178,7 +178,7 @@ RoundTripCostPercent:  roundTripCostPercent,
 BreakEvenMovePercent:  breakEvenMovePercent,
 ```
 
-- [ ] **Step 5: Run the test and verify it passes**
+- [x] **Step 5: Run the test and verify it passes**
 
 Run:
 
@@ -188,7 +188,7 @@ go test ./internal/backtest -run TestEngineReportsCostDiagnostics -count=1
 
 Expected: PASS.
 
-- [ ] **Step 6: Run focused package tests**
+- [x] **Step 6: Run focused package tests**
 
 Run:
 
@@ -206,7 +206,7 @@ Expected: PASS.
 - Modify: `internal/backtest/engine.go`
 - Modify: `internal/backtest/engine_test.go`
 
-- [ ] **Step 1: Write the failing benchmark test**
+- [x] **Step 1: Write the failing benchmark test**
 
 Add this test near `TestEngineCalculatesBenchmarkMetrics`:
 
@@ -244,7 +244,7 @@ func TestBenchmarkBuyAndHoldAppliesExitCosts(t *testing.T) {
 }
 ```
 
-- [ ] **Step 2: Run the test and verify it fails**
+- [x] **Step 2: Run the test and verify it fails**
 
 Run:
 
@@ -254,7 +254,7 @@ go test ./internal/backtest -run TestBenchmarkBuyAndHoldAppliesExitCosts -count=
 
 Expected: FAIL because current benchmark does not apply exit slippage/fee.
 
-- [ ] **Step 3: Update benchmark liquidation logic**
+- [x] **Step 3: Update benchmark liquidation logic**
 
 In `benchmarkBuyAndHold`, replace:
 
@@ -271,7 +271,7 @@ exitFee := exitGross * request.FeeRate
 endingBalance := exitGross - exitFee
 ```
 
-- [ ] **Step 4: Run the benchmark test**
+- [x] **Step 4: Run the benchmark test**
 
 Run:
 
@@ -290,7 +290,7 @@ Expected: PASS.
 - Modify: `internal/backtest/repository.go`
 - Modify: `internal/backtest/repository_test.go`
 
-- [ ] **Step 1: Create migration**
+- [x] **Step 1: Create migration**
 
 Create the next migration number after the current highest file in `internal/platform/migrations`. Use the actual next number in the filename.
 
@@ -312,7 +312,7 @@ ALTER TABLE strategy_comparison_results
     ADD COLUMN IF NOT EXISTS break_even_move_percent DOUBLE PRECISION NOT NULL DEFAULT 0;
 ```
 
-- [ ] **Step 2: Update repository SQL tests first**
+- [x] **Step 2: Update repository SQL tests first**
 
 In `TestBuildInsertRunSQLUsesRunFields`, set:
 
@@ -334,7 +334,7 @@ if !strings.Contains(query, "gross_profit_loss") || !strings.Contains(query, "to
 }
 ```
 
-- [ ] **Step 3: Run repository test and verify it fails**
+- [x] **Step 3: Run repository test and verify it fails**
 
 Run:
 
@@ -344,7 +344,7 @@ go test ./internal/backtest -run TestBuildInsertRunSQLUsesRunFields -count=1
 
 Expected: FAIL because insert SQL does not include new fields.
 
-- [ ] **Step 4: Update insert/select/scan SQL**
+- [x] **Step 4: Update insert/select/scan SQL**
 
 In `BuildInsertRunSQL`, add the five columns and five args in the same order as the `Run` fields.
 
@@ -365,7 +365,7 @@ r.gross_profit_loss, r.total_fees, r.estimated_slippage_cost,
 r.round_trip_cost_percent, r.break_even_move_percent,
 ```
 
-- [ ] **Step 5: Run repository package tests**
+- [x] **Step 5: Run repository package tests**
 
 Run:
 
@@ -384,7 +384,7 @@ Expected: PASS.
 - Modify: `internal/backtest/engine_test.go`
 - Modify: `internal/backtest/validation.go`
 
-- [ ] **Step 1: Write failing validation tests**
+- [x] **Step 1: Write failing validation tests**
 
 Add these tests near existing `validateRunCandidate` tests:
 
@@ -427,7 +427,7 @@ func TestValidateRunCandidateRejectsExcessiveChurn(t *testing.T) {
 }
 ```
 
-- [ ] **Step 2: Run tests and verify failure**
+- [x] **Step 2: Run tests and verify failure**
 
 Run:
 
@@ -437,7 +437,7 @@ go test ./internal/backtest -run "TestValidateRunCandidateRejectsAverageTradeBel
 
 Expected: build failure or wrong status because new validation inputs are missing.
 
-- [ ] **Step 3: Extend validation input**
+- [x] **Step 3: Extend validation input**
 
 In `runValidationInput`, add:
 
@@ -453,7 +453,7 @@ BreakEvenMovePercent: breakEvenMovePercent,
 TradesPerDay:         tradesPerDay,
 ```
 
-- [ ] **Step 4: Add validation logic**
+- [x] **Step 4: Add validation logic**
 
 In `validateRunCandidate`, after insufficient sample checks and before benchmark checks, add:
 
@@ -466,7 +466,7 @@ if input.BreakEvenMovePercent > 0 && input.AverageTrade > 0 && input.AverageTrad
 }
 ```
 
-- [ ] **Step 5: Run validation tests**
+- [x] **Step 5: Run validation tests**
 
 Run:
 
@@ -485,7 +485,7 @@ Expected: PASS.
 - Modify: `internal/strategy/templates_test.go`
 - Modify: `internal/backtest/types.go`
 
-- [ ] **Step 1: Add failing template-profile test**
+- [x] **Step 1: Add failing template-profile test**
 
 In `internal/strategy/templates_test.go`, add:
 
@@ -511,7 +511,7 @@ func TestExecutableTemplatesHaveExecutionProfiles(t *testing.T) {
 }
 ```
 
-- [ ] **Step 2: Run test and verify failure**
+- [x] **Step 2: Run test and verify failure**
 
 Run:
 
@@ -521,7 +521,7 @@ go test ./internal/strategy -run TestExecutableTemplatesHaveExecutionProfiles -c
 
 Expected: build failure because `ExecutionProfile` does not exist.
 
-- [ ] **Step 3: Add profile type**
+- [x] **Step 3: Add profile type**
 
 In `internal/strategy/templates.go`, add:
 
@@ -544,7 +544,7 @@ Add to `StrategyTemplate`:
 ExecutionProfile TemplateExecutionProfile `json:"execution_profile"`
 ```
 
-- [ ] **Step 4: Populate executable template profiles**
+- [x] **Step 4: Populate executable template profiles**
 
 Use these initial profiles:
 
@@ -576,7 +576,7 @@ ExecutionProfile: TemplateExecutionProfile{
 },
 ```
 
-- [ ] **Step 5: Run strategy tests**
+- [x] **Step 5: Run strategy tests**
 
 Run:
 
@@ -594,7 +594,7 @@ Expected: PASS.
 - Modify: `dashboard-src/src/components/ResearchWorkspace.jsx`
 - Modify: `dashboard-src/src/components/StrategyWorkspace.jsx`
 
-- [ ] **Step 1: Locate strategy selection handler**
+- [x] **Step 1: Locate strategy selection handler**
 
 Run:
 
@@ -604,7 +604,7 @@ rg -n "strategyModel|setStrategy|templates|cooldown|atr_exit|backtest" dashboard
 
 Expected: find the strategy dropdown state and request body creation.
 
-- [ ] **Step 2: Apply profile values when a predefined template is selected**
+- [x] **Step 2: Apply profile values when a predefined template is selected**
 
 In the template selection handler, add logic equivalent to:
 
@@ -625,7 +625,7 @@ const applyTemplateProfile = (template) => {
 }
 ```
 
-- [ ] **Step 3: Add visible profile note**
+- [x] **Step 3: Add visible profile note**
 
 Render a compact note near the strategy dropdown:
 
@@ -637,7 +637,7 @@ Render a compact note near the strategy dropdown:
 )}
 ```
 
-- [ ] **Step 4: Run frontend checks**
+- [x] **Step 4: Run frontend checks**
 
 Run:
 
@@ -656,7 +656,7 @@ Expected: both PASS.
 **Files:**
 - Modify: `dashboard-src/src/components/ResearchWorkspace.jsx`
 
-- [ ] **Step 1: Add cost metrics to result panel**
+- [x] **Step 1: Add cost metrics to result panel**
 
 In the backtest result summary area, add rows for:
 
@@ -670,7 +670,7 @@ In the backtest result summary area, add rows for:
 
 Use the existing local metric/card component if one already exists. Do not create a new visual style.
 
-- [ ] **Step 2: Add cost warning**
+- [x] **Step 2: Add cost warning**
 
 Near validation status, render:
 
@@ -682,7 +682,7 @@ Near validation status, render:
 )}
 ```
 
-- [ ] **Step 3: Run frontend checks**
+- [x] **Step 3: Run frontend checks**
 
 Run:
 
@@ -702,7 +702,7 @@ Expected: both PASS.
 - Modify: `internal/backtest/optimizer.go`
 - Modify: `internal/backtest/optimizer_test.go`
 
-- [ ] **Step 1: Write failing optimizer ranking test**
+- [x] **Step 1: Write failing optimizer ranking test**
 
 Add:
 
@@ -721,7 +721,7 @@ func TestOptimizerRanksCostAwareResultsAboveHighChurnResults(t *testing.T) {
 }
 ```
 
-- [ ] **Step 2: Run test and verify failure**
+- [x] **Step 2: Run test and verify failure**
 
 Run:
 
@@ -731,7 +731,7 @@ go test ./internal/backtest -run TestOptimizerRanksCostAwareResultsAboveHighChur
 
 Expected: FAIL because current ranking prioritizes excess return directly.
 
-- [ ] **Step 3: Add score helper**
+- [x] **Step 3: Add score helper**
 
 In `optimizer.go`, add:
 
@@ -749,7 +749,7 @@ func optimizationScore(result OptimizationResult) float64 {
 
 Update ranking to sort by `optimizationScore`.
 
-- [ ] **Step 4: Run optimizer tests**
+- [x] **Step 4: Run optimizer tests**
 
 Run:
 
@@ -768,7 +768,7 @@ Expected: PASS.
 - Modify: `tools/backtest-agent/main.go`
 - Modify: `docs/backtesting_e2e_report.md`
 
-- [ ] **Step 1: Add API test assertions**
+- [x] **Step 1: Add API test assertions**
 
 In the existing successful backtest API test, assert:
 
@@ -781,7 +781,7 @@ if data["round_trip_cost_percent"] == nil {
 }
 ```
 
-- [ ] **Step 2: Run API test**
+- [x] **Step 2: Run API test**
 
 Run:
 
@@ -791,7 +791,7 @@ go test ./internal/api -run Backtest -count=1
 
 Expected: PASS after Task 3 persistence/API JSON changes.
 
-- [ ] **Step 3: Update E2E report output**
+- [x] **Step 3: Update E2E report output**
 
 In `tools/backtest-agent/main.go`, include cost fields in successful run evidence:
 
@@ -799,7 +799,7 @@ In `tools/backtest-agent/main.go`, include cost fields in successful run evidenc
 Evidence: fmt.Sprintf("return=%.2f%% trades=%d fees=%.2f roundTripCost=%.2f%% validation=%s", run.ReturnPercent, run.TotalTrades, run.TotalFees, run.RoundTripCostPercent, run.ValidationStatus),
 ```
 
-- [ ] **Step 4: Run E2E agent**
+- [x] **Step 4: Run E2E agent**
 
 Run:
 
@@ -817,7 +817,7 @@ Expected: report generated with cost diagnostics.
 - Modify: `docs/extending-strategies.md`
 - Modify: `docs/backtesting_e2e_report.md`
 
-- [ ] **Step 1: Document cost-aware strategy requirements**
+- [x] **Step 1: Document cost-aware strategy requirements**
 
 Add this section to `docs/extending-strategies.md`:
 
@@ -835,7 +835,7 @@ For high-frequency intervals such as `1m`, use stricter cooldown and minimum hol
 - max drawdown inside the strategy's declared risk limit
 ```
 
-- [ ] **Step 2: Run all backend tests**
+- [x] **Step 2: Run all backend tests**
 
 Run:
 
@@ -845,7 +845,7 @@ go test ./...
 
 Expected: PASS.
 
-- [ ] **Step 3: Run frontend checks**
+- [x] **Step 3: Run frontend checks**
 
 Run:
 
@@ -857,7 +857,7 @@ npm run build
 
 Expected: PASS.
 
-- [ ] **Step 4: Manual verification**
+- [x] **Step 4: Manual verification**
 
 Run the API locally, open the dashboard, and verify:
 

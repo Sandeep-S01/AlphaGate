@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-26T10:16:46.2724544Z",
+  "generated_at": "2026-06-27T20:06:11.2357032Z",
   "base_url": "http://127.0.0.1:8080",
   "symbol": "BTCUSDT",
   "interval": "1m",
@@ -18,15 +18,15 @@
       "method": "GET",
       "path": "/health",
       "http_status": 200,
-      "latency_ms": 10,
-      "evidence": "{\"service\":\"sentra\",\"status\":\"ok\",\"timestamp\":\"2026-06-26T10:16:46Z\"}",
+      "latency_ms": 3,
+      "evidence": "{\"service\":\"sentra\",\"status\":\"ok\",\"timestamp\":\"2026-06-27T20:06:11Z\"}",
       "response": {
         "service": "sentra",
         "status": "ok",
-        "timestamp": "2026-06-26T10:16:46Z"
+        "timestamp": "2026-06-27T20:06:11Z"
       },
-      "started_at": "2026-06-26T10:16:46.2724544Z",
-      "completed_at": "2026-06-26T10:16:46.2825523Z"
+      "started_at": "2026-06-27T20:06:11.2357032Z",
+      "completed_at": "2026-06-27T20:06:11.2396199Z"
     },
     {
       "level": "L0-Min",
@@ -35,34 +35,32 @@
       "method": "GET",
       "path": "/ready",
       "http_status": 200,
-      "latency_ms": 2081,
-      "evidence": "{\"checks\":{\"candles\":{\"latency_ms\":2034,\"note\":\"service responding\",\"status\":\"ok\"},\"postgres\":{\"latency_ms\":1,\"status\":\"ok\"},\"redis\":{\"latency_ms\":1,\"status\":\"ok\"},\"signals\":{\"late...",
+      "latency_ms": 1270,
+      "evidence": "{\"checks\":{\"candles\":{\"latency_ms\":1262,\"status\":\"ok\"},\"postgres\":{\"latency_ms\":2,\"status\":\"ok\"},\"redis\":{\"latency_ms\":0,\"status\":\"ok\"},\"signals\":{\"latency_ms\":4,\"status\":\"ok\"}},\"s...",
       "response": {
         "checks": {
           "candles": {
-            "latency_ms": 2034,
-            "note": "service responding",
+            "latency_ms": 1262,
             "status": "ok"
           },
           "postgres": {
-            "latency_ms": 1,
+            "latency_ms": 2,
             "status": "ok"
           },
           "redis": {
-            "latency_ms": 1,
+            "latency_ms": 0,
             "status": "ok"
           },
           "signals": {
-            "latency_ms": 0,
-            "note": "service responding",
+            "latency_ms": 4,
             "status": "ok"
           }
         },
         "status": "ok",
-        "timestamp": "2026-06-26T10:16:46Z"
+        "timestamp": "2026-06-27T20:06:11Z"
       },
-      "started_at": "2026-06-26T10:16:46.2830631Z",
-      "completed_at": "2026-06-26T10:16:48.3646209Z"
+      "started_at": "2026-06-27T20:06:11.2396199Z",
+      "completed_at": "2026-06-27T20:06:12.5104385Z"
     },
     {
       "level": "L1-Easy",
@@ -71,7 +69,7 @@
       "method": "GET",
       "path": "/api/v1/strategies/templates",
       "http_status": 200,
-      "latency_ms": 53,
+      "latency_ms": 1,
       "evidence": "catalog contains 10 templates",
       "response": {
         "data": [
@@ -107,7 +105,13 @@
               "cooldown_bars": 8,
               "max_trades_per_day": 12,
               "min_holding_bars": 4,
-              "recommended_interval": "15m"
+              "position_size_percent": 0,
+              "recommended_interval": "15m",
+              "regime_filter_enabled": false,
+              "regime_filter_period": 0,
+              "regime_max_atr_percent": 0,
+              "regime_min_atr_percent": 0,
+              "shorting_enabled": false
             },
             "exit_rules": [
               "Close falls below EMA(20) or SMA(50).",
@@ -170,7 +174,13 @@
               "cooldown_bars": 8,
               "max_trades_per_day": 12,
               "min_holding_bars": 4,
-              "recommended_interval": "15m"
+              "position_size_percent": 0,
+              "recommended_interval": "15m",
+              "regime_filter_enabled": false,
+              "regime_filter_period": 0,
+              "regime_max_atr_percent": 0,
+              "regime_min_atr_percent": 0,
+              "shorting_enabled": false
             },
             "exit_rules": [
               "Close falls below the entry candle low.",
@@ -233,7 +243,13 @@
               "cooldown_bars": 8,
               "max_trades_per_day": 12,
               "min_holding_bars": 4,
-              "recommended_interval": "15m"
+              "position_size_percent": 0,
+              "recommended_interval": "15m",
+              "regime_filter_enabled": false,
+              "regime_filter_period": 0,
+              "regime_max_atr_percent": 0,
+              "regime_min_atr_percent": 0,
+              "shorting_enabled": false
             },
             "exit_rules": [
               "Close touches the middle Bollinger Band.",
@@ -296,7 +312,13 @@
               "cooldown_bars": 0,
               "max_trades_per_day": 0,
               "min_holding_bars": 0,
-              "recommended_interval": ""
+              "position_size_percent": 0,
+              "recommended_interval": "",
+              "regime_filter_enabled": false,
+              "regime_filter_period": 0,
+              "regime_max_atr_percent": 0,
+              "regime_min_atr_percent": 0,
+              "shorting_enabled": false
             },
             "exit_rules": [
               "Exit when z-score returns inside +/-0.5.",
@@ -357,7 +379,13 @@
               "cooldown_bars": 0,
               "max_trades_per_day": 0,
               "min_holding_bars": 0,
-              "recommended_interval": ""
+              "position_size_percent": 0,
+              "recommended_interval": "",
+              "regime_filter_enabled": false,
+              "regime_filter_period": 0,
+              "regime_max_atr_percent": 0,
+              "regime_min_atr_percent": 0,
+              "shorting_enabled": false
             },
             "exit_rules": [
               "Exit when price crosses above VWAP.",
@@ -420,7 +448,13 @@
               "cooldown_bars": 0,
               "max_trades_per_day": 0,
               "min_holding_bars": 0,
-              "recommended_interval": ""
+              "position_size_percent": 0,
+              "recommended_interval": "",
+              "regime_filter_enabled": false,
+              "regime_filter_period": 0,
+              "regime_max_atr_percent": 0,
+              "regime_min_atr_percent": 0,
+              "shorting_enabled": false
             },
             "exit_rules": [
               "Cancel or reduce quotes when inventory skew exceeds 70%.",
@@ -485,7 +519,13 @@
               "cooldown_bars": 0,
               "max_trades_per_day": 0,
               "min_holding_bars": 0,
-              "recommended_interval": ""
+              "position_size_percent": 0,
+              "recommended_interval": "",
+              "regime_filter_enabled": false,
+              "regime_filter_period": 0,
+              "regime_max_atr_percent": 0,
+              "regime_min_atr_percent": 0,
+              "shorting_enabled": false
             },
             "exit_rules": [
               "Close hedge after funding payment capture.",
@@ -546,7 +586,13 @@
               "cooldown_bars": 0,
               "max_trades_per_day": 0,
               "min_holding_bars": 0,
-              "recommended_interval": ""
+              "position_size_percent": 0,
+              "recommended_interval": "",
+              "regime_filter_enabled": false,
+              "regime_filter_period": 0,
+              "regime_max_atr_percent": 0,
+              "regime_min_atr_percent": 0,
+              "shorting_enabled": false
             },
             "exit_rules": [
               "When a buy fills, place the matching sell one grid level higher.",
@@ -577,7 +623,7 @@
           },
           {
             "blockers": [
-              "Starter Pine omits MACD acceleration and ATR trailing stop because those should be represented by the backtest/risk settings or a future native evaluator."
+              "ATR trailing stop is represented by the backtest/risk settings rather than inline Pine."
             ],
             "category": "Momentum",
             "default_settings": {
@@ -597,20 +643,28 @@
               "Close is above SMA(50).",
               "SMA(50) is above SMA(200).",
               "RSI(14) is above 50 and below 70.",
-              "Momentum confirms and volume is above average."
+              "MACD crossover/crossunder confirms fresh momentum acceleration.",
+              "Risk-on continuation can enter established uptrends while MACD remains bullish.",
+              "Volume is above average."
             ],
             "execution_profile": {
               "atr_exit_enabled": true,
               "atr_period": 14,
               "atr_stop_multiplier": 2.5,
               "atr_take_profit_multiplier": 4,
-              "cooldown_bars": 6,
-              "max_trades_per_day": 6,
-              "min_holding_bars": 3,
-              "recommended_interval": "1h"
+              "cooldown_bars": 72,
+              "max_trades_per_day": 0.5,
+              "min_holding_bars": 24,
+              "position_size_percent": 10,
+              "recommended_interval": "1h",
+              "regime_filter_enabled": true,
+              "regime_filter_period": 14,
+              "regime_max_atr_percent": 4,
+              "regime_min_atr_percent": 0.25,
+              "shorting_enabled": true
             },
             "exit_rules": [
-              "Exit when core trend or RSI momentum conditions fail.",
+              "Exit when core trend, RSI momentum, or MACD confirmation fails.",
               "Use ATR trailing stop in execution/backtesting settings.",
               "Use 10-day time stop when implemented natively."
             ],
@@ -625,7 +679,7 @@
             ],
             "market": "Crypto / All Markets",
             "name": "Multi-Factor Momentum",
-            "pine_code": "sma50 = ta.sma(close, 50)\nsma200 = ta.sma(close, 200)\nrsi14 = ta.rsi(close, 14)\nvol20 = ta.sma(volume, 20)\nbuy = close \u003e sma50 and sma50 \u003e sma200 and rsi14 \u003e 50 and rsi14 \u003c 70 and volume \u003e vol20\nsell = close \u003c sma50 or rsi14 \u003c 45\nif buy\n    strategy.entry(\"LONG\", strategy.long)\nif sell\n    strategy.close(\"LONG\")",
+            "pine_code": "sma50 = ta.sma(close, 50)\nsma200 = ta.sma(close, 200)\nrsi14 = ta.rsi(close, 14)\nvol20 = ta.sma(volume, 20)\nmacdLine = ta.macd(close, 12, 26, 9)\nlongSignal = close \u003e sma50 and sma50 \u003e sma200 and volume \u003e vol20 and ((rsi14 \u003e 50 and rsi14 \u003c 70 and ta.crossover(macdLine, macdLine.signal)) or (rsi14 \u003e 55 and rsi14 \u003c 78 and macdLine \u003e macdLine.signal))\nshortSignal = close \u003c sma50 and sma50 \u003c sma200 and rsi14 \u003c 50 and rsi14 \u003e 30 and volume \u003e vol20 and ta.crossunder(macdLine, macdLine.signal)\nlongExit = close \u003c sma50 or rsi14 \u003c 48 or macdLine \u003c macdLine.signal\nshortExit = close \u003e sma50 or rsi14 \u003e 52 or macdLine \u003e macdLine.signal\nif longSignal\n    strategy.entry(\"LONG\", strategy.long)\nif shortSignal\n    strategy.entry(\"SHORT\", strategy.short)\nif longExit\n    strategy.close(\"LONG\")\nif shortExit\n    strategy.close(\"SHORT\")",
             "required_data": [
               "OHLCV"
             ],
@@ -669,7 +723,13 @@
               "cooldown_bars": 0,
               "max_trades_per_day": 0,
               "min_holding_bars": 0,
-              "recommended_interval": ""
+              "position_size_percent": 0,
+              "recommended_interval": "",
+              "regime_filter_enabled": false,
+              "regime_filter_period": 0,
+              "regime_max_atr_percent": 0,
+              "regime_min_atr_percent": 0,
+              "shorting_enabled": false
             },
             "exit_rules": [
               "Exit on bearish CVD divergence.",
@@ -705,8 +765,8 @@
           }
         ]
       },
-      "started_at": "2026-06-26T10:16:48.3646209Z",
-      "completed_at": "2026-06-26T10:16:48.4183444Z"
+      "started_at": "2026-06-27T20:06:12.5104385Z",
+      "completed_at": "2026-06-27T20:06:12.5127951Z"
     },
     {
       "level": "L1-Easy",
@@ -715,7 +775,7 @@
       "method": "GET",
       "path": "/api/v1/market/candles?symbol=BTCUSDT\u0026interval=1m\u0026limit=600",
       "http_status": 200,
-      "latency_ms": 602,
+      "latency_ms": 17,
       "evidence": "600 candles available",
       "response": {
         "data": [
@@ -10321,8 +10381,8 @@
           }
         ]
       },
-      "started_at": "2026-06-26T10:16:48.4222085Z",
-      "completed_at": "2026-06-26T10:16:49.0250232Z"
+      "started_at": "2026-06-27T20:06:12.5149194Z",
+      "completed_at": "2026-06-27T20:06:12.5323214Z"
     },
     {
       "level": "L1-Easy",
@@ -10331,13 +10391,13 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 400,
-      "latency_ms": 7,
+      "latency_ms": 0,
       "evidence": "invalid JSON body",
       "response": {
         "error": "invalid JSON body"
       },
-      "started_at": "2026-06-26T10:16:49.2272886Z",
-      "completed_at": "2026-06-26T10:16:49.2352327Z"
+      "started_at": "2026-06-27T20:06:12.5512277Z",
+      "completed_at": "2026-06-27T20:06:12.5517581Z"
     },
     {
       "level": "L1-Easy",
@@ -10346,7 +10406,7 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 400,
-      "latency_ms": 13,
+      "latency_ms": 0,
       "evidence": "unsupported strategy_name \"unknown-strategy\"",
       "request": {
         "atr_exit_enabled": true,
@@ -10378,8 +10438,8 @@
       "response": {
         "error": "unsupported strategy_name \"unknown-strategy\""
       },
-      "started_at": "2026-06-26T10:16:49.2357542Z",
-      "completed_at": "2026-06-26T10:16:49.2496484Z"
+      "started_at": "2026-06-27T20:06:12.5517581Z",
+      "completed_at": "2026-06-27T20:06:12.5522942Z"
     },
     {
       "level": "L2-Medium",
@@ -10388,7 +10448,7 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 400,
-      "latency_ms": 72,
+      "latency_ms": 0,
       "evidence": "strategy template \"crypto-market-making\" is not executable: support status is \"blocked_by_data\"",
       "request": {
         "atr_exit_enabled": true,
@@ -10420,8 +10480,8 @@
       "response": {
         "error": "strategy template \"crypto-market-making\" is not executable: support status is \"blocked_by_data\""
       },
-      "started_at": "2026-06-26T10:16:49.2496484Z",
-      "completed_at": "2026-06-26T10:16:49.3225458Z"
+      "started_at": "2026-06-27T20:06:12.5522942Z",
+      "completed_at": "2026-06-27T20:06:12.5528287Z"
     },
     {
       "level": "L2-Medium",
@@ -10430,7 +10490,7 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 400,
-      "latency_ms": 179,
+      "latency_ms": 6,
       "evidence": "not enough candles for selected backtest range",
       "request": {
         "atr_exit_enabled": true,
@@ -10441,7 +10501,7 @@
         "execution_fill_mode": "next_open",
         "fast_period": 9,
         "fee_rate": 0.001,
-        "from": "2026-06-27T10:16:49Z",
+        "from": "2026-06-28T20:06:12Z",
         "interval": "1m",
         "min_holding_bars": 1,
         "position_size_value": 10,
@@ -10456,7 +10516,7 @@
         "starting_balance": 1000,
         "strategy_name": "sma-crossover",
         "symbol": "BTCUSDT",
-        "to": "2026-06-27T12:16:49Z",
+        "to": "2026-06-28T22:06:12Z",
         "version": "v1"
       },
       "response": {
@@ -10464,8 +10524,8 @@
         "error": "not enough candles for selected backtest range",
         "required_candles": 22
       },
-      "started_at": "2026-06-26T10:16:49.3240884Z",
-      "completed_at": "2026-06-26T10:16:49.5044124Z"
+      "started_at": "2026-06-27T20:06:12.5528287Z",
+      "completed_at": "2026-06-27T20:06:12.5588605Z"
     },
     {
       "level": "L3-Hard",
@@ -10474,7 +10534,7 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 201,
-      "latency_ms": 2296,
+      "latency_ms": 125,
       "evidence": "strategy=sma-crossover return=-0.20% trades=14 fees=1.40 roundTripCost=0.30% validation=insufficient_sample",
       "request": {
         "atr_exit_enabled": true,
@@ -10521,7 +10581,7 @@
           "buy_count": 7,
           "churn_ratio": 2.422145328719723,
           "cooldown_bars": 1,
-          "created_at": "2026-06-26T15:46:49.950956+05:30",
+          "created_at": "2026-06-28T01:36:12.582447+05:30",
           "ending_balance": 997.9825423262836,
           "estimated_slippage_cost": 0.6984226353867936,
           "excess_return_percent": -1.0926923651195692,
@@ -10531,7 +10591,7 @@
           "fee_rate": 0.001,
           "from": "2024-06-18T16:47:00Z",
           "gross_profit_loss": 0.07850962519367777,
-          "id": "98705587-e831-48c0-a41c-83308a554b55",
+          "id": "2f3ed25a-8fb6-4e68-98ad-507c89a28ff9",
           "interval": "1m",
           "losing_trades": 7,
           "max_drawdown": 0.20650468033928565,
@@ -10541,6 +10601,10 @@
           "position_sizing_mode": "percent_equity",
           "profit_factor": 0,
           "profit_loss": -2.0174576737164216,
+          "regime_filter_enabled": false,
+          "regime_filter_period": 0,
+          "regime_max_atr_percent": 0,
+          "regime_min_atr_percent": 0,
           "return_percent": -0.20174576737164215,
           "round_trip_cost_percent": 0.3,
           "round_trips": [
@@ -10554,11 +10618,11 @@
               "fees": 0.19977800618598196,
               "gross_profit_loss": -0.12199381401804646,
               "holding_seconds": 840,
-              "id": "28a35a06-1394-4c4d-9104-c1ac697e6d29",
+              "id": "2eac97f1-248e-44a5-a1f2-5c23d5911edf",
               "net_profit_loss": -0.3217718202040203,
               "profit_percent": -0.3217718202040203,
               "quantity": 0.0015438896490435894,
-              "run_id": "98705587-e831-48c0-a41c-83308a554b55",
+              "run_id": "2f3ed25a-8fb6-4e68-98ad-507c89a28ff9",
               "symbol": "BTCUSDT"
             },
             {
@@ -10571,11 +10635,11 @@
               "fees": 0.1998618442018544,
               "gross_profit_loss": 0.02616638871318623,
               "holding_seconds": 1800,
-              "id": "62e755ef-eacf-43c7-a654-bf212d11df58",
+              "id": "45bbf2a1-3ed0-445e-b834-f91d1f0c56f9",
               "net_profit_loss": -0.17369545548866938,
               "profit_percent": -0.17375136378125622,
               "quantity": 0.001551925122070091,
-              "run_id": "98705587-e831-48c0-a41c-83308a554b55",
+              "run_id": "2f3ed25a-8fb6-4e68-98ad-507c89a28ff9",
               "symbol": "BTCUSDT"
             },
             {
@@ -10588,11 +10652,11 @@
               "fees": 0.19958443388858998,
               "gross_profit_loss": -0.21652220299904834,
               "holding_seconds": 119,
-              "id": "64509da6-ce0f-44bc-a389-7af56d8d53de",
+              "id": "fd1ca1b6-d924-4017-a45b-8976220edc18",
               "net_profit_loss": -0.4161066368876334,
               "profit_percent": -0.416312906309158,
               "quantity": 0.0015326923377962777,
-              "run_id": "98705587-e831-48c0-a41c-83308a554b55",
+              "run_id": "2f3ed25a-8fb6-4e68-98ad-507c89a28ff9",
               "symbol": "BTCUSDT"
             },
             {
@@ -10605,11 +10669,11 @@
               "fees": 0.19986117544911225,
               "gross_profit_loss": 0.1433990742370689,
               "holding_seconds": 359,
-              "id": "d58fdd64-06f2-4218-baed-b90afe2cf047",
+              "id": "2279f90d-1377-4c07-b0e5-9b77d6a9c24d",
               "net_profit_loss": -0.05646210121204831,
               "profit_percent": -0.056513617551513816,
               "quantity": 0.0015338008924144974,
-              "run_id": "98705587-e831-48c0-a41c-83308a554b55",
+              "run_id": "2f3ed25a-8fb6-4e68-98ad-507c89a28ff9",
               "symbol": "BTCUSDT"
             },
             {
@@ -10622,11 +10686,11 @@
               "fees": 0.19954719854365116,
               "gross_profit_loss": -0.15929105719171255,
               "holding_seconds": 959,
-              "id": "07361ac3-e450-4446-b6f4-ce658acc766b",
+              "id": "6e03cec3-9069-46ee-9127-a3ef91dff46d",
               "net_profit_loss": -0.3588382557353498,
               "profit_percent": -0.3591859606809376,
               "quantity": 0.001528366373934779,
-              "run_id": "98705587-e831-48c0-a41c-83308a554b55",
+              "run_id": "2f3ed25a-8fb6-4e68-98ad-507c89a28ff9",
               "symbol": "BTCUSDT"
             },
             {
@@ -10639,11 +10703,11 @@
               "fees": 0.1995049029862644,
               "gross_profit_loss": -0.1298548472569773,
               "holding_seconds": 119,
-              "id": "5fce313c-26f9-46c5-ab23-5bfd44b4df92",
+              "id": "45198f59-074e-4bfa-bed9-d1cef82e732a",
               "net_profit_loss": -0.32935975024325614,
               "profit_percent": -0.3297973498609451,
               "quantity": 0.0015292229661239554,
-              "run_id": "98705587-e831-48c0-a41c-83308a554b55",
+              "run_id": "2f3ed25a-8fb6-4e68-98ad-507c89a28ff9",
               "symbol": "BTCUSDT"
             },
             {
@@ -10656,11 +10720,11 @@
               "fees": 0.1994071022677702,
               "gross_profit_loss": -0.16181655167758616,
               "holding_seconds": 179,
-              "id": "215f8366-96c0-446a-aafe-fec0d96f55da",
+              "id": "8de3c28a-c00b-4e98-b1a7-c30229416238",
               "net_profit_loss": -0.36122365394535905,
               "profit_percent": -0.3618229173702404,
               "quantity": 0.0015288438321849264,
-              "run_id": "98705587-e831-48c0-a41c-83308a554b55",
+              "run_id": "2f3ed25a-8fb6-4e68-98ad-507c89a28ff9",
               "symbol": "BTCUSDT"
             }
           ],
@@ -10860,8 +10924,8 @@
           }
         ]
       },
-      "started_at": "2026-06-26T10:16:49.5044124Z",
-      "completed_at": "2026-06-26T10:16:51.8004758Z"
+      "started_at": "2026-06-27T20:06:12.5588605Z",
+      "completed_at": "2026-06-27T20:06:12.6840516Z"
     },
     {
       "level": "L3-Hard",
@@ -10870,7 +10934,7 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 201,
-      "latency_ms": 1786,
+      "latency_ms": 85,
       "evidence": "strategy=rsi-mean-reversion return=-0.02% trades=10 fees=1.00 roundTripCost=0.30% validation=insufficient_sample",
       "request": {
         "atr_exit_enabled": true,
@@ -10917,7 +10981,7 @@
           "buy_count": 5,
           "churn_ratio": 1.7094017094017095,
           "cooldown_bars": 1,
-          "created_at": "2026-06-26T15:46:53.01496+05:30",
+          "created_at": "2026-06-28T01:36:12.737613+05:30",
           "ending_balance": 999.8073596188391,
           "estimated_slippage_cost": 0.4999130499710166,
           "excess_return_percent": -0.9102106358640185,
@@ -10927,7 +10991,7 @@
           "fee_rate": 0.001,
           "from": "2024-06-18T16:47:00Z",
           "gross_profit_loss": 1.3075981238425318,
-          "id": "fa58c178-e200-49da-9648-a0166790854a",
+          "id": "401a1763-68af-4a4e-b215-1db75a89f230",
           "interval": "1m",
           "losing_trades": 1,
           "max_drawdown": 0.07178022914867631,
@@ -10937,6 +11001,10 @@
           "position_sizing_mode": "percent_equity",
           "profit_factor": 0.5678295838528871,
           "profit_loss": -0.19264038116091342,
+          "regime_filter_enabled": false,
+          "regime_filter_period": 0,
+          "regime_max_atr_percent": 0,
+          "regime_min_atr_percent": 0,
           "return_percent": -0.019264038116091342,
           "round_trip_cost_percent": 0.3,
           "round_trips": [
@@ -10950,11 +11018,11 @@
               "fees": 0.2001920293014144,
               "gross_profit_loss": 0.29202930141439154,
               "holding_seconds": 359,
-              "id": "62000362-bc55-48e3-86f7-c8ae18f85f51",
+              "id": "a0549d96-906a-43f2-b794-58403e07376a",
               "net_profit_loss": 0.09183727211298276,
               "profit_percent": 0.09183727211298276,
               "quantity": 0.0015511898473577323,
-              "run_id": "fa58c178-e200-49da-9648-a0166790854a",
+              "run_id": "401a1763-68af-4a4e-b215-1db75a89f230",
               "symbol": "BTCUSDT"
             },
             {
@@ -10967,11 +11035,11 @@
               "fees": 0.20014827458436701,
               "gross_profit_loss": 0.22991631367158913,
               "holding_seconds": 1319,
-              "id": "af9ae726-f777-43ab-8963-b9bff6a6491b",
+              "id": "b37f0e37-a927-4dd8-9b4a-384afd2acd2b",
               "net_profit_loss": 0.029768039087230136,
               "profit_percent": 0.02976530552276731,
               "quantity": 0.0015495470872224026,
-              "run_id": "fa58c178-e200-49da-9648-a0166790854a",
+              "run_id": "401a1763-68af-4a4e-b215-1db75a89f230",
               "symbol": "BTCUSDT"
             },
             {
@@ -10984,11 +11052,11 @@
               "fees": 0.20016346837113344,
               "gross_profit_loss": 0.23915946942449712,
               "holding_seconds": 659,
-              "id": "32c81fa7-c6e4-4958-a983-4b6dbc5ff4cb",
+              "id": "6963f7a2-8187-4040-a0e2-623381526981",
               "net_profit_loss": 0.03899600105336276,
               "profit_percent": 0.03899125950911606,
               "quantity": 0.0015571355526407711,
-              "run_id": "fa58c178-e200-49da-9648-a0166790854a",
+              "run_id": "401a1763-68af-4a4e-b215-1db75a89f230",
               "symbol": "BTCUSDT"
             },
             {
@@ -11001,11 +11069,11 @@
               "fees": 0.19968603927400444,
               "gross_profit_loss": -0.24606492831509766,
               "holding_seconds": 779,
-              "id": "c95be1b2-fb6a-498f-b4e8-99e7a73f991a",
+              "id": "ec0a94c8-2b56-49aa-aef9-635fd9dfa2fd",
               "net_profit_loss": -0.44575096758909183,
               "profit_percent": -0.44567939089406977,
               "quantity": 0.0015361949124631125,
-              "run_id": "fa58c178-e200-49da-9648-a0166790854a",
+              "run_id": "401a1763-68af-4a4e-b215-1db75a89f230",
               "symbol": "BTCUSDT"
             },
             {
@@ -11018,11 +11086,11 @@
               "fees": 0.2001356435015746,
               "gross_profit_loss": 0.2926449176761352,
               "holding_seconds": 779,
-              "id": "6bf42638-d544-46ab-bc0d-4b7e8743ef79",
+              "id": "d1586dfd-1f33-4973-8842-4538972c0f32",
               "net_profit_loss": 0.09250927417456012,
               "profit_percent": 0.09253566068631106,
               "quantity": 0.0015391739500465423,
-              "run_id": "fa58c178-e200-49da-9648-a0166790854a",
+              "run_id": "401a1763-68af-4a4e-b215-1db75a89f230",
               "symbol": "BTCUSDT"
             }
           ],
@@ -11174,8 +11242,8 @@
           }
         ]
       },
-      "started_at": "2026-06-26T10:16:51.8014655Z",
-      "completed_at": "2026-06-26T10:16:53.5880916Z"
+      "started_at": "2026-06-27T20:06:12.6840516Z",
+      "completed_at": "2026-06-27T20:06:12.7705347Z"
     },
     {
       "level": "L3-Hard",
@@ -11184,7 +11252,7 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 201,
-      "latency_ms": 437,
+      "latency_ms": 31,
       "evidence": "strategy=btc-trend-pullback return=0.00% trades=0 fees=0.00 roundTripCost=0.30% validation=insufficient_sample",
       "request": {
         "atr_exit_enabled": true,
@@ -11231,7 +11299,7 @@
           "buy_count": 0,
           "churn_ratio": 0,
           "cooldown_bars": 1,
-          "created_at": "2026-06-26T15:46:53.945407+05:30",
+          "created_at": "2026-06-28T01:36:12.797287+05:30",
           "ending_balance": 1000,
           "estimated_slippage_cost": 0,
           "excess_return_percent": -0.8909465977479272,
@@ -11241,7 +11309,7 @@
           "fee_rate": 0.001,
           "from": "2024-06-18T16:47:00Z",
           "gross_profit_loss": 0,
-          "id": "63f5d93c-2f05-443b-9683-09dd7b1a80ea",
+          "id": "cafd9b26-c85c-4502-86df-ddd986b4e350",
           "interval": "1m",
           "losing_trades": 0,
           "max_drawdown": 0,
@@ -11251,6 +11319,10 @@
           "position_sizing_mode": "percent_equity",
           "profit_factor": 0,
           "profit_loss": 0,
+          "regime_filter_enabled": false,
+          "regime_filter_period": 0,
+          "regime_max_atr_percent": 0,
+          "regime_min_atr_percent": 0,
           "return_percent": 0,
           "round_trip_cost_percent": 0.3,
           "rsi_overbought": 70,
@@ -11280,8 +11352,8 @@
         },
         "trades": []
       },
-      "started_at": "2026-06-26T10:16:53.5976523Z",
-      "completed_at": "2026-06-26T10:16:54.0351512Z"
+      "started_at": "2026-06-27T20:06:12.7710554Z",
+      "completed_at": "2026-06-27T20:06:12.8028909Z"
     },
     {
       "level": "L4-Template",
@@ -11290,7 +11362,7 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 201,
-      "latency_ms": 252,
+      "latency_ms": 37,
       "evidence": "strategy=adaptive-mean-reversion return=-0.07% trades=6 fees=0.60 roundTripCost=0.30% validation=insufficient_sample",
       "request": {
         "atr_exit_enabled": true,
@@ -11337,7 +11409,7 @@
           "buy_count": 3,
           "churn_ratio": 4,
           "cooldown_bars": 1,
-          "created_at": "2026-06-26T15:46:54.143305+05:30",
+          "created_at": "2026-06-28T01:36:12.815956+05:30",
           "ending_balance": 999.2608716635062,
           "estimated_slippage_cost": 0.29959394849010806,
           "excess_return_percent": -0.9648594313973036,
@@ -11347,7 +11419,7 @@
           "fee_rate": 0.001,
           "from": "2024-06-18T16:47:00Z",
           "gross_profit_loss": 0.15995339269248243,
-          "id": "cd355aab-dc8c-4f03-add2-c501a27ec02e",
+          "id": "b42df4f5-ab46-4494-8641-817b24f0674f",
           "interval": "1m",
           "losing_trades": 3,
           "max_drawdown": 0.07391283364937636,
@@ -11357,6 +11429,10 @@
           "position_sizing_mode": "percent_equity",
           "profit_factor": 0,
           "profit_loss": -0.7391283364937635,
+          "regime_filter_enabled": false,
+          "regime_filter_period": 0,
+          "regime_max_atr_percent": 0,
+          "regime_min_atr_percent": 0,
           "return_percent": -0.07391283364937636,
           "round_trip_cost_percent": 0.3,
           "round_trips": [
@@ -11370,11 +11446,11 @@
               "fees": 0.2000753088716188,
               "gross_profit_loss": 0.17530887161879757,
               "holding_seconds": 120,
-              "id": "ab1e7184-25ef-403c-8144-cddac59711e0",
+              "id": "0b630644-8e28-45b3-bb7e-f0a35dce50a8",
               "net_profit_loss": -0.024766437252822016,
               "profit_percent": -0.024766437252822016,
               "quantity": 0.0015294255271041074,
-              "run_id": "cd355aab-dc8c-4f03-add2-c501a27ec02e",
+              "run_id": "b42df4f5-ab46-4494-8641-817b24f0674f",
               "symbol": "BTCUSDT"
             },
             {
@@ -11387,11 +11463,11 @@
               "fees": 0.1997812880734454,
               "gross_profit_loss": -0.11376111574778851,
               "holding_seconds": 300,
-              "id": "d1ff0405-0704-44df-93d2-e6aef05cf2b3",
+              "id": "cb993d94-cf80-4f17-b25f-e5c9c5c7daf7",
               "net_profit_loss": -0.31354240382123066,
               "profit_percent": -0.3135501693418253,
               "quantity": 0.0015280432440028028,
-              "run_id": "cd355aab-dc8c-4f03-add2-c501a27ec02e",
+              "run_id": "b42df4f5-ab46-4494-8641-817b24f0674f",
               "symbol": "BTCUSDT"
             },
             {
@@ -11404,11 +11480,11 @@
               "fees": 0.19963118375100064,
               "gross_profit_loss": -0.20118831166863463,
               "holding_seconds": 179,
-              "id": "3c9fd768-7061-4a7b-8e9e-df2c423da4c8",
+              "id": "c3ef1834-cce1-4509-9b96-45b42f030407",
               "net_profit_loss": -0.4008194954196256,
               "profit_percent": -0.40095514208906846,
               "quantity": 0.0015280655031899976,
-              "run_id": "cd355aab-dc8c-4f03-add2-c501a27ec02e",
+              "run_id": "b42df4f5-ab46-4494-8641-817b24f0674f",
               "symbol": "BTCUSDT"
             }
           ],
@@ -11512,8 +11588,8 @@
           }
         ]
       },
-      "started_at": "2026-06-26T10:16:54.0356792Z",
-      "completed_at": "2026-06-26T10:16:54.2881187Z"
+      "started_at": "2026-06-27T20:06:12.8028909Z",
+      "completed_at": "2026-06-27T20:06:12.8407172Z"
     },
     {
       "level": "L4-Template",
@@ -11522,7 +11598,7 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 201,
-      "latency_ms": 1660,
+      "latency_ms": 118,
       "evidence": "strategy=momentum-breakout-volume return=-0.47% trades=36 fees=3.59 roundTripCost=0.30% validation=insufficient_sample",
       "request": {
         "atr_exit_enabled": true,
@@ -11569,7 +11645,7 @@
           "buy_count": 18,
           "churn_ratio": 10.909090909090908,
           "cooldown_bars": 1,
-          "created_at": "2026-06-26T15:46:54.605412+05:30",
+          "created_at": "2026-06-28T01:36:12.852611+05:30",
           "ending_balance": 995.3226122185907,
           "estimated_slippage_cost": 1.7930129991159443,
           "excess_return_percent": -1.3586853758888537,
@@ -11579,7 +11655,7 @@
           "fee_rate": 0.001,
           "from": "2024-06-18T16:47:00Z",
           "gross_profit_loss": 0.7034462171757809,
-          "id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+          "id": "d2499073-f995-4abc-972c-51b901aa80f6",
           "interval": "1m",
           "losing_trades": 17,
           "max_drawdown": 0.4769120258955397,
@@ -11589,6 +11665,10 @@
           "position_sizing_mode": "percent_equity",
           "profit_factor": 0.016289794315727572,
           "profit_loss": -4.677387781409266,
+          "regime_filter_enabled": false,
+          "regime_filter_period": 0,
+          "regime_max_atr_percent": 0,
+          "regime_min_atr_percent": 0,
           "return_percent": -0.4677387781409265,
           "round_trip_cost_percent": 0.3,
           "round_trips": [
@@ -11602,11 +11682,11 @@
               "fees": 0.19967322902344667,
               "gross_profit_loss": -0.22677097655334422,
               "holding_seconds": 539,
-              "id": "cf094082-fc49-4aef-8d0a-b318936719fa",
+              "id": "a259b83f-dca4-4f15-9c61-97b3a8b5ca42",
               "net_profit_loss": -0.42644420557678586,
               "profit_percent": -0.42644420557678586,
               "quantity": 0.0015352723359280788,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11619,11 +11699,11 @@
               "fees": 0.19979496427118296,
               "gross_profit_loss": -0.01978953212223805,
               "holding_seconds": 1380,
-              "id": "773603f1-3387-4fd9-bec4-2feafe49b578",
+              "id": "d7fcac5b-eb52-4330-8909-863ecbf2a97e",
               "net_profit_loss": -0.2195844963934377,
               "profit_percent": -0.2196781768790594,
               "quantity": 0.0015330906041755082,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11636,11 +11716,11 @@
               "fees": 0.19964094935633053,
               "gross_profit_loss": -0.12990950614559002,
               "holding_seconds": 239,
-              "id": "90719fe0-7a1a-43f8-9e86-ea4cd7306977",
+              "id": "0f0b03b6-4a30-4440-8292-74747ff18f41",
               "net_profit_loss": -0.3295504555019164,
               "profit_percent": -0.32976349218272843,
               "quantity": 0.0015303281747813765,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11653,11 +11733,11 @@
               "fees": 0.19960787329921365,
               "gross_profit_loss": -0.09710842720767388,
               "holding_seconds": 900,
-              "id": "7077a6ab-a607-4791-8bc6-9ab7aa338fbd",
+              "id": "a3929d60-8132-4879-81bd-58c6659a583f",
               "net_profit_loss": -0.2967163005068869,
               "profit_percent": -0.29700605342224873,
               "quantity": 0.0015292247874436331,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11670,11 +11750,11 @@
               "fees": 0.19952332058413513,
               "gross_profit_loss": -0.12234755381488514,
               "holding_seconds": 119,
-              "id": "f64a4477-67bf-40b3-af23-c0fef6363d49",
+              "id": "3c941f2b-9c9f-4d27-8cda-db1e0a4a89f1",
               "net_profit_loss": -0.32187087439902484,
               "profit_percent": -0.3222809109382049,
               "quantity": 0.0015280523788771896,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11687,11 +11767,11 @@
               "fees": 0.19946716088388905,
               "gross_profit_loss": -0.11416526626857132,
               "holding_seconds": 120,
-              "id": "5441cbf2-e76a-4cec-b17a-4bb489040e83",
+              "id": "34a00188-01dd-41c9-9b18-777369e9b86e",
               "net_profit_loss": -0.31363242715245576,
               "profit_percent": -0.3141332077361106,
               "quantity": 0.001527595964000731,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11704,11 +11784,11 @@
               "fees": 0.19940437699335317,
               "gross_profit_loss": -0.114254034616666,
               "holding_seconds": 119,
-              "id": "5aea87f3-3c3d-40e8-9338-ae760eaf4096",
+              "id": "5c604c8f-fc94-44ff-8ff1-4ceef9fe7343",
               "net_profit_loss": -0.31365841161002095,
               "profit_percent": -0.3142579525420533,
               "quantity": 0.0015285214171561411,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11721,11 +11801,11 @@
               "fees": 0.19932884584487542,
               "gross_profit_loss": -0.12708486661353477,
               "holding_seconds": 119,
-              "id": "7436b499-8d85-4325-b233-fa804aa938bb",
+              "id": "540a4893-d14a-4e9f-9a00-f5b200a196cc",
               "net_profit_loss": -0.3264137124584039,
               "profit_percent": -0.3271404409368933,
               "quantity": 0.0015270161861857161,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11738,11 +11818,11 @@
               "fees": 0.19925524868432198,
               "gross_profit_loss": -0.1354319260465427,
               "holding_seconds": 119,
-              "id": "009def15-4272-49f3-83a1-92d37d5abaf3",
+              "id": "2a9d4082-4ea3-4dab-8ac8-6fcfe1358305",
               "net_profit_loss": -0.33468717473085974,
               "profit_percent": -0.3355420926589675,
               "quantity": 0.0015269294744665372,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11755,11 +11835,11 @@
               "fees": 0.1991724357097888,
               "gross_profit_loss": -0.15134093435104842,
               "holding_seconds": 119,
-              "id": "d0685d78-fbd3-4fa5-99d9-e9174fadb340",
+              "id": "8c2eeab7-46f6-403f-9847-8511d90ce4dc",
               "net_profit_loss": -0.35051337006083827,
               "profit_percent": -0.35152666608487904,
               "quantity": 0.0015286226635802783,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11772,11 +11852,11 @@
               "fees": 0.1990828414392316,
               "gross_profit_loss": -0.1708675822330347,
               "holding_seconds": 119,
-              "id": "d82c09bd-a78c-47e1-a630-fd302fe47811",
+              "id": "8e2312d2-6af7-4284-98dc-cd65c82010e7",
               "net_profit_loss": -0.3699504236722788,
               "profit_percent": -0.37115037935942224,
               "quantity": 0.0015276396761068091,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11789,11 +11869,11 @@
               "fees": 0.19903109036823516,
               "gross_profit_loss": -0.1486655635374352,
               "holding_seconds": 180,
-              "id": "7b06e04d-c67a-4699-82da-1a2c5f925b0b",
+              "id": "bec11304-46b3-48d5-b4b2-efe64488b736",
               "net_profit_loss": -0.34769665390567184,
               "profit_percent": -0.34895394258617335,
               "quantity": 0.0015269972222904157,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11806,11 +11886,11 @@
               "fees": 0.19917372063406782,
               "gross_profit_loss": 0.063469263410943,
               "holding_seconds": 119,
-              "id": "cb7da7a2-6ea0-4003-847b-2facd873431f",
+              "id": "27d5fe13-a3af-45e1-a292-890a6f3038b7",
               "net_profit_loss": -0.1357044572231132,
               "profit_percent": -0.13624271383396042,
               "quantity": 0.001530274424906788,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11823,11 +11903,11 @@
               "fees": 0.19926970563447527,
               "gross_profit_loss": 0.18658158481736078,
               "holding_seconds": 539,
-              "id": "b937d472-580b-4dc1-94c2-4128397e2745",
+              "id": "ff5a8467-d988-4c1c-a93d-162e96335c45",
               "net_profit_loss": -0.01268812081711701,
               "profit_percent": -0.012740182591815464,
               "quantity": 0.001526201587734458,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11840,11 +11920,11 @@
               "fees": 0.19901251012464283,
               "gross_profit_loss": -0.06807756966373742,
               "holding_seconds": 420,
-              "id": "b8cf6def-a365-4e09-ad82-559dfb5d3e14",
+              "id": "78cb3976-59ae-4bd1-8a80-d2fa1768e4e4",
               "net_profit_loss": -0.2670900797883746,
               "profit_percent": -0.26818941800433016,
               "quantity": 0.001521770038741794,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11857,11 +11937,11 @@
               "fees": 0.19930395576083504,
               "gross_profit_loss": 0.2767593734781348,
               "holding_seconds": 1139,
-              "id": "db065d7e-1080-4a4b-9df3-d0c1fa549c5a",
+              "id": "5f7cc0bc-fc3f-4ff6-8aa8-4df897a4bdf3",
               "net_profit_loss": 0.07745541771730302,
               "profit_percent": 0.07779508671545778,
               "quantity": 0.001528883091784283,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11874,11 +11954,11 @@
               "fees": 0.19916167466932838,
               "gross_profit_loss": 0.1189949439697979,
               "holding_seconds": 659,
-              "id": "0c7baef4-bdeb-4e62-8b86-5088f3e0f44a",
+              "id": "21abb85a-5b65-4bcd-9033-8425c37732dc",
               "net_profit_loss": -0.0801667306995455,
               "profit_percent": -0.08051202630989034,
               "quantity": 0.001523032776281287,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             },
             {
@@ -11891,11 +11971,11 @@
               "fees": 0.19891709618744963,
               "gross_profit_loss": -0.10955820844209783,
               "holding_seconds": 120,
-              "id": "56e1ede0-a1af-45b8-832e-e293a7c6540b",
+              "id": "5539104a-538c-4223-b922-2ca80fab4a52",
               "net_profit_loss": -0.308475304629539,
               "profit_percent": -0.30982892006407414,
               "quantity": 0.0015216558381007175,
-              "run_id": "87d2b75d-d14c-4537-89da-e8b8901e933f",
+              "run_id": "d2499073-f995-4abc-972c-51b901aa80f6",
               "symbol": "BTCUSDT"
             }
           ],
@@ -12359,8 +12439,8 @@
           }
         ]
       },
-      "started_at": "2026-06-26T10:16:54.2926528Z",
-      "completed_at": "2026-06-26T10:16:55.9526845Z"
+      "started_at": "2026-06-27T20:06:12.8413335Z",
+      "completed_at": "2026-06-27T20:06:12.9599999Z"
     },
     {
       "level": "L4-Template",
@@ -12369,8 +12449,8 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 201,
-      "latency_ms": 480,
-      "evidence": "strategy=multi-factor-momentum return=-0.04% trades=2 fees=0.20 roundTripCost=0.30% validation=insufficient_sample",
+      "latency_ms": 61,
+      "evidence": "strategy=multi-factor-momentum return=-0.17% trades=16 fees=1.60 roundTripCost=0.30% validation=insufficient_sample",
       "request": {
         "atr_exit_enabled": true,
         "atr_period": 14,
@@ -12404,113 +12484,404 @@
           "atr_period": 14,
           "atr_stop_multiplier": 2,
           "atr_take_profit_multiplier": 3,
-          "average_holding_seconds": 239,
-          "average_loss": -0.3989378818756961,
-          "average_trade": -0.3989378818756961,
-          "average_win": 0,
+          "average_holding_seconds": 411.625,
+          "average_loss": -0.24745523807798367,
+          "average_trade": -0.21574813550520489,
+          "average_win": 0.006201582504246517,
           "benchmark_ending_balance": 1008.9094659774793,
           "benchmark_profit_loss": 8.909465977479272,
           "benchmark_return_percent": 0.8909465977479272,
-          "best_trade": -0.3989378818756961,
+          "best_trade": 0.006201582504246517,
           "break_even_move_percent": 0.3,
-          "buy_count": 1,
-          "churn_ratio": 1.3333333333333335,
+          "buy_count": 8,
+          "churn_ratio": 10.666666666666668,
           "cooldown_bars": 1,
-          "created_at": "2026-06-26T15:46:56.265463+05:30",
-          "ending_balance": 999.6010621181243,
-          "estimated_slippage_cost": 0.09980035658130224,
-          "excess_return_percent": -0.9308403859354939,
+          "created_at": "2026-06-28T01:36:12.975818+05:30",
+          "ending_balance": 998.2740149159586,
+          "estimated_slippage_cost": 0.7986927539833162,
+          "excess_return_percent": -1.063545106152071,
           "execution_fill_mode": "next_open",
-          "expectancy": -0.3989378818756961,
+          "expectancy": -0.21574813550520489,
           "fast_period": 9,
           "fee_rate": 0.001,
           "from": "2024-06-18T16:47:00Z",
-          "gross_profit_loss": -0.09943676241339786,
-          "id": "a8716a3c-ffde-49e3-ba92-5b20d8c7a8d1",
+          "gross_profit_loss": 0.670892398504778,
+          "id": "f6e3c7f3-53f6-4a20-b3b2-3e23107cbc33",
           "interval": "1m",
-          "losing_trades": 1,
-          "max_drawdown": 0.03989378818756677,
+          "losing_trades": 7,
+          "max_drawdown": 0.17415691190576785,
           "min_holding_bars": 1,
           "open_position": false,
           "position_size_value": 10,
           "position_sizing_mode": "percent_equity",
-          "profit_factor": 0,
-          "profit_loss": -0.3989378818756677,
-          "return_percent": -0.03989378818756677,
+          "profit_factor": 0.0035802045033708476,
+          "profit_loss": -1.7259850840414401,
+          "regime_filter_enabled": false,
+          "regime_filter_period": 0,
+          "regime_max_atr_percent": 0,
+          "regime_min_atr_percent": 0,
+          "return_percent": -0.17259850840414404,
           "round_trip_cost_percent": 0.3,
           "round_trips": [
             {
-              "entry_price": 65365.33633499999,
+              "entry_price": 65056.562025,
               "entry_reason": "strategy buy signal",
-              "entry_time": "2024-06-19T08:03:00+05:30",
-              "exit_price": 65234.97395968963,
+              "entry_time": "2024-06-19T06:16:00+05:30",
+              "exit_price": 65099.61736184465,
+              "exit_reason": "ATR take-profit",
+              "exit_time": "2024-06-19T06:18:59.999+05:30",
+              "fees": 0.1999661152083187,
+              "gross_profit_loss": 0.06611520831868666,
+              "holding_seconds": 179,
+              "id": "fe7ca679-a747-4f9a-a54f-c72bf49c6f9f",
+              "net_profit_loss": -0.1338509068896343,
+              "profit_percent": -0.1338509068896343,
+              "quantity": 0.001535586832295416,
+              "run_id": "f6e3c7f3-53f6-4a20-b3b2-3e23107cbc33",
+              "symbol": "BTCUSDT"
+            },
+            {
+              "entry_price": 65100.544004999996,
+              "entry_reason": "strategy buy signal",
+              "entry_time": "2024-06-19T06:20:00+05:30",
+              "exit_price": 65181.70542014035,
+              "exit_reason": "ATR take-profit",
+              "exit_time": "2024-06-19T06:27:59.999+05:30",
+              "fees": 0.19999777273307195,
+              "gross_profit_loss": 0.12452952935922737,
+              "holding_seconds": 479,
+              "id": "c1bdfb6e-91e6-40aa-b82e-afe31b7852da",
+              "net_profit_loss": -0.07546824337384805,
+              "profit_percent": -0.07547834621893999,
+              "quantity": 0.0015343439877665232,
+              "run_id": "f6e3c7f3-53f6-4a20-b3b2-3e23107cbc33",
+              "symbol": "BTCUSDT"
+            },
+            {
+              "entry_price": 65220.594,
+              "entry_reason": "strategy buy signal",
+              "entry_time": "2024-06-19T06:29:00+05:30",
+              "exit_price": 65348.5983555,
+              "exit_reason": "ATR take-profit",
+              "exit_time": "2024-06-19T06:34:59.999+05:30",
+              "fees": 0.20005418350446663,
+              "gross_profit_loss": 0.19602640260427676,
+              "holding_seconds": 359,
+              "id": "5ea57687-bda5-4207-930a-1d16ec9a8c59",
+              "net_profit_loss": -0.0040277809001878495,
+              "profit_percent": -0.004028624168375505,
+              "quantity": 0.0015314041607301014,
+              "run_id": "f6e3c7f3-53f6-4a20-b3b2-3e23107cbc33",
+              "symbol": "BTCUSDT"
+            },
+            {
+              "entry_price": 65392.39986,
+              "entry_reason": "strategy buy signal",
+              "entry_time": "2024-06-19T06:36:00+05:30",
+              "exit_price": 65312.79726500001,
+              "exit_reason": "strategy sell signal",
+              "exit_time": "2024-06-19T06:45:00+05:30",
+              "fees": 0.1997357689715566,
+              "gross_profit_loss": -0.12158297690376711,
+              "holding_seconds": 540,
+              "id": "96271828-fa48-4104-8118-5e8072f05527",
+              "net_profit_loss": -0.32131874587531684,
+              "profit_percent": -0.3213873128722331,
+              "quantity": 0.0015273745397845803,
+              "run_id": "f6e3c7f3-53f6-4a20-b3b2-3e23107cbc33",
+              "symbol": "BTCUSDT"
+            },
+            {
+              "entry_price": 65512.74,
+              "entry_reason": "strategy buy signal",
+              "entry_time": "2024-06-19T06:49:00+05:30",
+              "exit_price": 65339.60671071429,
               "exit_reason": "ATR stop-loss",
-              "exit_time": "2024-06-19T08:06:59.999+05:30",
-              "fees": 0.1997007628810053,
-              "gross_profit_loss": -0.1992371189947001,
-              "holding_seconds": 239,
-              "id": "18d63a86-69e9-48d7-a331-ccc072844c88",
-              "net_profit_loss": -0.3989378818756961,
-              "profit_percent": -0.3989378818756962,
-              "quantity": 0.0015283329911745342,
-              "run_id": "a8716a3c-ffde-49e3-ba92-5b20d8c7a8d1",
+              "exit_time": "2024-06-19T06:51:59.999+05:30",
+              "fees": 0.19952925153230106,
+              "gross_profit_loss": -0.26386879885884423,
+              "holding_seconds": 179,
+              "id": "3fc3b0e4-d686-42c3-851c-066d59476fc2",
+              "net_profit_loss": -0.463398050391163,
+              "profit_percent": -0.4636459459647686,
+              "quantity": 0.0015240789333321092,
+              "run_id": "f6e3c7f3-53f6-4a20-b3b2-3e23107cbc33",
+              "symbol": "BTCUSDT"
+            },
+            {
+              "entry_price": 65170.178804999996,
+              "entry_reason": "strategy buy signal",
+              "entry_time": "2024-06-19T07:33:00+05:30",
+              "exit_price": 65304.76865774035,
+              "exit_reason": "ATR take-profit",
+              "exit_time": "2024-06-19T07:51:59.999+05:30",
+              "fees": 0.1999065952386296,
+              "gross_profit_loss": 0.20610817774288379,
+              "holding_seconds": 1139,
+              "id": "ceccf02e-3623-41c4-bb8b-fc5c2748359a",
+              "net_profit_loss": 0.006201582504246517,
+              "profit_percent": 0.006207778262558304,
+              "quantity": 0.0015313797700670546,
+              "run_id": "f6e3c7f3-53f6-4a20-b3b2-3e23107cbc33",
+              "symbol": "BTCUSDT"
+            },
+            {
+              "entry_price": 65346.43689,
+              "entry_reason": "strategy buy signal",
+              "entry_time": "2024-06-19T07:53:00+05:30",
+              "exit_price": 65237.04490726929,
+              "exit_reason": "ATR stop-loss",
+              "exit_time": "2024-06-19T07:54:59.999+05:30",
+              "fees": 0.19953465690204064,
+              "gross_profit_loss": -0.16706985518871892,
+              "holding_seconds": 119,
+              "id": "d468d86f-975e-4f13-a0fb-fc9735d72fb3",
+              "net_profit_loss": -0.3666045120907597,
+              "profit_percent": -0.36696849424858524,
+              "quantity": 0.0015272586803733521,
+              "run_id": "f6e3c7f3-53f6-4a20-b3b2-3e23107cbc33",
+              "symbol": "BTCUSDT"
+            },
+            {
+              "entry_price": 65426.666984999996,
+              "entry_reason": "strategy buy signal",
+              "entry_time": "2024-06-19T07:58:00+05:30",
+              "exit_price": 65316.4524215075,
+              "exit_reason": "ATR stop-loss",
+              "exit_time": "2024-06-19T08:02:59.999+05:30",
+              "fees": 0.19946038447271014,
+              "gross_profit_loss": -0.16805804255228232,
+              "holding_seconds": 299,
+              "id": "04100945-d0de-4f10-810f-cc8043c1ad78",
+              "net_profit_loss": -0.36751842702497584,
+              "profit_percent": -0.368018367706675,
+              "quantity": 0.0015248260958155863,
+              "run_id": "f6e3c7f3-53f6-4a20-b3b2-3e23107cbc33",
               "symbol": "BTCUSDT"
             }
           ],
           "rsi_overbought": 70,
           "rsi_oversold": 30,
           "rsi_period": 14,
-          "sell_count": 1,
-          "sharpe_ratio": -99.49399390142275,
+          "sell_count": 8,
+          "sharpe_ratio": -133.93647913366723,
           "shorting_enabled": false,
           "slippage_rate": 0.0005,
           "slow_period": 21,
-          "sortino_ratio": -16.209116824495695,
+          "sortino_ratio": -69.05371369326087,
           "starting_balance": 1000,
           "strategy_name": "multi-factor-momentum",
           "symbol": "BTCUSDT",
           "to": "2024-06-19T02:46:59Z",
-          "total_fees": 0.1997007628810053,
-          "total_trades": 2,
-          "trades_per_day": 4.80013333703714,
+          "total_fees": 1.5981847285630952,
+          "total_trades": 16,
+          "trades_per_day": 38.40106669629712,
           "trend_filter_enabled": false,
           "trend_period": 0,
           "validation_reason": "completed trades below 100",
           "validation_status": "insufficient_sample",
           "version": "v1",
-          "win_rate": 0,
-          "winning_trades": 0,
-          "worst_trade": -0.3989378818756961
+          "win_rate": 12.5,
+          "winning_trades": 1,
+          "worst_trade": -0.463398050391163
         },
         "trades": [
           {
             "equity": 999.8500749625188,
-            "executed_at": "2024-06-19T08:03:00+05:30",
+            "executed_at": "2024-06-19T06:16:00+05:30",
             "fee": 0.1,
             "id": "",
-            "price": 65365.33633499999,
-            "quantity": 0.0015283329911745342,
+            "price": 65056.562025,
+            "quantity": 0.001535586832295416,
             "quote_amount": 100,
             "run_id": "",
             "side": "buy",
             "symbol": "BTCUSDT"
           },
           {
-            "equity": 999.6010621181243,
-            "executed_at": "2024-06-19T08:06:59.999+05:30",
-            "fee": 0.09970076288100531,
+            "equity": 999.8661490931104,
+            "executed_at": "2024-06-19T06:18:59.999+05:30",
+            "fee": 0.09996611520831869,
             "id": "",
-            "price": 65234.97395968963,
-            "quantity": 0.0015283329911745342,
-            "quote_amount": 99.7007628810053,
+            "price": 65099.61736184465,
+            "quantity": 0.001535586832295416,
+            "quote_amount": 99.96611520831868,
+            "run_id": "",
+            "side": "sell",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 999.7162441232314,
+            "executed_at": "2024-06-19T06:20:00+05:30",
+            "fee": 0.09998661490931103,
+            "id": "",
+            "price": 65100.544004999996,
+            "quantity": 0.0015343439877665232,
+            "quote_amount": 99.98661490931103,
+            "run_id": "",
+            "side": "buy",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 999.7906808497365,
+            "executed_at": "2024-06-19T06:27:59.999+05:30",
+            "fee": 0.10001115782376094,
+            "id": "",
+            "price": 65181.70542014035,
+            "quantity": 0.0015343439877665232,
+            "quote_amount": 100.01115782376094,
+            "run_id": "",
+            "side": "sell",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 999.6408025084784,
+            "executed_at": "2024-06-19T06:29:00+05:30",
+            "fee": 0.09997906808497366,
+            "id": "",
+            "price": 65220.594,
+            "quantity": 0.0015314041607301014,
+            "quote_amount": 99.97906808497366,
+            "run_id": "",
+            "side": "buy",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 999.7866530688364,
+            "executed_at": "2024-06-19T06:34:59.999+05:30",
+            "fee": 0.10007511541949296,
+            "id": "",
+            "price": 65348.5983555,
+            "quantity": 0.0015314041607301014,
+            "quote_amount": 100.07511541949296,
+            "run_id": "",
+            "side": "sell",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 999.6367752911472,
+            "executed_at": "2024-06-19T06:36:00+05:30",
+            "fee": 0.09997866530688362,
+            "id": "",
+            "price": 65392.39986,
+            "quantity": 0.0015273745397845803,
+            "quote_amount": 99.97866530688363,
+            "run_id": "",
+            "side": "buy",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 999.4653343229611,
+            "executed_at": "2024-06-19T06:45:00+05:30",
+            "fee": 0.09975710366467298,
+            "id": "",
+            "price": 65312.79726500001,
+            "quantity": 0.0015273745397845803,
+            "quote_amount": 99.75710366467298,
+            "run_id": "",
+            "side": "sell",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 999.3155046860409,
+            "executed_at": "2024-06-19T06:49:00+05:30",
+            "fee": 0.0999465334322961,
+            "id": "",
+            "price": 65512.74,
+            "quantity": 0.0015240789333321092,
+            "quote_amount": 99.9465334322961,
+            "run_id": "",
+            "side": "buy",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 999.00193627257,
+            "executed_at": "2024-06-19T06:51:59.999+05:30",
+            "fee": 0.09958271810000495,
+            "id": "",
+            "price": 65339.60671071429,
+            "quantity": 0.0015240789333321092,
+            "quote_amount": 99.58271810000495,
+            "run_id": "",
+            "side": "sell",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 998.8521608698305,
+            "executed_at": "2024-06-19T07:33:00+05:30",
+            "fee": 0.099900193627257,
+            "id": "",
+            "price": 65170.178804999996,
+            "quantity": 0.0015313797700670546,
+            "quote_amount": 99.900193627257,
+            "run_id": "",
+            "side": "buy",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 999.0081378550743,
+            "executed_at": "2024-06-19T07:51:59.999+05:30",
+            "fee": 0.10000640161137261,
+            "id": "",
+            "price": 65304.76865774035,
+            "quantity": 0.0015313797700670546,
+            "quote_amount": 100.00640161137261,
+            "run_id": "",
+            "side": "sell",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 998.8583767951491,
+            "executed_at": "2024-06-19T07:53:00+05:30",
+            "fee": 0.09990081378550744,
+            "id": "",
+            "price": 65346.43689,
+            "quantity": 0.0015272586803733521,
+            "quote_amount": 99.90081378550744,
+            "run_id": "",
+            "side": "buy",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 998.6415333429835,
+            "executed_at": "2024-06-19T07:54:59.999+05:30",
+            "fee": 0.09963384311653321,
+            "id": "",
+            "price": 65237.04490726929,
+            "quantity": 0.0015272586803733521,
+            "quote_amount": 99.63384311653321,
+            "run_id": "",
+            "side": "sell",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 998.4918119736668,
+            "executed_at": "2024-06-19T07:58:00+05:30",
+            "fee": 0.09986415333429835,
+            "id": "",
+            "price": 65426.666984999996,
+            "quantity": 0.0015248260958155863,
+            "quote_amount": 99.86415333429835,
+            "run_id": "",
+            "side": "buy",
+            "symbol": "BTCUSDT"
+          },
+          {
+            "equity": 998.2740149159586,
+            "executed_at": "2024-06-19T08:02:59.999+05:30",
+            "fee": 0.09959623113841179,
+            "id": "",
+            "price": 65316.4524215075,
+            "quantity": 0.0015248260958155863,
+            "quote_amount": 99.59623113841178,
             "run_id": "",
             "side": "sell",
             "symbol": "BTCUSDT"
           }
         ]
       },
-      "started_at": "2026-06-26T10:16:55.95468Z",
-      "completed_at": "2026-06-26T10:16:56.4353095Z"
+      "started_at": "2026-06-27T20:06:12.9610833Z",
+      "completed_at": "2026-06-27T20:06:13.0226848Z"
     },
     {
       "level": "L4-Template",
@@ -12519,7 +12890,7 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 201,
-      "latency_ms": 882,
+      "latency_ms": 106,
       "evidence": "strategy=trend-following-mtf return=-0.42% trades=32 fees=3.19 roundTripCost=0.30% validation=insufficient_sample",
       "request": {
         "atr_exit_enabled": true,
@@ -12566,7 +12937,7 @@
           "buy_count": 16,
           "churn_ratio": 10.666666666666668,
           "cooldown_bars": 1,
-          "created_at": "2026-06-26T15:46:56.562524+05:30",
+          "created_at": "2026-06-28T01:36:13.039222+05:30",
           "ending_balance": 995.7882872397386,
           "estimated_slippage_cost": 1.594514492080928,
           "excess_return_percent": -1.3121178737740706,
@@ -12576,7 +12947,7 @@
           "fee_rate": 0.001,
           "from": "2024-06-18T16:47:00Z",
           "gross_profit_loss": 0.5734270507822891,
-          "id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+          "id": "75504806-3b1f-4c7c-84ca-00c2350af380",
           "interval": "1m",
           "losing_trades": 15,
           "max_drawdown": 0.42584798081570957,
@@ -12586,6 +12957,10 @@
           "position_sizing_mode": "percent_equity",
           "profit_factor": 0.0014667790878913145,
           "profit_loss": -4.211712760261435,
+          "regime_filter_enabled": false,
+          "regime_filter_period": 0,
+          "regime_max_atr_percent": 0,
+          "regime_min_atr_percent": 0,
           "return_percent": -0.42117127602614346,
           "round_trip_cost_percent": 0.3,
           "round_trips": [
@@ -12599,11 +12974,11 @@
               "fees": 0.1997663097475418,
               "gross_profit_loss": -0.1336902524582041,
               "holding_seconds": 900,
-              "id": "4c94bc27-2ca1-437c-a54f-1320ed249a2e",
+              "id": "f5a48749-1db9-4151-9d4d-0921d12e0758",
               "net_profit_loss": -0.3334565622057397,
               "profit_percent": -0.3334565622057397,
               "quantity": 0.00153199574881117,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12616,11 +12991,11 @@
               "fees": 0.19969874105900812,
               "gross_profit_loss": -0.13460097420695769,
               "holding_seconds": 480,
-              "id": "48f36ff2-656c-4c90-a6a8-4f027443de28",
+              "id": "5ac617dc-5704-4d33-8147-45213e0973a9",
               "net_profit_loss": -0.3342997152659706,
               "profit_percent": -0.33441122688405034,
               "quantity": 0.0015310864806436133,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12633,11 +13008,11 @@
               "fees": 0.19966937717153935,
               "gross_profit_loss": -0.09713834859409022,
               "holding_seconds": 900,
-              "id": "495f5ffe-eea2-46a0-8b81-7e0d6f6fc0e7",
+              "id": "97eaa331-fb71-4e27-96bb-a2b2cd293da1",
               "net_profit_loss": -0.29680772576561765,
               "profit_percent": -0.2970060534222374,
               "quantity": 0.0015296959775050756,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12650,11 +13025,11 @@
               "fees": 0.19958479840378404,
               "gross_profit_loss": -0.12238525196879467,
               "holding_seconds": 119,
-              "id": "aec225ef-955d-48d1-90c6-563f2d4fd5a7",
+              "id": "ab4112c0-e894-4583-a5b3-b40613ffcdb2",
               "net_profit_loss": -0.32197005037259885,
               "profit_percent": -0.32228091093822037,
               "quantity": 0.0015285232076920254,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12667,11 +13042,11 @@
               "fees": 0.19951801432656646,
               "gross_profit_loss": -0.12480751611694496,
               "holding_seconds": 119,
-              "id": "1d00b2ad-8498-45f3-bbc1-3788c77b180a",
+              "id": "d988ba42-15fe-4d02-840c-4d636d40ae3f",
               "net_profit_loss": -0.32432553044351664,
               "profit_percent": -0.32474332378825266,
               "quantity": 0.001527598494436411,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12684,11 +13059,11 @@
               "fees": 0.199459982302375,
               "gross_profit_loss": -0.11800686677270826,
               "holding_seconds": 120,
-              "id": "98be17d9-8166-4961-bb56-2bf21272d7ae",
+              "id": "7f858d17-6972-4102-befc-0b1028c9c490",
               "net_profit_loss": -0.3174668490750747,
               "profit_percent": -0.3179790687054273,
               "quantity": 0.0015285070609061164,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12701,11 +13076,11 @@
               "fees": 0.1993527550964395,
               "gross_profit_loss": -0.16177244957812154,
               "holding_seconds": 179,
-              "id": "9f75d389-9fc9-4e31-bf7e-0a9c9a68acd1",
+              "id": "8fd0eba7-5981-479b-bbe6-b5bf23ac7c67",
               "net_profit_loss": -0.36112520467456477,
               "profit_percent": -0.3618229173702415,
               "quantity": 0.0015284271552624862,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12718,11 +13093,11 @@
               "fees": 0.19950830245834988,
               "gross_profit_loss": 0.06596384074671774,
               "holding_seconds": 179,
-              "id": "4ab6df49-80c7-4f8c-828e-7d3a271e26c3",
+              "id": "e6b335b6-103b-4045-b0c7-046d77e3bb3e",
               "net_profit_loss": -0.1335444617116366,
               "profit_percent": -0.1338509068896365,
               "quantity": 0.0015320711805072284,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12735,11 +13110,11 @@
               "fees": 0.19953988750473134,
               "gross_profit_loss": 0.12424442502428107,
               "holding_seconds": 479,
-              "id": "2f023bda-9e3f-4863-85fb-a8a36e65175f",
+              "id": "d75579a8-0abc-4873-966b-e7de34b09acc",
               "net_profit_loss": -0.07529546248044028,
               "profit_percent": -0.07547834621892655,
               "quantity": 0.0015308311814107782,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12752,11 +13127,11 @@
               "fees": 0.199596169126393,
               "gross_profit_loss": 0.19557760963578177,
               "holding_seconds": 359,
-              "id": "db5cafa5-8a3e-493a-8d2f-aa5fc67fca1d",
+              "id": "fc5df555-7fda-412f-87c0-e509d52dbbe8",
               "net_profit_loss": -0.004018559490603479,
               "profit_percent": -0.004028624168369767,
               "quantity": 0.0015278980849661797,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12769,11 +13144,11 @@
               "fees": 0.19918790389445687,
               "gross_profit_loss": -0.21188431225813664,
               "holding_seconds": 600,
-              "id": "20b8545d-16a8-426b-b010-116a14ac5376",
+              "id": "55900bbe-4506-4de2-a170-ee22bb9a3752",
               "net_profit_loss": -0.41107221615258993,
               "profit_percent": -0.4121034267283914,
               "quantity": 0.0015238776896429318,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12786,11 +13161,11 @@
               "fees": 0.19903888723784208,
               "gross_profit_loss": -0.27872763286404995,
               "holding_seconds": 299,
-              "id": "e829107d-4edd-4a7a-a1e7-44245333cdd5",
+              "id": "0ce363dc-f174-497a-a1cf-baf3f9490294",
               "net_profit_loss": -0.4777665201018948,
               "profit_percent": -0.4791625036769658,
               "quantity": 0.0015207767928040676,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12803,11 +13178,11 @@
               "fees": 0.19942772379389406,
               "gross_profit_loss": 0.2056144505562958,
               "holding_seconds": 1139,
-              "id": "3b6b15a2-6c8e-431d-a112-6d4fb10f7e79",
+              "id": "3ba17402-559e-46b9-9fb3-a5ddb844ce25",
               "net_profit_loss": 0.006186726762393846,
               "profit_percent": 0.006207778262558024,
               "quantity": 0.0015277113866300027,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12820,11 +13195,11 @@
               "fees": 0.1990566764266519,
               "gross_profit_loss": -0.16666964336563977,
               "holding_seconds": 119,
-              "id": "36a580d1-4c51-47bd-b3ef-f501990df202",
+              "id": "551c8282-b201-423f-9eb0-30ec91db1551",
               "net_profit_loss": -0.3657263197922873,
               "profit_percent": -0.3669684942485807,
               "quantity": 0.0015236001689076229,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12837,11 +13212,11 @@
               "fees": 0.19926005358427024,
               "gross_profit_loss": 0.10981620557917245,
               "holding_seconds": 179,
-              "id": "7b528200-c6fa-4b48-949b-522c0b3138eb",
+              "id": "3c342ebb-ce91-41a5-8349-b1dd69376097",
               "net_profit_loss": -0.08944384800510363,
               "profit_percent": -0.08978058701592763,
               "quantity": 0.0015238242713917173,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             },
             {
@@ -12854,11 +13229,11 @@
               "fees": 0.19895973682881762,
               "gross_profit_loss": -0.1726207246572404,
               "holding_seconds": 179,
-              "id": "5b8c0298-b6e9-4207-8262-698288591b41",
+              "id": "ef7e6af8-47df-4a7f-9e95-af6af9360854",
               "net_profit_loss": -0.3715804614860474,
               "profit_percent": -0.3730128802955294,
               "quantity": 0.001519456134316398,
-              "run_id": "6a416c7c-69d9-4e8c-ad4a-6c0e57427778",
+              "run_id": "75504806-3b1f-4c7c-84ca-00c2350af380",
               "symbol": "BTCUSDT"
             }
           ],
@@ -13274,8 +13649,8 @@
           }
         ]
       },
-      "started_at": "2026-06-26T10:16:56.4358238Z",
-      "completed_at": "2026-06-26T10:16:57.3188053Z"
+      "started_at": "2026-06-27T20:06:13.0243566Z",
+      "completed_at": "2026-06-27T20:06:13.1307049Z"
     },
     {
       "level": "L5-Extreme",
@@ -13284,7 +13659,7 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 400,
-      "latency_ms": 22,
+      "latency_ms": 0,
       "evidence": "backtest range is too large",
       "request": {
         "atr_exit_enabled": true,
@@ -13310,17 +13685,17 @@
         "starting_balance": 1000,
         "strategy_name": "sma-crossover",
         "symbol": "BTCUSDT",
-        "to": "2026-06-26T10:16:57Z",
+        "to": "2026-06-27T20:06:13Z",
         "version": "v1"
       },
       "response": {
         "error": "backtest range is too large",
         "max_candles": 200000,
-        "requested_candles": 8669416,
+        "requested_candles": 8671446,
         "requested_interval": "1m"
       },
-      "started_at": "2026-06-26T10:16:57.3203486Z",
-      "completed_at": "2026-06-26T10:16:57.343103Z"
+      "started_at": "2026-06-27T20:06:13.1317784Z",
+      "completed_at": "2026-06-27T20:06:13.1317784Z"
     },
     {
       "level": "L5-Extreme",
@@ -13329,7 +13704,7 @@
       "method": "POST",
       "path": "/api/v1/backtests",
       "http_status": 400,
-      "latency_ms": 25,
+      "latency_ms": 0,
       "evidence": "starting_balance must be positive",
       "request": {
         "atr_exit_enabled": true,
@@ -13361,8 +13736,8 @@
       "response": {
         "error": "starting_balance must be positive"
       },
-      "started_at": "2026-06-26T10:16:57.343103Z",
-      "completed_at": "2026-06-26T10:16:57.369018Z"
+      "started_at": "2026-06-27T20:06:13.1317784Z",
+      "completed_at": "2026-06-27T20:06:13.1323282Z"
     },
     {
       "level": "L5-Extreme",
@@ -13371,10 +13746,10 @@
       "method": "GET",
       "path": "/api/v1/strategies/templates",
       "http_status": 429,
-      "latency_ms": 584,
+      "latency_ms": 48,
       "evidence": "received 429 after burst requests",
-      "started_at": "2026-06-26T10:16:57.369018Z",
-      "completed_at": "2026-06-26T10:16:57.9533917Z"
+      "started_at": "2026-06-27T20:06:13.1323282Z",
+      "completed_at": "2026-06-27T20:06:13.1810632Z"
     }
   ],
   "findings": [
