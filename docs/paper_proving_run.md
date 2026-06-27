@@ -157,3 +157,39 @@ Notes:
 - No risk thresholds were loosened.
 - The fix makes strategy strength compatible with the existing risk threshold model instead of bypassing risk.
 - Continue paper proving to observe the worker-driven path over multiple natural 15m candles.
+
+## Checkpoint 5 - 2026-06-28 00:32 IST
+
+Status: PASS
+
+Runtime:
+- API process running: yes
+- Worker process running: yes
+- Worker market-data interval: `15m`
+- Dashboard/API URL: `http://localhost:8080`
+- Execution mode: paper
+- Paper execution enabled: true
+- Exchange adapter: `binance_disabled`
+- Live trading enabled: false
+
+Natural worker-driven paper lifecycle:
+- Observation window crossed the `00:30 IST` 15m boundary.
+- Worker-generated strategy signal: `d810fe4d-6fc2-468b-af90-5d74b80399ad`
+- Strategy: `btc-trend-pullback`, `BTCUSDT`, `15m`
+- Signal: `sell`
+- Strength: `35.011919`
+- Risk decision: `approved`
+- Risk reason: `approved by risk rules`
+- Paper order ID: `ecc2f466-e1d6-4c6f-b5b3-44d376aec9ba`
+- Paper order status: `filled`
+- Order lifecycle events persisted: `created -> submitted -> filled`
+- Trade ID: `f2303b2a-0844-4663-bb4a-d92357915749`
+- Paper account after natural worker sell: `0.000006165398438465414 BTC`, `9999.8 USDT`
+- Reconciliation run: `38dadda9-9585-4a39-9243-059879bd08d0`
+- Reconciliation status: `matched`
+- Reconciliation mismatches: `0`
+
+Notes:
+- This checkpoint proves the background worker path, not only the manual cycle path.
+- Older pre-fix high-strength signals remain in history, but the new worker-generated signal used normalized strength below the max risk threshold.
+- Continue observing for duplicate-order behavior and longer-run account/reconciliation stability across more 15m candles.
