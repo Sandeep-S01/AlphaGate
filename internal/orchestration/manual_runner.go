@@ -82,10 +82,12 @@ func (r *ManualRunner) RunOnce(ctx context.Context, request ManualRunRequest) (M
 		Symbol:   settings.Symbol,
 		Interval: settings.Interval,
 		Limit:    settings.LookbackLimit,
+		Desc:     true,
 	})
 	if err != nil {
 		return ManualRunResult{}, fmt.Errorf("read strategy candles: %w", err)
 	}
+	reverseCandles(candles)
 	evaluator, err := strategy.NewEvaluatorFromSettings(settings)
 	if err != nil {
 		return ManualRunResult{}, fmt.Errorf("create strategy evaluator: %w", err)

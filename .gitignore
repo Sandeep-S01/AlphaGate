@@ -5,6 +5,7 @@ coverage.out
 *.test
 *.exe
 *.log
+*.err
 build_out.txt
 test-results/
 tmp/

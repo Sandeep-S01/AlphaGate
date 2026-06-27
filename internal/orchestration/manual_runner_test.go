@@ -57,6 +57,13 @@ func TestManualRunnerRunsOnePaperCycle(t *testing.T) {
 	if len(fixture.executions.saved) != 1 {
 		t.Fatalf("expected one saved paper execution, got %d", len(fixture.executions.saved))
 	}
+	if !fixture.candleReader.query.Desc {
+		t.Fatalf("expected manual runner to request newest candles first, got %+v", fixture.candleReader.query)
+	}
+	wantGeneratedAt := manualRunnerCandles()[len(manualRunnerCandles())-1].CloseTime
+	if !result.Signal.GeneratedAt.Equal(wantGeneratedAt) {
+		t.Fatalf("expected signal from newest candle %s, got %s", wantGeneratedAt, result.Signal.GeneratedAt)
+	}
 }
 
 func TestManualRunnerBlocksExecutionWhenKillSwitchActive(t *testing.T) {

@@ -404,10 +404,16 @@ func (f *fakeCandleStore) Upsert(ctx context.Context, candle marketdata.Candle) 
 
 type fakeCandleReader struct {
 	candles []marketdata.Candle
+	query   marketdata.CandleQuery
 }
 
 func (f *fakeCandleReader) List(ctx context.Context, query marketdata.CandleQuery) ([]marketdata.Candle, error) {
-	return f.candles, nil
+	f.query = query
+	candles := append([]marketdata.Candle(nil), f.candles...)
+	if query.Desc {
+		reverseCandles(candles)
+	}
+	return candles, nil
 }
 
 type fakeStrategyEvaluator struct{}
