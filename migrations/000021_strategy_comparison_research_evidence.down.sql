@@ -1,0 +1,32 @@
+ALTER TABLE strategy_comparison_results
+    DROP COLUMN IF EXISTS walk_forward_validation_reason,
+    DROP COLUMN IF EXISTS walk_forward_validation_status,
+    DROP COLUMN IF EXISTS walk_forward_worst_drawdown,
+    DROP COLUMN IF EXISTS walk_forward_average_excess,
+    DROP COLUMN IF EXISTS walk_forward_average_return,
+    DROP COLUMN IF EXISTS walk_forward_passes,
+    DROP COLUMN IF EXISTS walk_forward_folds,
+    DROP COLUMN IF EXISTS test_validation_reason,
+    DROP COLUMN IF EXISTS test_validation_status,
+    DROP COLUMN IF EXISTS test_total_trades,
+    DROP COLUMN IF EXISTS test_max_drawdown,
+    DROP COLUMN IF EXISTS test_profit_factor,
+    DROP COLUMN IF EXISTS test_excess_return_percent,
+    DROP COLUMN IF EXISTS test_return_percent,
+    DROP COLUMN IF EXISTS train_validation_reason,
+    DROP COLUMN IF EXISTS train_validation_status,
+    DROP COLUMN IF EXISTS train_total_trades,
+    DROP COLUMN IF EXISTS train_max_drawdown,
+    DROP COLUMN IF EXISTS train_profit_factor,
+    DROP COLUMN IF EXISTS train_excess_return_percent,
+    DROP COLUMN IF EXISTS train_return_percent;
+
+ALTER TABLE strategy_comparisons
+    DROP COLUMN IF EXISTS walk_forward_folds,
+    DROP COLUMN IF EXISTS walk_forward_enabled,
+    DROP COLUMN IF EXISTS test_to,
+    DROP COLUMN IF EXISTS test_from,
+    DROP COLUMN IF EXISTS train_to,
+    DROP COLUMN IF EXISTS train_from,
+    DROP COLUMN IF EXISTS train_ratio,
+    DROP COLUMN IF EXISTS train_test_enabled;

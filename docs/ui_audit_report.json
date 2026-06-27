@@ -1,0 +1,157 @@
+{
+  "audit": "Sentra Dashboard UI Audit",
+  "target": "dashboard-src/src React dashboard",
+  "source_prompt_scope": "Agents 1-9 plus visible Agent 10.1 only",
+  "score": {
+    "available_points": 88,
+    "awarded_points": 88,
+    "blocked_points": 12,
+    "blocked_reason": "Attachment stops mid-Agent-10 and omits the rest of Agents 10-12."
+  },
+  "agents": [
+    {
+      "id": "AGENT-01",
+      "name": "Visual Hierarchy",
+      "points": 15,
+      "awarded": 15,
+      "results": [
+        { "id": "1.1", "status": "PASS", "points": 2, "evidence": "Trading workspace preserves narrow left watchlist, dominant central chart, and secondary right operations panel." },
+        { "id": "1.2", "status": "PASS", "points": 2, "evidence": "Global and component styles use regular labels, bold values, and extra-bold brand/signal headings." },
+        { "id": "1.3", "status": "PASS", "points": 2, "evidence": "Signal Intelligence BUY/SELL/HOLD badge now uses an 18px signal value." },
+        { "id": "1.4", "status": "PASS", "points": 2, "evidence": "Color use remains semantic for buy, sell, warning, info, brand, base surfaces, and borders." },
+        { "id": "1.5", "status": "PASS", "points": 1, "evidence": "Icon-only controls received aria labels; decorative SVG/lucide icons are hidden where text already labels the control." },
+        { "id": "1.6", "status": "PASS", "points": 2, "evidence": "Sections use spacing, surface depth, and labels in addition to borders." },
+        { "id": "1.7", "status": "PASS", "points": 2, "evidence": "Type scale normalization increases separation between labels, values, tabs, and signal badges." }
+      ]
+    },
+    {
+      "id": "AGENT-02",
+      "name": "Typography",
+      "points": 10,
+      "awarded": 10,
+      "results": [
+        { "id": "2.1", "status": "PASS", "points": 2, "evidence": "Only Inter and JetBrains Mono are used by authored dashboard styles." },
+        { "id": "2.2", "status": "PASS", "points": 2, "evidence": "Disallowed sub-10px and fractional arbitrary font sizes were normalized to the allowed scale." },
+        { "id": "2.3", "status": "PASS", "points": 1, "evidence": "Dense table rows retain compact line-height while signal and empty-state text uses readable leading." },
+        { "id": "2.4", "status": "PASS", "points": 1, "evidence": "Tracking remains on uppercase labels and compact metadata only." },
+        { "id": "2.5", "status": "PASS", "points": 1, "evidence": "No authored dashboard source contains text below 10px." },
+        { "id": "2.6", "status": "PASS", "points": 1, "evidence": "font-mono-data and numeric-data now enforce JetBrains Mono and tabular numerals." },
+        { "id": "2.7", "status": "PASS", "points": 1, "evidence": "Bold weight remains reserved for headings, prices, statuses, and signal/action values." },
+        { "id": "2.8", "status": "PASS", "points": 1, "evidence": "Text is not placed directly over image or decorative gradient backgrounds." }
+      ]
+    },
+    {
+      "id": "AGENT-03",
+      "name": "Color System",
+      "points": 10,
+      "awarded": 10,
+      "results": [
+        { "id": "3.1", "status": "PASS", "points": 2, "evidence": "Large areas use base surface colors; signal colors remain limited to badges, values, and state accents." },
+        { "id": "3.2", "status": "PASS", "points": 2, "evidence": "Buy, sell, warn, info, and brand colors keep one semantic role each." },
+        { "id": "3.3", "status": "PASS", "points": 2, "evidence": "Primary text remains high-contrast on dark dashboard surfaces." },
+        { "id": "3.4", "status": "PASS", "points": 1, "evidence": "Secondary chrome text remains restricted to muted metadata and labels." },
+        { "id": "3.5", "status": "PASS", "points": 2, "evidence": "Color-coded states also include visible text, status labels, aria labels, or position." },
+        { "id": "3.6", "status": "PASS", "points": 1, "evidence": "No decorative extra hue family was added; the semantic palette is unchanged." }
+      ]
+    },
+    {
+      "id": "AGENT-04",
+      "name": "Spacing & Grid",
+      "points": 10,
+      "awarded": 10,
+      "results": [
+        { "id": "4.1", "status": "PASS", "points": 3, "evidence": "Sub-4px spacing utilities in audited dashboard source were normalized to 4px-grid equivalents." },
+        { "id": "4.2", "status": "PASS", "points": 2, "evidence": "Panel padding remains compact while external section gaps are larger." },
+        { "id": "4.3", "status": "PASS", "points": 2, "evidence": "Headers and logical groups keep clear spacing between unrelated controls." },
+        { "id": "4.4", "status": "PASS", "points": 2, "evidence": "Rows remain data-dense; critical action buttons were raised to safer minimum hit areas." },
+        { "id": "4.5", "status": "PASS", "points": 1, "evidence": "Empty states, logs, risk metrics, and action controls remain inside visible parent groups." }
+      ]
+    },
+    {
+      "id": "AGENT-05",
+      "name": "Interactive States",
+      "points": 10,
+      "awarded": 10,
+      "results": [
+        { "id": "5.1", "status": "PASS", "points": 3, "evidence": "Global focus-visible and reusable interactive-control states were added." },
+        { "id": "5.2", "status": "PASS", "points": 2, "evidence": "Global focus-visible ring applies to keyboard-reachable controls." },
+        { "id": "5.3", "status": "PASS", "points": 1, "evidence": "Slow duration utilities were normalized to 100ms." },
+        { "id": "5.4", "status": "PASS", "points": 1, "evidence": "interactive-control and btn-active-scale provide tactile active feedback." },
+        { "id": "5.5", "status": "PASS", "points": 1, "evidence": "Disabled action buttons use visible opacity and not-allowed cursor." },
+        { "id": "5.6", "status": "PASS", "points": 1, "evidence": "Command palette items are semantic buttons; display-only topbar market context no longer uses pointer styling." },
+        { "id": "5.7", "status": "PASS", "points": 1, "evidence": "High-risk Trading action buttons use min-height 44px." }
+      ]
+    },
+    {
+      "id": "AGENT-06",
+      "name": "Micro-Interactions & Animation",
+      "points": 8,
+      "awarded": 8,
+      "results": [
+        { "id": "6.1", "status": "PASS", "points": 2, "evidence": "Interactive-control centralizes 100ms color/background/border transitions." },
+        { "id": "6.2", "status": "PASS", "points": 2, "evidence": "UI feedback uses 100ms transitions; tick flash remains 400ms; skeleton loading is a functional loading loop." },
+        { "id": "6.3", "status": "PASS", "points": 1, "evidence": "Data and loading animations use ease-out or appropriate timing." },
+        { "id": "6.4", "status": "PASS", "points": 1, "evidence": "Infinite animation is limited to live/loading/spinner states." },
+        { "id": "6.5", "status": "PASS", "points": 2, "evidence": "prefers-reduced-motion block disables long-running animations and transitions." }
+      ]
+    },
+    {
+      "id": "AGENT-07",
+      "name": "Information Architecture",
+      "points": 8,
+      "awarded": 8,
+      "results": [
+        { "id": "7.1", "status": "PASS", "points": 2, "evidence": "Workspace order remains Trading, Research, Strategy, Risk, Ops." },
+        { "id": "7.2", "status": "PASS", "points": 2, "evidence": "Active workspace tab, active watchlist item, symbol context, and OHLCV chart overlay remain visible." },
+        { "id": "7.3", "status": "PASS", "points": 1, "evidence": "Signal conditions, signal stats, risk metrics, and account info remain spatially grouped." },
+        { "id": "7.4", "status": "PASS", "points": 2, "evidence": "Detailed ops and log information stays below/secondary to the primary chart." },
+        { "id": "7.5", "status": "PASS", "points": 1, "evidence": "Log empty states now include what is empty, why, and the next action." }
+      ]
+    },
+    {
+      "id": "AGENT-08",
+      "name": "Cognitive Load Reduction",
+      "points": 8,
+      "awarded": 8,
+      "results": [
+        { "id": "8.1", "status": "PASS", "points": 2, "evidence": "Signal Intelligence remains visible in the Trading right panel." },
+        { "id": "8.2", "status": "PASS", "points": 1, "evidence": "Workspace tabs remain 5 and log tabs were reduced to 5." },
+        { "id": "8.3", "status": "PASS", "points": 2, "evidence": "Default symbol BTCUSDT and default workspace Trading are preserved." },
+        { "id": "8.4", "status": "PASS", "points": 1, "evidence": "Stale status now includes prescriptive tooltip text." },
+        { "id": "8.5", "status": "PASS", "points": 1, "evidence": "Settings form controls use visible labels linked to input IDs." },
+        { "id": "8.6", "status": "PASS", "points": 1, "evidence": "Manual buy/sell and safety block controls require hold-to-confirm with progress text." }
+      ]
+    },
+    {
+      "id": "AGENT-09",
+      "name": "Feedback & System Status",
+      "points": 7,
+      "awarded": 7,
+      "results": [
+        { "id": "9.1", "status": "PASS", "points": 2, "evidence": "Topbar keeps API, DB, Redis, stale, and symbol status visible." },
+        { "id": "9.2", "status": "PASS", "points": 2, "evidence": "Canvas chart now supports a skeleton loading state." },
+        { "id": "9.3", "status": "PASS", "points": 1, "evidence": "CSS active states, hold progress, tab changes, and data updates provide immediate feedback." },
+        { "id": "9.4", "status": "PASS", "points": 1, "evidence": "Stale state mutes price context and changes API health to warning/offline semantics." },
+        { "id": "9.5", "status": "PASS", "points": 1, "evidence": "Toast hierarchy supports info, warning, error, and success with distinct semantic styling and aria-live." }
+      ]
+    },
+    {
+      "id": "AGENT-10",
+      "name": "Accessibility",
+      "points": 2,
+      "awarded": 2,
+      "results": [
+        { "id": "10.1", "status": "PASS", "points": 2, "evidence": "Command palette options are buttons, settings modal traps focus, and interactive controls are keyboard reachable." }
+      ]
+    },
+    {
+      "id": "AGENT-10-REMAINDER-THROUGH-AGENT-12",
+      "name": "Missing Prompt Content",
+      "points": 12,
+      "awarded": 0,
+      "results": [
+        { "id": "missing", "status": "BLOCKED", "points": 12, "evidence": "The provided attachment ends mid-Agent-10 and does not include complete acceptance criteria for the rest of Agent-10, Agent-11, or Agent-12." }
+      ]
+    }
+  ]
+}

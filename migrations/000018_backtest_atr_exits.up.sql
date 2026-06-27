@@ -1,0 +1,5 @@
+ALTER TABLE backtest_runs
+    ADD COLUMN atr_exit_enabled BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN atr_period INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN atr_stop_multiplier DOUBLE PRECISION NOT NULL DEFAULT 0,
+    ADD COLUMN atr_take_profit_multiplier DOUBLE PRECISION NOT NULL DEFAULT 0;

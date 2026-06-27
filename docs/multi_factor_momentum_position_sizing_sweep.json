@@ -1,0 +1,528 @@
+{
+    "generated_at":  "2026-06-26T13:18:03.2033975Z",
+    "note":  "Risk-on profile allocation sweep",
+    "ranked":  [
+                   {
+                       "position_size":  50,
+                       "avg_return":  0.8582,
+                       "avg_excess":  -4.9233,
+                       "min_return":  -4.5098,
+                       "positive_return_folds":  3,
+                       "positive_excess_folds":  2,
+                       "avg_pf":  1.0638,
+                       "worst_dd":  7.4425,
+                       "folds":  [
+                                     {
+                                         "fold":  1,
+                                         "run_id":  "cb5a9645-8d3f-4f25-a410-0a51ce434ab0",
+                                         "return_pct":  2.8992670200954307,
+                                         "benchmark_pct":  67.054625430901353,
+                                         "excess_pct":  -64.155358410805917,
+                                         "trades":  78,
+                                         "profit_factor":  1.1676111368575497,
+                                         "max_drawdown":  6.675830737622392
+                                     },
+                                     {
+                                         "fold":  2,
+                                         "run_id":  "8cbe0c1b-57e0-478d-9347-34763cd2da8b",
+                                         "return_pct":  -4.5097666567958,
+                                         "benchmark_pct":  -1.8269564355438159,
+                                         "excess_pct":  -2.6828102212519842,
+                                         "trades":  78,
+                                         "profit_factor":  0.7050885637237404,
+                                         "max_drawdown":  7.4425331889194561
+                                     },
+                                     {
+                                         "fold":  3,
+                                         "run_id":  "f58a96c1-b1ed-43a8-8c2f-92b4940244fd",
+                                         "return_pct":  1.5769524586031911,
+                                         "benchmark_pct":  -16.50514158629074,
+                                         "excess_pct":  18.082094044893932,
+                                         "trades":  78,
+                                         "profit_factor":  1.1431933411284168,
+                                         "max_drawdown":  3.9148978543405821
+                                     },
+                                     {
+                                         "fold":  4,
+                                         "run_id":  "d9eb449a-fe35-4b18-82a7-aad6815e0f78",
+                                         "return_pct":  3.4663072915467636,
+                                         "benchmark_pct":  -25.596638882835848,
+                                         "excess_pct":  29.06294617438261,
+                                         "trades":  78,
+                                         "profit_factor":  1.2391762616571518,
+                                         "max_drawdown":  4.7263260926622133
+                                     }
+                                 ]
+                   },
+                   {
+                       "position_size":  40,
+                       "avg_return":  0.7029,
+                       "avg_excess":  -5.0786,
+                       "min_return":  -3.6041,
+                       "positive_return_folds":  3,
+                       "positive_excess_folds":  2,
+                       "avg_pf":  1.0663,
+                       "worst_dd":  5.976,
+                       "folds":  [
+                                     {
+                                         "fold":  1,
+                                         "run_id":  "cf8cc3aa-8210-42f4-8f8a-ba5d8140dc6e",
+                                         "return_pct":  2.3475746878803876,
+                                         "benchmark_pct":  67.054625430901353,
+                                         "excess_pct":  -64.707050743020972,
+                                         "trades":  78,
+                                         "profit_factor":  1.1711564873007243,
+                                         "max_drawdown":  5.3645902009853179
+                                     },
+                                     {
+                                         "fold":  2,
+                                         "run_id":  "19d51be1-503f-431b-87c4-67ef4bcdf1c9",
+                                         "return_pct":  -3.6040825333727113,
+                                         "benchmark_pct":  -1.8269564355438159,
+                                         "excess_pct":  -1.7771260978288954,
+                                         "trades":  78,
+                                         "profit_factor":  0.70724824804635134,
+                                         "max_drawdown":  5.9760211429714474
+                                     },
+                                     {
+                                         "fold":  3,
+                                         "run_id":  "3e27e923-9318-45b8-9464-0a9599524953",
+                                         "return_pct":  1.2740772037558417,
+                                         "benchmark_pct":  -16.50514158629074,
+                                         "excess_pct":  17.779218790046581,
+                                         "trades":  78,
+                                         "profit_factor":  1.1448289347554998,
+                                         "max_drawdown":  3.1439024907680952
+                                     },
+                                     {
+                                         "fold":  4,
+                                         "run_id":  "64fd2a35-5050-4c55-9d7f-ea072e56362d",
+                                         "return_pct":  2.7938912660865207,
+                                         "benchmark_pct":  -25.596638882835848,
+                                         "excess_pct":  28.39053014892237,
+                                         "trades":  78,
+                                         "profit_factor":  1.2421235570184983,
+                                         "max_drawdown":  3.7920473019905456
+                                     }
+                                 ]
+                   },
+                   {
+                       "position_size":  30,
+                       "avg_return":  0.5393,
+                       "avg_excess":  -5.2422,
+                       "min_return":  -2.7001,
+                       "positive_return_folds":  3,
+                       "positive_excess_folds":  2,
+                       "avg_pf":  1.0689,
+                       "worst_dd":  4.4984,
+                       "folds":  [
+                                     {
+                                         "fold":  1,
+                                         "run_id":  "fed2a47a-b734-4742-8ddd-50beaf082f77",
+                                         "return_pct":  1.7815582554300089,
+                                         "benchmark_pct":  67.054625430901353,
+                                         "excess_pct":  -65.27306717547134,
+                                         "trades":  78,
+                                         "profit_factor":  1.174740513220057,
+                                         "max_drawdown":  4.04139201621403
+                                     },
+                                     {
+                                         "fold":  2,
+                                         "run_id":  "e7e389cf-5b83-411c-93c3-653301ba7b54",
+                                         "return_pct":  -2.7000785482525682,
+                                         "benchmark_pct":  -1.8269564355438159,
+                                         "excess_pct":  -0.87312211270875184,
+                                         "trades":  78,
+                                         "profit_factor":  0.70940034340892077,
+                                         "max_drawdown":  4.4983873876786884
+                                     },
+                                     {
+                                         "fold":  3,
+                                         "run_id":  "1017d190-22d7-42aa-b8e0-cdea56d170e7",
+                                         "return_pct":  0.96488374589163861,
+                                         "benchmark_pct":  -16.50514158629074,
+                                         "excess_pct":  17.470025332182381,
+                                         "trades":  78,
+                                         "profit_factor":  1.1464639577305078,
+                                         "max_drawdown":  2.3669675993496715
+                                     },
+                                     {
+                                         "fold":  4,
+                                         "run_id":  "8efc22b6-d8bc-4782-b3d9-29e3ae2adfa0",
+                                         "return_pct":  2.1108237616206496,
+                                         "benchmark_pct":  -25.596638882835848,
+                                         "excess_pct":  27.7074626444565,
+                                         "trades":  78,
+                                         "profit_factor":  1.245077592022753,
+                                         "max_drawdown":  2.8522629168565063
+                                     }
+                                 ]
+                   },
+                   {
+                       "position_size":  20,
+                       "avg_return":  0.3676,
+                       "avg_excess":  -5.4139,
+                       "min_return":  -1.7979,
+                       "positive_return_folds":  3,
+                       "positive_excess_folds":  3,
+                       "avg_pf":  1.0715,
+                       "worst_dd":  3.0098,
+                       "folds":  [
+                                     {
+                                         "fold":  1,
+                                         "run_id":  "60581cd3-0c2f-47ae-9e0f-4dfaafd38ff3",
+                                         "return_pct":  1.2014585823141533,
+                                         "benchmark_pct":  67.054625430901353,
+                                         "excess_pct":  -65.8531668485872,
+                                         "trades":  78,
+                                         "profit_factor":  1.1783635198956202,
+                                         "max_drawdown":  2.706230137769694
+                                     },
+                                     {
+                                         "fold":  2,
+                                         "run_id":  "6d6190e9-4268-4521-9380-2bfa69fb96d3",
+                                         "return_pct":  -1.797939481433714,
+                                         "benchmark_pct":  -1.8269564355438159,
+                                         "excess_pct":  0.029016954110101967,
+                                         "trades":  78,
+                                         "profit_factor":  0.71154490022707251,
+                                         "max_drawdown":  3.0097543726360652
+                                     },
+                                     {
+                                         "fold":  3,
+                                         "run_id":  "b9399270-4077-4701-a03a-0e371bea406d",
+                                         "return_pct":  0.64943215188595782,
+                                         "benchmark_pct":  -16.50514158629074,
+                                         "excess_pct":  17.154573738176698,
+                                         "trades":  78,
+                                         "profit_factor":  1.148098397365716,
+                                         "max_drawdown":  1.5840408957591023
+                                     },
+                                     {
+                                         "fold":  4,
+                                         "run_id":  "952ecdd4-a27a-4ddd-bd3d-9af1346a152e",
+                                         "return_pct":  1.4173320026758305,
+                                         "benchmark_pct":  -25.596638882835848,
+                                         "excess_pct":  27.013970885511679,
+                                         "trades":  78,
+                                         "profit_factor":  1.2480380970427023,
+                                         "max_drawdown":  1.9069850007291336
+                                     }
+                                 ]
+                   },
+                   {
+                       "position_size":  10,
+                       "avg_return":  0.1878,
+                       "avg_excess":  -5.5937,
+                       "min_return":  -0.8979,
+                       "positive_return_folds":  3,
+                       "positive_excess_folds":  3,
+                       "avg_pf":  1.0741,
+                       "worst_dd":  1.5102,
+                       "folds":  [
+                                     {
+                                         "fold":  1,
+                                         "run_id":  "b819fbf4-a91e-4c1e-83d3-b36af115db56",
+                                         "return_pct":  0.60752196898720279,
+                                         "benchmark_pct":  67.054625430901353,
+                                         "excess_pct":  -66.447103461914153,
+                                         "trades":  78,
+                                         "profit_factor":  1.1820258110396182,
+                                         "max_drawdown":  1.3591002931160452
+                                     },
+                                     {
+                                         "fold":  2,
+                                         "run_id":  "363c059d-c63c-459c-a40f-f96a5b6faa9e",
+                                         "return_pct":  -0.89785107927129493,
+                                         "benchmark_pct":  -1.8269564355438159,
+                                         "excess_pct":  0.929105356272521,
+                                         "trades":  78,
+                                         "profit_factor":  0.71368196870046474,
+                                         "max_drawdown":  1.5102484744594269
+                                     },
+                                     {
+                                         "fold":  3,
+                                         "run_id":  "6ebaa994-4b50-4509-834c-6bbe7a03d548",
+                                         "return_pct":  0.32778352758807161,
+                                         "benchmark_pct":  -16.50514158629074,
+                                         "excess_pct":  16.832925113878812,
+                                         "trades":  78,
+                                         "profit_factor":  1.1497322412658375,
+                                         "max_drawdown":  0.79506951433256978
+                                     },
+                                     {
+                                         "fold":  4,
+                                         "run_id":  "1cb77e2e-e4c6-4934-9afe-bfad72dea111",
+                                         "return_pct":  0.71364631307393211,
+                                         "benchmark_pct":  -25.596638882835848,
+                                         "excess_pct":  26.310285195909781,
+                                         "trades":  78,
+                                         "profit_factor":  1.2510047931969095,
+                                         "max_drawdown":  0.95622625048851861
+                                     }
+                                 ]
+                   }
+               ],
+    "results":  [
+                    {
+                        "position_size":  10,
+                        "avg_return":  0.1878,
+                        "avg_excess":  -5.5937,
+                        "min_return":  -0.8979,
+                        "positive_return_folds":  3,
+                        "positive_excess_folds":  3,
+                        "avg_pf":  1.0741,
+                        "worst_dd":  1.5102,
+                        "folds":  [
+                                      {
+                                          "fold":  1,
+                                          "run_id":  "b819fbf4-a91e-4c1e-83d3-b36af115db56",
+                                          "return_pct":  0.60752196898720279,
+                                          "benchmark_pct":  67.054625430901353,
+                                          "excess_pct":  -66.447103461914153,
+                                          "trades":  78,
+                                          "profit_factor":  1.1820258110396182,
+                                          "max_drawdown":  1.3591002931160452
+                                      },
+                                      {
+                                          "fold":  2,
+                                          "run_id":  "363c059d-c63c-459c-a40f-f96a5b6faa9e",
+                                          "return_pct":  -0.89785107927129493,
+                                          "benchmark_pct":  -1.8269564355438159,
+                                          "excess_pct":  0.929105356272521,
+                                          "trades":  78,
+                                          "profit_factor":  0.71368196870046474,
+                                          "max_drawdown":  1.5102484744594269
+                                      },
+                                      {
+                                          "fold":  3,
+                                          "run_id":  "6ebaa994-4b50-4509-834c-6bbe7a03d548",
+                                          "return_pct":  0.32778352758807161,
+                                          "benchmark_pct":  -16.50514158629074,
+                                          "excess_pct":  16.832925113878812,
+                                          "trades":  78,
+                                          "profit_factor":  1.1497322412658375,
+                                          "max_drawdown":  0.79506951433256978
+                                      },
+                                      {
+                                          "fold":  4,
+                                          "run_id":  "1cb77e2e-e4c6-4934-9afe-bfad72dea111",
+                                          "return_pct":  0.71364631307393211,
+                                          "benchmark_pct":  -25.596638882835848,
+                                          "excess_pct":  26.310285195909781,
+                                          "trades":  78,
+                                          "profit_factor":  1.2510047931969095,
+                                          "max_drawdown":  0.95622625048851861
+                                      }
+                                  ]
+                    },
+                    {
+                        "position_size":  20,
+                        "avg_return":  0.3676,
+                        "avg_excess":  -5.4139,
+                        "min_return":  -1.7979,
+                        "positive_return_folds":  3,
+                        "positive_excess_folds":  3,
+                        "avg_pf":  1.0715,
+                        "worst_dd":  3.0098,
+                        "folds":  [
+                                      {
+                                          "fold":  1,
+                                          "run_id":  "60581cd3-0c2f-47ae-9e0f-4dfaafd38ff3",
+                                          "return_pct":  1.2014585823141533,
+                                          "benchmark_pct":  67.054625430901353,
+                                          "excess_pct":  -65.8531668485872,
+                                          "trades":  78,
+                                          "profit_factor":  1.1783635198956202,
+                                          "max_drawdown":  2.706230137769694
+                                      },
+                                      {
+                                          "fold":  2,
+                                          "run_id":  "6d6190e9-4268-4521-9380-2bfa69fb96d3",
+                                          "return_pct":  -1.797939481433714,
+                                          "benchmark_pct":  -1.8269564355438159,
+                                          "excess_pct":  0.029016954110101967,
+                                          "trades":  78,
+                                          "profit_factor":  0.71154490022707251,
+                                          "max_drawdown":  3.0097543726360652
+                                      },
+                                      {
+                                          "fold":  3,
+                                          "run_id":  "b9399270-4077-4701-a03a-0e371bea406d",
+                                          "return_pct":  0.64943215188595782,
+                                          "benchmark_pct":  -16.50514158629074,
+                                          "excess_pct":  17.154573738176698,
+                                          "trades":  78,
+                                          "profit_factor":  1.148098397365716,
+                                          "max_drawdown":  1.5840408957591023
+                                      },
+                                      {
+                                          "fold":  4,
+                                          "run_id":  "952ecdd4-a27a-4ddd-bd3d-9af1346a152e",
+                                          "return_pct":  1.4173320026758305,
+                                          "benchmark_pct":  -25.596638882835848,
+                                          "excess_pct":  27.013970885511679,
+                                          "trades":  78,
+                                          "profit_factor":  1.2480380970427023,
+                                          "max_drawdown":  1.9069850007291336
+                                      }
+                                  ]
+                    },
+                    {
+                        "position_size":  30,
+                        "avg_return":  0.5393,
+                        "avg_excess":  -5.2422,
+                        "min_return":  -2.7001,
+                        "positive_return_folds":  3,
+                        "positive_excess_folds":  2,
+                        "avg_pf":  1.0689,
+                        "worst_dd":  4.4984,
+                        "folds":  [
+                                      {
+                                          "fold":  1,
+                                          "run_id":  "fed2a47a-b734-4742-8ddd-50beaf082f77",
+                                          "return_pct":  1.7815582554300089,
+                                          "benchmark_pct":  67.054625430901353,
+                                          "excess_pct":  -65.27306717547134,
+                                          "trades":  78,
+                                          "profit_factor":  1.174740513220057,
+                                          "max_drawdown":  4.04139201621403
+                                      },
+                                      {
+                                          "fold":  2,
+                                          "run_id":  "e7e389cf-5b83-411c-93c3-653301ba7b54",
+                                          "return_pct":  -2.7000785482525682,
+                                          "benchmark_pct":  -1.8269564355438159,
+                                          "excess_pct":  -0.87312211270875184,
+                                          "trades":  78,
+                                          "profit_factor":  0.70940034340892077,
+                                          "max_drawdown":  4.4983873876786884
+                                      },
+                                      {
+                                          "fold":  3,
+                                          "run_id":  "1017d190-22d7-42aa-b8e0-cdea56d170e7",
+                                          "return_pct":  0.96488374589163861,
+                                          "benchmark_pct":  -16.50514158629074,
+                                          "excess_pct":  17.470025332182381,
+                                          "trades":  78,
+                                          "profit_factor":  1.1464639577305078,
+                                          "max_drawdown":  2.3669675993496715
+                                      },
+                                      {
+                                          "fold":  4,
+                                          "run_id":  "8efc22b6-d8bc-4782-b3d9-29e3ae2adfa0",
+                                          "return_pct":  2.1108237616206496,
+                                          "benchmark_pct":  -25.596638882835848,
+                                          "excess_pct":  27.7074626444565,
+                                          "trades":  78,
+                                          "profit_factor":  1.245077592022753,
+                                          "max_drawdown":  2.8522629168565063
+                                      }
+                                  ]
+                    },
+                    {
+                        "position_size":  40,
+                        "avg_return":  0.7029,
+                        "avg_excess":  -5.0786,
+                        "min_return":  -3.6041,
+                        "positive_return_folds":  3,
+                        "positive_excess_folds":  2,
+                        "avg_pf":  1.0663,
+                        "worst_dd":  5.976,
+                        "folds":  [
+                                      {
+                                          "fold":  1,
+                                          "run_id":  "cf8cc3aa-8210-42f4-8f8a-ba5d8140dc6e",
+                                          "return_pct":  2.3475746878803876,
+                                          "benchmark_pct":  67.054625430901353,
+                                          "excess_pct":  -64.707050743020972,
+                                          "trades":  78,
+                                          "profit_factor":  1.1711564873007243,
+                                          "max_drawdown":  5.3645902009853179
+                                      },
+                                      {
+                                          "fold":  2,
+                                          "run_id":  "19d51be1-503f-431b-87c4-67ef4bcdf1c9",
+                                          "return_pct":  -3.6040825333727113,
+                                          "benchmark_pct":  -1.8269564355438159,
+                                          "excess_pct":  -1.7771260978288954,
+                                          "trades":  78,
+                                          "profit_factor":  0.70724824804635134,
+                                          "max_drawdown":  5.9760211429714474
+                                      },
+                                      {
+                                          "fold":  3,
+                                          "run_id":  "3e27e923-9318-45b8-9464-0a9599524953",
+                                          "return_pct":  1.2740772037558417,
+                                          "benchmark_pct":  -16.50514158629074,
+                                          "excess_pct":  17.779218790046581,
+                                          "trades":  78,
+                                          "profit_factor":  1.1448289347554998,
+                                          "max_drawdown":  3.1439024907680952
+                                      },
+                                      {
+                                          "fold":  4,
+                                          "run_id":  "64fd2a35-5050-4c55-9d7f-ea072e56362d",
+                                          "return_pct":  2.7938912660865207,
+                                          "benchmark_pct":  -25.596638882835848,
+                                          "excess_pct":  28.39053014892237,
+                                          "trades":  78,
+                                          "profit_factor":  1.2421235570184983,
+                                          "max_drawdown":  3.7920473019905456
+                                      }
+                                  ]
+                    },
+                    {
+                        "position_size":  50,
+                        "avg_return":  0.8582,
+                        "avg_excess":  -4.9233,
+                        "min_return":  -4.5098,
+                        "positive_return_folds":  3,
+                        "positive_excess_folds":  2,
+                        "avg_pf":  1.0638,
+                        "worst_dd":  7.4425,
+                        "folds":  [
+                                      {
+                                          "fold":  1,
+                                          "run_id":  "cb5a9645-8d3f-4f25-a410-0a51ce434ab0",
+                                          "return_pct":  2.8992670200954307,
+                                          "benchmark_pct":  67.054625430901353,
+                                          "excess_pct":  -64.155358410805917,
+                                          "trades":  78,
+                                          "profit_factor":  1.1676111368575497,
+                                          "max_drawdown":  6.675830737622392
+                                      },
+                                      {
+                                          "fold":  2,
+                                          "run_id":  "8cbe0c1b-57e0-478d-9347-34763cd2da8b",
+                                          "return_pct":  -4.5097666567958,
+                                          "benchmark_pct":  -1.8269564355438159,
+                                          "excess_pct":  -2.6828102212519842,
+                                          "trades":  78,
+                                          "profit_factor":  0.7050885637237404,
+                                          "max_drawdown":  7.4425331889194561
+                                      },
+                                      {
+                                          "fold":  3,
+                                          "run_id":  "f58a96c1-b1ed-43a8-8c2f-92b4940244fd",
+                                          "return_pct":  1.5769524586031911,
+                                          "benchmark_pct":  -16.50514158629074,
+                                          "excess_pct":  18.082094044893932,
+                                          "trades":  78,
+                                          "profit_factor":  1.1431933411284168,
+                                          "max_drawdown":  3.9148978543405821
+                                      },
+                                      {
+                                          "fold":  4,
+                                          "run_id":  "d9eb449a-fe35-4b18-82a7-aad6815e0f78",
+                                          "return_pct":  3.4663072915467636,
+                                          "benchmark_pct":  -25.596638882835848,
+                                          "excess_pct":  29.06294617438261,
+                                          "trades":  78,
+                                          "profit_factor":  1.2391762616571518,
+                                          "max_drawdown":  4.7263260926622133
+                                      }
+                                  ]
+                    }
+                ]
+}
