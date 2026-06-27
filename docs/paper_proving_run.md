@@ -71,3 +71,46 @@ Defect found and fixed:
 
 Restoration:
 - Active strategy settings restored to `btc-trend-pullback`, `BTCUSDT`, `15m`, fast `21`, slow `200`, lookback `201`, RSI `14/30/70`.
+
+## Checkpoint 3 - 2026-06-27 22:02 IST
+
+Status: PASS with runtime configuration correction
+
+Runtime:
+- Docker Desktop restarted.
+- Project Postgres container running: `sentra-postgres-1`
+- Project Redis container recreated and reachable on `localhost:6379`: `sentra-redis-1`
+- API process running: yes
+- Worker process running: yes
+- Dashboard/API URL: `http://localhost:8080`
+- Execution mode: paper
+- Paper execution enabled: true
+- Exchange adapter: `binance_disabled`
+- Live trading enabled: false
+
+Configuration correction:
+- Initial restart used `MARKET_DATA_INTERVAL=1m` while active strategy settings were `btc-trend-pullback` on `15m`.
+- This produced fresh strategy signals labeled `15m` while consuming `1m` market-data events.
+- Worker was restarted with `MARKET_DATA_INTERVAL=15m` and `EXECUTION_INTERVAL=15m` to match active strategy settings.
+
+Market data:
+- Redis `stream:market-data` length: `97`
+- Latest persisted BTCUSDT `1m` candle: `2026-06-27 16:31:00 UTC`
+- Latest persisted BTCUSDT `15m` candle: `2026-06-27 16:30:00 UTC`
+
+Strategy/risk/execution:
+- Active strategy settings: `btc-trend-pullback`, `BTCUSDT`, `15m`
+- Latest real strategy signal: `hold`
+- Latest real risk decision: `rejected`
+- Latest real risk reason: `hold signal is not executable`
+- No new natural paper order was created after restarting the real strategy path.
+- Existing paper test orders remain filled from the forced RSI lifecycle test.
+
+Safety and reconciliation:
+- Reconciliation run: `7d533d48-e16b-4069-81ab-8b4dca86188a`
+- Reconciliation status: `matched`
+- Reconciliation mismatches: `0`
+
+Next observation target:
+- Continue paper proving on the corrected `15m` runtime path.
+- Wait for a natural `buy` or `sell` signal from `btc-trend-pullback`, then verify risk, paper order lifecycle, trade persistence, account update, and reconciliation again.
