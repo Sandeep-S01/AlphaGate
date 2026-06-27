@@ -107,6 +107,37 @@ const defaultBacktestWindow = () => {
   return { fromDate, toDate };
 };
 
+const candleTime = (candle, key) => {
+  if (key === 'OpenTime') return candle?.OpenTime || candle?.open_time;
+  if (key === 'CloseTime') return candle?.CloseTime || candle?.close_time;
+  return null;
+};
+
+const availableBacktestWindow = async (symbol, interval) => {
+  const fallback = defaultBacktestWindow();
+  try {
+    const res = await fetch(`/api/v1/market/candles?symbol=${encodeURIComponent(symbol)}&interval=${encodeURIComponent(interval)}&limit=600`);
+    if (!res.ok) return fallback;
+    const body = await res.json();
+    const candles = Array.isArray(body.data) ? body.data : [];
+    if (candles.length === 0) return fallback;
+    const sorted = candles
+      .map((candle) => ({
+        openTime: new Date(candleTime(candle, 'OpenTime')),
+        closeTime: new Date(candleTime(candle, 'CloseTime'))
+      }))
+      .filter((candle) => !Number.isNaN(candle.openTime.getTime()) && !Number.isNaN(candle.closeTime.getTime()))
+      .sort((a, b) => a.openTime.getTime() - b.openTime.getTime());
+    if (sorted.length === 0) return fallback;
+    return {
+      fromDate: sorted[0].openTime,
+      toDate: sorted[sorted.length - 1].closeTime
+    };
+  } catch {
+    return fallback;
+  }
+};
+
 export default function ResearchWorkspace({ activeSymbol = 'BTCUSDT', showToast = () => {} }) {
   const [strategy, setStrategy] = useState('sma-crossover');
   const [strategyTemplates, setStrategyTemplates] = useState([]);
@@ -306,7 +337,7 @@ export default function ResearchWorkspace({ activeSymbol = 'BTCUSDT', showToast 
     setBacktestRun(null);
     setBacktestTrades([]);
 
-    const { fromDate, toDate } = defaultBacktestWindow();
+    const { fromDate, toDate } = await availableBacktestWindow(symbol, interval);
 
     const payload = {
       strategy_name: strategy,
@@ -376,7 +407,7 @@ export default function ResearchWorkspace({ activeSymbol = 'BTCUSDT', showToast 
     setOptimizationError(null);
     setOptimizationResult(null);
 
-    const { fromDate, toDate } = defaultBacktestWindow();
+    const { fromDate, toDate } = await availableBacktestWindow(symbol, interval);
     const fastPeriods = strategy === 'btc-trend-pullback'
       ? uniquePositiveInts([5, 9, 12, fastPeriod])
       : uniquePositiveInts([5, 8, 9, 12, 20, fastPeriod]);

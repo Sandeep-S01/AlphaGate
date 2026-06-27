@@ -56,4 +56,16 @@ test.describe('Sentra UI audit behavior', () => {
     await expect(safetyButton).toContainText(/Hold to confirm/);
     await safetyButton.dispatchEvent('pointerup');
   });
+
+  test('shows backtest cost diagnostics after executing research backtest', async ({ page }) => {
+    await page.getByRole('button', { name: 'Research' }).click();
+    await page.getByRole('button', { name: 'Execute Backtest' }).click();
+
+    await expect(page.getByText('GROSS PNL')).toBeVisible({ timeout: 20000 });
+    await expect(page.getByText('FEES')).toBeVisible();
+    await expect(page.getByText('SLIPPAGE COST')).toBeVisible();
+    await expect(page.getByText('ROUND TRIP COST')).toBeVisible();
+    await expect(page.getByText('BREAK EVEN MOVE')).toBeVisible();
+    await expect(page.getByText('Execution Failed')).toHaveCount(0);
+  });
 });
