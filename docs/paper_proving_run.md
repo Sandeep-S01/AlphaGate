@@ -193,3 +193,47 @@ Notes:
 - This checkpoint proves the background worker path, not only the manual cycle path.
 - Older pre-fix high-strength signals remain in history, but the new worker-generated signal used normalized strength below the max risk threshold.
 - Continue observing for duplicate-order behavior and longer-run account/reconciliation stability across more 15m candles.
+
+## Checkpoint 6 - 2026-06-28 01:02 IST
+
+Status: PASS with failed-execution resilience fix
+
+Defect found:
+- At the `00:45 IST` 15m boundary, the worker generated a normalized `sell` signal and risk approved it.
+- The paper account no longer had enough BTC for another `$100` sell.
+- Paper execution returned `insufficient base balance`.
+- Before the fix, this error stopped the paper orchestration worker and did not persist a failed order.
+
+Fix:
+- Orchestrator now records a failed paper order when paper execution rejects an approved risk decision.
+- Failed order events are persisted as `created -> failed`.
+- Execution repository skips trade insertion for failed orders.
+- The pipeline completes after recording the failed execution, so the worker remains alive and the event is auditable.
+
+Verification:
+- Tests added:
+  - `TestOrchestratorRecordsFailedOrderWhenPaperExecutionRejects`
+  - `TestRepositorySaveSkipsTradeForFailedOrder`
+- Full verification: `go test ./...`
+- Worker rebuilt and restarted on the corrected `15m` paper path.
+
+Natural worker retry evidence:
+- Observation crossed the `01:00 IST` 15m boundary.
+- Worker process remained running after the execution failure.
+- Worker-generated signal: `e33e7936-3a54-4305-a17e-879200104409`
+- Signal: `sell`
+- Strength: `35.891964`
+- Risk decision: `approved`
+- Failed order ID: `953e3785-02fe-4c12-b50c-932e8a316eab`
+- Failed order reason: `insufficient base balance`
+- Failed order lifecycle events persisted: `created -> failed`
+- No trade row was inserted for the failed order.
+- Paper account remained unchanged: `0.000006165398438465414 BTC`, `9999.8 USDT`
+- Reconciliation run: `9da9d686-645e-4788-bf32-40cfd1ca1e66`
+- Reconciliation status: `matched`
+- Reconciliation mismatches: `0`
+
+Safety:
+- Execution mode: paper
+- Exchange adapter: `binance_disabled`
+- Live trading enabled: false

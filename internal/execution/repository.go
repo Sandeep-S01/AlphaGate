@@ -38,6 +38,18 @@ func (r *Repository) Save(ctx context.Context, result Result) (string, string, e
 		return "", "", fmt.Errorf("insert paper order: %w", err)
 	}
 
+	if result.Order.Status == OrderStatusFailed {
+		for _, event := range result.OrderEvents {
+			event.OrderID = orderID
+			eventQuery, eventArgs := BuildInsertOrderEventSQL(event)
+			var eventID string
+			if err := r.db.QueryRow(ctx, eventQuery, eventArgs...).Scan(&eventID); err != nil {
+				return "", "", fmt.Errorf("insert paper order event: %w", err)
+			}
+		}
+		return orderID, "", nil
+	}
+
 	result.Trade.OrderID = orderID
 	tradeQuery, tradeArgs := BuildInsertTradeSQL(result.Trade)
 	var tradeID string

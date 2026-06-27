@@ -85,6 +85,35 @@ func TestOrchestratorBlocksExecutionWhenKillSwitchActive(t *testing.T) {
 	}
 }
 
+func TestOrchestratorRecordsFailedOrderWhenPaperExecutionRejects(t *testing.T) {
+	fixture := newFixture()
+	fixture.riskDecision.SignalSide = strategy.SideSell
+	fixture.accounts.account = execution.Account{BaseBalance: 0, QuoteBalance: 1000}
+	orchestrator := fixture.orchestrator()
+
+	err := orchestrator.Handle(context.Background(), candleEnvelope(true))
+	if err != nil {
+		t.Fatalf("Handle returned error: %v", err)
+	}
+
+	if len(fixture.executions.saved) != 1 {
+		t.Fatalf("expected failed execution record, got %d", len(fixture.executions.saved))
+	}
+	order := fixture.executions.saved[0].Order
+	if order.Status != execution.OrderStatusFailed {
+		t.Fatalf("expected failed order status, got %+v", order)
+	}
+	if order.FailureReason != "insufficient base balance" {
+		t.Fatalf("expected failure reason to be persisted, got %+v", order)
+	}
+	if fixture.accounts.saved.UpdatedAt != (time.Time{}) {
+		t.Fatalf("expected account to remain unchanged, got %+v", fixture.accounts.saved)
+	}
+	if !fixture.idempotency.completed {
+		t.Fatal("expected pipeline to complete after recording failed execution")
+	}
+}
+
 func TestOrchestratorSkipsDuplicateCandle(t *testing.T) {
 	fixture := newFixture()
 	fixture.idempotency.begin = false

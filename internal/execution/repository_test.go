@@ -143,6 +143,42 @@ func TestRepositoryWrapsPostgresDisconnectDuringExecutionSave(t *testing.T) {
 	}
 }
 
+func TestRepositorySaveSkipsTradeForFailedOrder(t *testing.T) {
+	db := &fakeExecutionDB{}
+	repository := NewRepository(db)
+
+	orderID, tradeID, err := repository.Save(context.Background(), Result{
+		Order: Order{
+			RiskDecisionID: "risk-1",
+			Symbol:         "BTCUSDT",
+			Side:           strategy.SideSell,
+			Status:         OrderStatusFailed,
+			FailureReason:  "insufficient base balance",
+			CreatedAt:      time.Unix(10, 0).UTC(),
+			UpdatedAt:      time.Unix(10, 0).UTC(),
+		},
+		OrderEvents: []OrderEvent{
+			{Status: OrderStatusCreated, CreatedAt: time.Unix(10, 0).UTC()},
+			{Status: OrderStatusFailed, Reason: "insufficient base balance", CreatedAt: time.Unix(10, 0).UTC()},
+		},
+	})
+	if err != nil {
+		t.Fatalf("Save returned error: %v", err)
+	}
+	if orderID == "" {
+		t.Fatal("expected order id")
+	}
+	if tradeID != "" {
+		t.Fatalf("expected no trade id for failed order, got %q", tradeID)
+	}
+	if len(db.queries) != 3 {
+		t.Fatalf("expected order insert and two event inserts only, got %d queries", len(db.queries))
+	}
+	if strings.Contains(strings.Join(db.queries, "\n"), "paper_trades") {
+		t.Fatalf("did not expect failed order to insert trade, got queries: %s", strings.Join(db.queries, "\n"))
+	}
+}
+
 func TestAccountRepositoryWrapsPostgresDisconnect(t *testing.T) {
 	dbErr := errors.New("postgres disconnect")
 	accounts := NewAccountRepository(&fakeExecutionDB{rowErrs: []error{dbErr}})
@@ -159,9 +195,11 @@ func TestAccountRepositoryWrapsPostgresDisconnect(t *testing.T) {
 
 type fakeExecutionDB struct {
 	rowErrs []error
+	queries []string
 }
 
 func (f *fakeExecutionDB) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
+	f.queries = append(f.queries, sql)
 	var err error
 	if len(f.rowErrs) > 0 {
 		err = f.rowErrs[0]

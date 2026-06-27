@@ -218,7 +218,7 @@ func (o *Orchestrator) run(ctx context.Context, candle marketdata.Candle, correl
 	}
 	result, updatedAccount, err := o.deps.ExecutionEngine.Execute(decision, price, account)
 	if err != nil {
-		return fmt.Errorf("execute paper order: %w", err)
+		return o.recordFailedExecution(ctx, decision, price, err, correlationID)
 	}
 	orderID, tradeID, err := o.deps.ExecutionStore.Save(ctx, result)
 	if err != nil {
@@ -232,6 +232,42 @@ func (o *Orchestrator) run(ctx context.Context, candle marketdata.Candle, correl
 	}
 	if err := o.deps.Publisher.PublishExecution(ctx, o.cfg.ExecutionStream, correlationID, result); err != nil {
 		return fmt.Errorf("publish execution: %w", err)
+	}
+	return nil
+}
+
+func (o *Orchestrator) recordFailedExecution(ctx context.Context, decision risk.Decision, price float64, cause error, correlationID string) error {
+	now := time.Now().UTC()
+	requestedQuantity := 0.0
+	if price > 0 {
+		requestedQuantity = o.cfg.QuoteOrderAmount / price
+	}
+	result := execution.Result{
+		Order: execution.Order{
+			RiskDecisionID:    decision.ID,
+			ClientOrderID:     fmt.Sprintf("paper-%s-%d", decision.ID, now.UnixNano()),
+			Symbol:            decision.Symbol,
+			Side:              decision.SignalSide,
+			RequestedQuantity: requestedQuantity,
+			Price:             price,
+			QuoteAmount:       o.cfg.QuoteOrderAmount,
+			Status:            execution.OrderStatusFailed,
+			FailureReason:     cause.Error(),
+			CreatedAt:         now,
+			UpdatedAt:         now,
+		},
+		OrderEvents: []execution.OrderEvent{
+			{Status: execution.OrderStatusCreated, CreatedAt: now},
+			{Status: execution.OrderStatusFailed, Reason: cause.Error(), CreatedAt: now},
+		},
+	}
+	orderID, _, err := o.deps.ExecutionStore.Save(ctx, result)
+	if err != nil {
+		return fmt.Errorf("save failed execution: %w", err)
+	}
+	result.Order.ID = orderID
+	if err := o.deps.Publisher.PublishExecution(ctx, o.cfg.ExecutionStream, correlationID, result); err != nil {
+		return fmt.Errorf("publish failed execution: %w", err)
 	}
 	return nil
 }
