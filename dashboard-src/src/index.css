@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-60-1: #080a12; /* background */
+  --color-bg-60-2: #0d111a; /* surface-container-lowest */
+  --color-bg-60-3: #141a26; /* surface-container-low */
+  --color-bg-60-4: #1d2533; /* surface-container */
+  
+  --color-chrome-border: #3a4659; /* outline-variant */
+  --color-chrome-border-active: #9fb4d8; /* outline */
+  --color-chrome-text: #d8e1f1; /* on-surface-variant */
+  
+  --color-signal-buy: #20f2a3; /* secondary */
+  --color-signal-sell: #ff5c7a; /* tertiary */
+  --color-signal-warn: #ffcf4a; /* tertiary-fixed */
+  --color-signal-info: #5aa7ff; /* primary */
+  --color-signal-brand: #7c5cff; /* primary-container / brand */
+}
+
+@layer base {
+  body {
+    background-color: #080a12;
+    color: #f2f6ff;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    font-size: 12px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Monospace font standard */
+  .font-mono-data {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+*:focus-visible {
+  outline: 2px solid rgba(90, 167, 255, 0.95);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.interactive-control {
+  transition:
+    background-color 100ms ease,
+    border-color 100ms ease,
+    color 100ms ease,
+    transform 80ms ease;
+}
+
+.interactive-control:active {
+  transform: scale(0.97);
+}
+
+.interactive-control:disabled,
+.interactive-control[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.numeric-data {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.chart-skeleton {
+  background: linear-gradient(90deg, #141a26 25%, #263247 50%, #141a26 75%);
+  background-size: 200% 100%;
+  animation: skeleton-sweep 1.5s infinite ease-out;
+}
+
+@keyframes skeleton-sweep {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #080a12;
+}
+::-webkit-scrollbar-thumb {
+  background: #334159;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6d84aa;
+}
+
+/* Transitions */
+.transition-row {
+  transition: background-color 120ms ease;
+}
+.transition-row:hover {
+  background-color: #263247;
+}
+
+/* Tick Animations */
+@keyframes flash-green {
+  0% { background-color: rgba(32, 242, 163, 0.26); }
+  100% { background-color: transparent; }
+}
+@keyframes flash-red {
+  0% { background-color: rgba(255, 92, 122, 0.26); }
+  100% { background-color: transparent; }
+}
+.tick-up-flash {
+  animation: flash-green 400ms ease-out forwards;
+}
+.tick-down-flash {
+  animation: flash-red 400ms ease-out forwards;
+}
+
+/* Button Active scaling */
+.btn-active-scale:active {
+  transform: scale(0.97);
+  transition: transform 80ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .tick-up-flash,
+  .tick-down-flash {
+    animation-name: none;
+  }
+}
+
+/* Scrollable container styling for high density tables */
+.table-scroll-container {
+  overflow-y: auto;
+  max-height: 100%;
+}

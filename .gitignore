@@ -1,0 +1,10 @@
+.env
+bin/
+dashboard-src/node_modules/
+coverage.out
+*.test
+*.exe
+*.log
+build_out.txt
+test-results/
+tmp/

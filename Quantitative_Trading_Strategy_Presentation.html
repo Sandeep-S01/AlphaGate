@@ -1,0 +1,3437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantitative Trading Strategy Research Report</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for math formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    
+    <!-- Prism.js for code highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #111827;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.08);
+            
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            
+            --accent-primary: #6366f1; /* Indigo */
+            --accent-primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            --accent-success: #10b981; /* Emerald */
+            --accent-success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --accent-danger: #f43f5e; /* Rose */
+            --accent-danger-gradient: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+            --accent-warning: #f59e0b; /* Amber */
+            --accent-warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --accent-info: #06b6d4; /* Cyan */
+            --accent-info-gradient: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            
+            --glow-color: rgba(99, 102, 241, 0.15);
+            --transition-speed: 0.3s;
+            --font-display: 'Outfit', sans-serif;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+        }
+
+        .light-mode {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #f1f5f9;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --border-color: rgba(0, 0, 0, 0.08);
+            
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            
+            --accent-primary: #4f46e5;
+            --accent-primary-gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            --glow-color: rgba(79, 70, 229, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            overflow-x: hidden;
+            transition: background var(--transition-speed), color var(--transition-speed);
+            line-height: 1.6;
+        }
+
+        /* Ambient background lights */
+        .bg-glow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .bg-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            transition: all 1s ease;
+        }
+        .bg-glow-1 {
+            top: -10%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: var(--accent-primary);
+        }
+        .bg-glow-2 {
+            bottom: -10%;
+            left: -10%;
+            width: 45vw;
+            height: 45vw;
+            background: var(--accent-info);
+        }
+
+        /* Presentation Wrapper */
+        .deck-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Top Bar / Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(11, 15, 25, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 10;
+        }
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+            color: var(--text-primary);
+        }
+        .header-logo svg {
+            width: 28px;
+            height: 28px;
+            fill: var(--accent-primary);
+        }
+        .header-meta {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .btn-action {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-action:hover {
+            color: var(--text-primary);
+            border-color: var(--accent-primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        .btn-action svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Slide Layout Container */
+        .deck-container {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Navigation Sidebar */
+        .slide-nav-sidebar {
+            width: 280px;
+            border-right: 1px solid var(--border-color);
+            background: rgba(17, 24, 39, 0.3);
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 5;
+        }
+        .slide-nav-sidebar.collapsed {
+            transform: translateX(-280px);
+            position: absolute;
+        }
+        .sidebar-title {
+            padding: 1rem 1.5rem;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .slide-list {
+            list-style: none;
+            overflow-y: auto;
+            flex: 1;
+            padding: 0.5rem;
+        }
+        .slide-item {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.25rem;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .slide-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-primary);
+        }
+        .slide-item.active {
+            background: var(--accent-primary-gradient);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+        }
+        .slide-item-num {
+            font-family: var(--font-mono);
+            font-weight: 500;
+            opacity: 0.8;
+            min-width: 18px;
+        }
+        .slide-item-name {
+            font-weight: 500;
+        }
+
+        /* Slide Stage */
+        .slide-stage {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        /* Slide Card */
+        .slide-card {
+            width: 100%;
+            max-width: 1100px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            backdrop-filter: blur(16px);
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            display: none;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        .slide-card.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Slide Content Components */
+        .slide-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent-primary);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        .slide-title {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--text-primary) 30%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .title-glow-text {
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Title Slide Custom Styling */
+        .title-slide-content {
+            text-align: center;
+            padding: 3rem 1.5rem;
+        }
+        .title-slide-tag {
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent-primary);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+        .title-slide-h1 {
+            font-family: var(--font-display);
+            font-size: 3.75rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #ffffff 40%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .title-slide-desc {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            font-weight: 400;
+        }
+        .title-slide-metadata {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .metadata-box {
+            text-align: center;
+        }
+        .metadata-box-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+        }
+        .metadata-box-value {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+        }
+
+        /* Card components */
+        .info-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: transparent;
+            transition: background var(--transition-speed);
+        }
+        .info-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.2);
+            background: rgba(99, 102, 241, 0.02);
+        }
+        .info-card.accent-indigo::before { background: var(--accent-primary); }
+        .info-card.accent-success::before { background: var(--accent-success); }
+        .info-card.accent-danger::before { background: var(--accent-danger); }
+        .info-card.accent-warning::before { background: var(--accent-warning); }
+        .info-card.accent-info::before { background: var(--accent-info); }
+        
+        .card-header-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        .accent-indigo .card-header-icon { background: rgba(99, 102, 241, 0.1); color: var(--accent-primary); }
+        .accent-success .card-header-icon { background: rgba(16, 105, 129, 0.1); color: var(--accent-success); }
+        .accent-danger .card-header-icon { background: rgba(244, 63, 94, 0.1); color: var(--accent-danger); }
+        .accent-warning .card-header-icon { background: rgba(245, 158, 11, 0.1); color: var(--accent-warning); }
+        .accent-info .card-header-icon { background: rgba(6, 182, 212, 0.1); color: var(--accent-info); }
+        
+        .info-card-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        .info-card-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Large stat boxes */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        .stat-box {
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .stat-box:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+        .stat-box-value {
+            font-family: var(--font-display);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        .stat-box-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        /* Interactive Strategy Slide Layout */
+        .strategy-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .strategy-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.25rem;
+        }
+        .strategy-meta-tags {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .badge {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-cyan { background: rgba(6, 182, 212, 0.1); color: var(--accent-info); border: 1px solid rgba(6, 182, 212, 0.2); }
+        .badge-indigo { background: rgba(99, 102, 241, 0.1); color: var(--accent-primary); border: 1px solid rgba(99, 102, 241, 0.2); }
+        .badge-success { background: rgba(16, 185, 129, 0.1); color: var(--accent-success); border: 1px solid rgba(16, 185, 129, 0.2); }
+        .badge-warning { background: rgba(245, 158, 11, 0.1); color: var(--accent-warning); border: 1px solid rgba(245, 158, 11, 0.2); }
+        
+        /* Tabs Navigation */
+        .tabs-nav {
+            display: flex;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            padding: 0.35rem;
+            border-radius: 12px;
+            gap: 0.25rem;
+            margin-bottom: 1.5rem;
+            width: fit-content;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .tab-btn:hover {
+            color: var(--text-primary);
+        }
+        .tab-btn.active {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+        .tab-content {
+            display: none;
+            animation: tabFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes tabFadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Details list / key value grid */
+        .desc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        .desc-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+            padding-bottom: 1rem;
+        }
+        .desc-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .desc-label {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--accent-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .desc-value {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .logic-card {
+            background: rgba(0,0,0,0.15);
+            border-radius: 12px;
+            padding: 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            margin-bottom: 1rem;
+        }
+        .logic-card-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logic-card-title.buy { color: var(--accent-success); }
+        .logic-card-title.sell { color: var(--accent-danger); }
+        .logic-card ul {
+            list-style: none;
+            padding-left: 0.5rem;
+        }
+        .logic-card li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .logic-card li:last-child {
+            margin-bottom: 0;
+        }
+        .logic-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            line-height: 1;
+        }
+        .logic-card.buy li::before { color: var(--accent-success); }
+        .logic-card.sell li::before { color: var(--accent-danger); }
+
+        /* Code Blocks */
+        .code-container {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            margin-top: 1rem;
+        }
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: #181b24;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+        .btn-copy {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: color 0.2s;
+        }
+        .btn-copy:hover {
+            color: var(--text-primary);
+        }
+        pre[class*="language-"] {
+            margin: 0 !important;
+            border-radius: 0 !important;
+            padding: 1.25rem !important;
+            font-size: 0.8rem !important;
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        /* Tables */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        .custom-table th {
+            font-family: var(--font-display);
+            font-weight: 600;
+            padding: 0.85rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+        .custom-table td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+        }
+        .custom-table tr:last-child td {
+            border-bottom: none;
+        }
+        .custom-table tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+            color: var(--text-primary);
+        }
+        
+        /* Interactive Sorting / Highlighting */
+        .sortable {
+            cursor: pointer;
+            user-select: none;
+        }
+        .sortable:hover {
+            background: rgba(255, 255, 255, 0.08) !important;
+        }
+        .sort-icon::after {
+            content: ' ↕';
+            opacity: 0.5;
+        }
+        .sort-asc::after {
+            content: ' ▲';
+            opacity: 0.8;
+            color: var(--accent-primary);
+        }
+        .sort-desc::after {
+            content: ' ▼';
+            opacity: 0.8;
+            color: var(--accent-primary);
+        }
+
+        /* Mini progress bar indicators inside tables */
+        .table-progress-container {
+            width: 100%;
+            max-width: 120px;
+            background: rgba(255,255,255,0.06);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+        .table-progress-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        /* Math and Formulas */
+        .formula-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: center;
+            text-align: center;
+        }
+        .formula-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        .formula-display {
+            font-size: 1.35rem;
+            padding: 0.75rem;
+            color: var(--text-primary);
+            background: rgba(0,0,0,0.1);
+            border-radius: 8px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 50px;
+        }
+        .formula-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Recommendations Card Details */
+        .recom-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .recom-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-primary);
+        }
+        .recom-strategy {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-primary);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .recom-body {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
+        }
+        .recom-ai-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.75rem;
+        }
+        .recom-ai-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .recom-ai-list li {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            position: relative;
+            padding-left: 0.85rem;
+        }
+        .recom-ai-list li::before {
+            content: '⚡';
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 0.7rem;
+        }
+
+        /* Checklists */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.015);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+        .checklist-item:hover {
+            background: rgba(255,255,255,0.03);
+            border-color: rgba(255,255,255,0.15);
+        }
+        .checklist-checkbox {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--text-muted);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        .checklist-checkbox:checked {
+            background: var(--accent-success);
+            border-color: var(--accent-success);
+        }
+        .checklist-checkbox:checked::after {
+            content: '✓';
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+        .checklist-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+        .checklist-checkbox:checked + .checklist-text {
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+
+        /* Bottom Controls / Slide Navigation Footer */
+        footer {
+            padding: 1.25rem 2.5rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(11, 15, 25, 0.5);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        .footer-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .btn-nav {
+            background: var(--accent-primary-gradient);
+            border: none;
+            color: #ffffff;
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-nav:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.3);
+        }
+        .btn-nav:active {
+            transform: translateY(0);
+        }
+        .btn-nav-secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        .btn-nav-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border-color: rgba(255,255,255,0.15);
+        }
+        .progress-dots {
+            display: flex;
+            gap: 0.35rem;
+        }
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .progress-dot.active {
+            background: var(--accent-primary);
+            width: 24px;
+            border-radius: 4px;
+        }
+        .slide-counter {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Keyboard Shortcut Legend overlay */
+        .keyboard-legend {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .kbd {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            padding: 0.1rem 0.35rem;
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+        }
+
+        /* Search Panel styling */
+        .search-container {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            color: var(--text-primary);
+            font-size: 0.8rem;
+            font-family: var(--font-sans);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        /* Layout view: Document view vs Slide view */
+        .deck-wrapper.document-view {
+            overflow: auto;
+            height: auto;
+        }
+        .deck-wrapper.document-view .deck-container {
+            display: block;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .deck-wrapper.document-view .slide-card {
+            display: block !important;
+            margin-bottom: 2rem;
+            box-shadow: none;
+            border-radius: 16px;
+        }
+        .deck-wrapper.document-view .slide-nav-sidebar,
+        .deck-wrapper.document-view footer,
+        .deck-wrapper.document-view .progress-dots {
+            display: none !important;
+        }
+
+        /* Alerts in markdown presentation style */
+        .alert {
+            background: rgba(245, 158, 11, 0.05);
+            border-left: 4px solid var(--accent-warning);
+            border-radius: 4px 8px 8px 4px;
+            padding: 1rem 1.25rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .alert-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .alert-danger {
+            background: rgba(244, 63, 94, 0.05);
+            border-left-color: var(--accent-danger);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .slide-nav-sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                transform: translateX(-100%);
+            }
+            .slide-nav-sidebar.active-mobile {
+                transform: translateX(0);
+            }
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .title-slide-h1 {
+                font-size: 2.5rem;
+            }
+            .title-slide-metadata {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .slide-card {
+                padding: 1.5rem;
+            }
+            .slide-stage {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow-container">
+        <div class="bg-glow bg-glow-1"></div>
+        <div class="bg-glow bg-glow-2"></div>
+    </div>
+
+    <div class="deck-wrapper" id="deckWrapper">
+        <!-- Top Navigation -->
+        <header>
+            <div class="header-logo">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12C20,13.88 19.35,15.61 18.27,17L14,12.73V8H10V11.27L6.44,7.7C7.89,5.43 10.42,4 12,4M12,20C10.42,20 7.89,18.57 6.44,16.3L10,12.73V16H14V12.73L17.56,16.3C16.11,18.57 13.58,20 12,20Z" />
+                </svg>
+                <span>Sentra Quant</span>
+            </div>
+            
+            <div class="header-meta">
+                Strategy Research Report
+            </div>
+
+            <div class="header-actions">
+                <button class="btn-action" id="toggleTheme" title="Toggle Light/Dark Theme">
+                    <svg viewBox="0 0 24 24" id="themeIcon">
+                        <!-- Sun icon by default -->
+                        <path d="M12,18C11.11,18 10.26,17.8 9.5,17.45C11.56,16.5 13,14.42 13,12C13,9.58 11.56,7.5 9.5,6.55C10.26,6.2 11.11,6 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31L23.31,12L20,8.69Z" />
+                    </svg>
+                </button>
+                <button class="btn-action" id="toggleLayout" title="Switch to Single-Page Scroll view">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19,3H5C3.89,3 3,3.89 3,5V19C3,20.11 3.89,21 5,21H19C20.11,21 21,20.11 21,19V5C21,3.89 20.11,3 19,3M19,5V19H5V5H19Z" />
+                    </svg>
+                </button>
+                <button class="btn-action" id="toggleAutoplay" title="Auto-play Slides">
+                    <svg viewBox="0 0 24 24" id="autoplayIcon">
+                        <path d="M8,5.14V19.14L19,12.14L8,5.14Z" />
+                    </svg>
+                </button>
+                <button class="btn-action" id="toggleFullscreen" title="Toggle Fullscreen">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z" />
+                    </svg>
+                </button>
+                <button class="btn-action" id="toggleSidebar" title="Toggle Sidebar">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <div class="deck-container">
+            <!-- Sidebar -->
+            <div class="slide-nav-sidebar" id="sidebar">
+                <div class="sidebar-title">Presentation Deck</div>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="searchSlides" placeholder="Filter slides...">
+                </div>
+                <ul class="slide-list" id="slideList">
+                    <!-- Javascript populates this -->
+                </ul>
+            </div>
+
+            <!-- Slide Canvas -->
+            <div class="slide-stage">
+                
+                <!-- Slide 1: Cover -->
+                <div class="slide-card active" data-slide="1">
+                    <div class="title-slide-content">
+                        <span class="title-slide-tag">Internal Research Document</span>
+                        <h1 class="title-slide-h1">QUANTITATIVE TRADING STRATEGY REPORT</h1>
+                        <p class="title-slide-desc">A rigorous evaluation of ten production-ready algorithmic trading strategies across crypto, Indian equities, and global markets.</p>
+                        
+                        <div class="title-slide-metadata">
+                            <div class="metadata-box">
+                                <div class="metadata-box-label">Prepared For</div>
+                                <div class="metadata-box-value">Strategy Development & Risk Committee</div>
+                            </div>
+                            <div class="metadata-box-value">
+                                <div class="metadata-box-label">Scope</div>
+                                <div class="metadata-box-value">Multi-Asset Algorithmic Systems</div>
+                            </div>
+                            <div class="metadata-box">
+                                <div class="metadata-box-label">Date</div>
+                                <div class="metadata-box-value">June 22, 2026</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Executive Summary -->
+                <div class="slide-card" data-slide="2">
+                    <span class="slide-category">Overview</span>
+                    <h2 class="slide-title">Executive Summary</h2>
+                    <div class="grid-2">
+                        <div class="desc-list">
+                            <div class="info-card accent-indigo">
+                                <div class="info-card-title">Rigorous Empirical Evaluation</div>
+                                <div class="info-card-desc">All strategy performance targets are grounded in real-world market constraints and backtesting metrics, rather than optimistic assumptions. No single strategy dominates all regimes.</div>
+                            </div>
+                            <div class="info-card accent-info">
+                                <div class="info-card-title">The Ensemble Advantage</div>
+                                <div class="info-card-desc">Deploying multiple strategies under a unified regime-detection model increases risk-adjusted returns (Sharpe ratio) by 33% compared to single-system approaches.</div>
+                            </div>
+                        </div>
+                        <div class="desc-list">
+                            <div class="info-card accent-success">
+                                <div class="info-card-title">Key Performance Benchmarks</div>
+                                <div class="info-card-desc">
+                                    <ul style="list-style: none; padding-left: 0;">
+                                        <li style="margin-bottom: 0.5rem; display: flex; justify-content: space-between; font-size: 0.85rem;">
+                                            <span>Best Risk-Adjusted:</span>
+                                            <strong style="color: var(--accent-success)">Mean Reversion (Sharpe ~1.6-1.7)</strong>
+                                        </li>
+                                        <li style="margin-bottom: 0.5rem; display: flex; justify-content: space-between; font-size: 0.85rem;">
+                                            <span>Best for Crypto:</span>
+                                            <strong style="color: var(--accent-success)">Multi-Factor Momentum (Sharpe ~1.7-2.0)</strong>
+                                        </li>
+                                        <li style="margin-bottom: 0.5rem; display: flex; justify-content: space-between; font-size: 0.85rem;">
+                                            <span>Best for Indian Stocks:</span>
+                                            <strong style="color: var(--accent-success)">VWAP Reversion (Since 2020)</strong>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Strategy 1 -->
+                <div class="slide-card" data-slide="3" data-search="trend following momentum adx sma ema atr">
+                    <div class="strategy-layout">
+                        <div class="strategy-header">
+                            <div>
+                                <span class="slide-category">Strategy 1</span>
+                                <h2 class="slide-title" style="margin-bottom: 0.25rem;">Trend Following (Multi-Timeframe)</h2>
+                            </div>
+                            <div class="strategy-meta-tags">
+                                <span class="badge badge-indigo">Directional</span>
+                                <span class="badge badge-cyan">Intermediate Horizons</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="stat-box-value">15% - 35%</div>
+                                <div class="stat-box-label">Expected Return</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">15% - 30%</div>
+                                <div class="stat-box-label">Max Drawdown</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">35% - 45%</div>
+                                <div class="stat-box-label">Win Rate</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">1.26</div>
+                                <div class="stat-box-label">Sharpe (NYU Rsch)</div>
+                            </div>
+                        </div>
+
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" onclick="switchStrategyTab(this, 's1-edge')">Core Edge</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's1-logic')">Logic & Rules</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's1-risk')">Risk Management</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's1-code')">Implementation</button>
+                        </div>
+
+                        <!-- Tab contents -->
+                        <div class="tab-content active" id="s1-edge">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Market Behavior Exploited</div>
+                                        <div class="desc-value">Persistent directional movements driven by behavioral biases (herding, anchoring) and institutional portfolio rebalancing.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Academic Rationale</div>
+                                        <div class="desc-value">Markets exhibit momentum at intermediate horizons (3-12 months) due to slow information diffusion. Online gradient-based models achieve historical Sharpe ratios of 1.26 with proper regularization.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Works Best</div>
+                                        <div class="desc-value">Strong macro directional markets, post-breakout continuations, high volatility trends.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Fails</div>
+                                        <div class="desc-value">Choppy range-bound sideways markets, sharp V-shaped reversals, extremely low volatility environments.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s1-logic">
+                            <div class="grid-2">
+                                <div class="logic-card buy">
+                                    <div class="logic-card-title buy">BUY Signal Conditions</div>
+                                    <ul>
+                                        <li>Close price breaks above the 20-day high</li>
+                                        <li>Close > SMA(50) AND Close > EMA(20)</li>
+                                        <li>ADX(14) > 25 (confirming trend strength)</li>
+                                        <li>Volume > 1.5x of the 20-day average volume</li>
+                                    </ul>
+                                </div>
+                                <div class="logic-card sell">
+                                    <div class="logic-card-title sell">SELL / Exit Conditions</div>
+                                    <ul>
+                                        <li>Close price falls below EMA(20) OR SMA(50)</li>
+                                        <li>ADX(14) falls below 20 (indicating trend exhaustion)</li>
+                                        <li>Trailing stop-loss is triggered (set at 2.0x ATR from entry)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s1-risk">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Position Sizing</div>
+                                        <div class="desc-value">Volatility-adjusted sizing based on ATR: <br><strong>1% risk = Account Equity × 0.01 / (ATR × multiplier)</strong></div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Execution Controls</div>
+                                        <div class="desc-value">Max risk per trade: 1.5% | Max daily drawdown limit: 3%. Hard circuit breaker at 15% aggregate drawdown.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Drawdown Protection</div>
+                                        <div class="desc-value">If account drawdown exceeds 10%, decrease position sizes by 50% for all subsequent trades until recovery.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Backtest Requirements</div>
+                                        <div class="desc-value">Minimum 10-year lookback covering historical regimes: 2008 GFC, 2020 Covid liquidity crisis, 2022 rate hike cycle.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s1-code">
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span>Pine Script v5 (Trend Following)</span>
+                                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code class="language-pinescript">//@version=5
+strategy("Trend Following System", overlay=true, default_qty_type=strategy.percent_of_equity, default_qty_value=10)
+
+fastLength = input.int(20, "Fast EMA Length")
+slowLength = input.int(50, "Slow SMA Length")
+adxLength = input.int(14, "ADX Length")
+adxThreshold = input.float(25.0, "ADX Threshold")
+volMultiplier = input.float(1.5, "Volume Multiplier")
+atrLength = input.int(14, "ATR Length")
+riskPerTrade = input.float(1.5, "Risk Per Trade %") / 100
+
+emaFast = ta.ema(close, fastLength)
+smaSlow = ta.sma(close, slowLength)
+adxValue = ta.adx(high, low, close, adxLength)
+atrValue = ta.atr(atrLength)
+volumeSMA = ta.sma(volume, 20)
+highest20 = ta.highest(high, 20)
+
+trendUp = close > emaFast and close > smaSlow
+trendStrength = adxValue > adxThreshold
+volumeConfirm = volume > volumeSMA * volMultiplier
+breakout = close > highest20[1]
+
+trendDown = close < emaFast or close < smaSlow
+adxWeak = adxValue < 20
+
+riskAmount = strategy.equity * riskPerTrade
+stopDistance = atrValue * 2
+qty = riskAmount / stopDistance
+
+if trendUp and trendStrength and volumeConfirm and breakout and strategy.position_size == 0
+    strategy.entry("Long", strategy.long, qty=qty)
+    strategy.exit("Exit Long", "Long", stop=close - atrValue * 2, trail_points=atrValue * 10, trail_offset=atrValue * 3)
+
+if trendDown and adxWeak and strategy.position_size > 0
+    strategy.close("Long", comment="Trend Reversal")</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 4: Strategy 2 -->
+                <div class="slide-card" data-slide="4" data-search="momentum breakout bollinger bands rsi atr">
+                    <div class="strategy-layout">
+                        <div class="strategy-header">
+                            <div>
+                                <span class="slide-category">Strategy 2</span>
+                                <h2 class="slide-title" style="margin-bottom: 0.25rem;">Momentum Breakout (Volume-Confirmed)</h2>
+                            </div>
+                            <div class="strategy-meta-tags">
+                                <span class="badge badge-indigo">Breakout</span>
+                                <span class="badge badge-cyan">High Velocity</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="stat-box-value">25% - 60%</div>
+                                <div class="stat-box-label">Expected Return</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">20% - 35%</div>
+                                <div class="stat-box-label">Max Drawdown</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">40% - 50%</div>
+                                <div class="stat-box-label">Win Rate</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">1.5 - 2.5</div>
+                                <div class="stat-box-label">Target R:R</div>
+                            </div>
+                        </div>
+
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" onclick="switchStrategyTab(this, 's2-edge')">Core Edge</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's2-logic')">Logic & Rules</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's2-risk')">Risk Management</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's2-code')">Implementation</button>
+                        </div>
+
+                        <div class="tab-content active" id="s2-edge">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Market Behavior Exploited</div>
+                                        <div class="desc-value">Information-driven price expansion following dense consolidation phases, triggering order flow cascades.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Why the Edge Exists</div>
+                                        <div class="desc-value">Consolidation breakouts attract automated systems, market makers, and retail momentum buyers, creating short-term self-fulfilling trends. Genetic algorithm optimizations show substantial PnL gains (29-550%) in crypto breakout trading.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Works Best</div>
+                                        <div class="desc-value">High volatility regimes, key news releases, earnings releases, and token listings/funding rate anomalies.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Fails</div>
+                                        <div class="desc-value">False breakouts ("bull traps" or "bear traps"), low-volume chop, and sudden news-driven reversals.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s2-logic">
+                            <div class="grid-2">
+                                <div class="logic-card buy">
+                                    <div class="logic-card-title buy">BUY Signal Conditions</div>
+                                    <ul>
+                                        <li>Price closes above 20-day resistance level</li>
+                                        <li>Volume > 2.0x of the 20-day average volume</li>
+                                        <li>RSI(14) is between 50 and 70 (gaining momentum, not overbought)</li>
+                                        <li>Bollinger Band width > 6% (confirming volatility expansion)</li>
+                                    </ul>
+                                </div>
+                                <div class="logic-card sell">
+                                    <div class="logic-card-title sell">SELL / Exit Conditions</div>
+                                    <ul>
+                                        <li>Price closes below entry-day's low</li>
+                                        <li>RSI(14) goes above 75 (overbought exit)</li>
+                                        <li>Take Profit: hit at 2.0x of initial risk</li>
+                                        <li>Time Stop: Exit after 5 days if target is not hit</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s2-risk">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Risk Per Trade</div>
+                                        <div class="desc-value">Fixed fractional sizing limiting loss to 1.0% of total equity per position, adjusted for current ATR.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Daily and Global Stops</div>
+                                        <div class="desc-value">Max daily portfolio loss allowed: 2.5%. Global circuit breaker halts operations at 12% total portfolio drawdown.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Slippage Mitigation</div>
+                                        <div class="desc-value">Implement limit orders rather than market orders. Reject trades if estimated spread/slippage exceeds 0.2%.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Backtesting Frame</div>
+                                        <div class="desc-value">5-7 years minimum across varying liquidity and volume regimes in crypto and equities.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s2-code">
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span>Pine Script v5 (Momentum Breakout)</span>
+                                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code class="language-pinescript">//@version=5
+strategy("Momentum Breakout", overlay=true)
+
+lookback = input.int(20, "Breakout Lookback")
+rsiLength = input.int(14, "RSI Length")
+bbLength = input.int(20, "BB Length")
+volMult = input.float(2.0, "Volume Multiplier")
+riskPct = input.float(1.0, "Risk %") / 100
+
+resistance = ta.highest(high, lookback)[1]
+support = ta.lowest(low, lookback)[1]
+rsi = ta.rsi(close, rsiLength)
+basis = ta.sma(close, bbLength)
+dev = 2 * ta.stdev(close, bbLength)
+upper = basis + dev
+lower = basis - dev
+bbWidth = (upper - lower) / basis
+volAvg = ta.sma(volume, 20)
+
+breakout = close > resistance
+volumeConfirm = volume > volAvg * volMult
+rsiFilter = rsi > 50 and rsi < 70
+volatilityExpand = bbWidth > 0.06
+
+longCondition = breakout and volumeConfirm and rsiFilter and volatilityExpand
+
+if longCondition and strategy.position_size == 0
+    stopDist = close - support
+    tpDist = stopDist * 2
+    qty = (strategy.equity * riskPct) / stopDist
+    strategy.entry("BreakoutLong", strategy.long, qty=qty)
+    strategy.exit("TP/SL", "BreakoutLong", limit=close + tpDist, stop=support)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 5: Strategy 3 -->
+                <div class="slide-card" data-slide="5" data-search="mean reversion bollinger bands rsi sma atr">
+                    <div class="strategy-layout">
+                        <div class="strategy-header">
+                            <div>
+                                <span class="slide-category">Strategy 3</span>
+                                <h2 class="slide-title" style="margin-bottom: 0.25rem;">Mean Reversion (Adaptive Confidence-Weighted)</h2>
+                            </div>
+                            <div class="strategy-meta-tags">
+                                <span class="badge badge-indigo">Statistical</span>
+                                <span class="badge badge-cyan">High Win Rate</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="stat-box-value">20% - 50%</div>
+                                <div class="stat-box-label">Expected Return</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">12% - 25%</div>
+                                <div class="stat-box-label">Max Drawdown</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">55% - 70%</div>
+                                <div class="stat-box-label">Win Rate</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">1.75</div>
+                                <div class="stat-box-label">Sharpe Ratio</div>
+                            </div>
+                        </div>
+
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" onclick="switchStrategyTab(this, 's3-edge')">Core Edge</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's3-logic')">Logic & Rules</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's3-risk')">Risk Management</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's3-code')">Implementation</button>
+                        </div>
+
+                        <div class="tab-content active" id="s3-edge">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Market Behavior Exploited</div>
+                                        <div class="desc-value">Short-term price extremes driven by dealer hedging, liquidity shortages, and stop-loss hunts that quickly revert back to historical averages.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Why the Edge Exists</div>
+                                        <div class="desc-value">Market makers and algos temporarily push prices beyond fair value to clear order books. Once volume dries up, mean reversion occurs. Confidence Weighted Mean Reversion (CWMR) models achieve high Sharpe ratios (~1.75) and massive compounding gains.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Works Best</div>
+                                        <div class="desc-value">Range-bound sideways periods, post-volatile exhaustion crashes, and liquid high-beta assets.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Fails</div>
+                                        <div class="desc-value">Strong structural trending break markets, black swan liquidations, and major regime shifts.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s3-logic">
+                            <div class="grid-2">
+                                <div class="logic-card buy">
+                                    <div class="logic-card-title buy">BUY Signal Conditions</div>
+                                    <ul>
+                                        <li>Price falls below the Lower Bollinger Band (20, 2.5 SD)</li>
+                                        <li>RSI(2) < 10 (extreme short-term oversold)</li>
+                                        <li>Price > SMA(200) (trend filter: only buy pullbacks in long-term uptrends)</li>
+                                        <li>Volume > 1.5x average (signaling capitulation volume)</li>
+                                    </ul>
+                                </div>
+                                <div class="logic-card sell">
+                                    <div class="logic-card-title sell">SELL / Exit Conditions</div>
+                                    <ul>
+                                        <li>Price touches the middle Bollinger Band (reversion target)</li>
+                                        <li>RSI(2) crosses above 50</li>
+                                        <li>Stop Loss: Close below entry-day low - 0.5x ATR</li>
+                                        <li>Time Stop: Exit after 3 days regardless of target status</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s3-risk">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Position Sizing</div>
+                                        <div class="desc-value">Inverse-volatility weighting. Scale up positions in low-volatility regimes and scale down when volatility expands.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Risk Limits</div>
+                                        <div class="desc-value">Max risk per trade: 0.75%. Max daily loss: 2.0%. Hard stop out at 12% drawdown.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Volatility Filter</div>
+                                        <div class="desc-value">Temporarily suspend all new mean reversion signals when VIX > 30 (equities) or equivalent crypto fear/volatility indexes spike.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Backtesting Frame</div>
+                                        <div class="desc-value">10+ years covering market cycles, verifying average recovery periods and worst-case drawdown duration.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s3-code">
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span>Pine Script v5 (Adaptive Mean Reversion)</span>
+                                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code class="language-pinescript">//@version=5
+strategy("Adaptive Mean Reversion", overlay=true)
+
+bbLength = input.int(20, "BB Length")
+bbMult = input.float(2.5, "BB Multiplier")
+rsiLength = input.int(2, "RSI Length")
+trendFilter = input.int(200, "Trend SMA")
+riskPct = input.float(0.75, "Risk %") / 100
+
+basis = ta.sma(close, bbLength)
+dev = bbMult * ta.stdev(close, bbLength)
+upper = basis + dev
+lower = basis - dev
+rsi2 = ta.rsi(close, rsiLength)
+sma200 = ta.sma(close, trendFilter)
+atr = ta.atr(14)
+volAvg = ta.sma(volume, 20)
+
+oversold = close < lower
+extremeRSI = rsi2 < 10
+trendUp = close > sma200
+capitulation = volume > volAvg * 1.5
+
+longCondition = oversold and extremeRSI and trendUp and capitulation
+
+if longCondition and strategy.position_size == 0
+    stopPrice = low - atr * 0.5
+    targetPrice = basis
+    riskAmt = close - stopPrice
+    qty = (strategy.equity * riskPct) / riskAmt
+    strategy.entry("MR_Long", strategy.long, qty=qty)
+    strategy.exit("MR_Exit", "MR_Long", limit=targetPrice, stop=stopPrice)
+
+if strategy.position_size > 0 and bar_index - strategy.closedtrades.exit_bar_index(strategy.closedtrades - 1) > 3
+    strategy.close("MR_Long", comment="Time Stop")</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 6: Strategy 4 -->
+                <div class="slide-card" data-slide="6" data-search="statistical arbitrage pairs trading z-score adf">
+                    <div class="strategy-layout">
+                        <div class="strategy-header">
+                            <div>
+                                <span class="slide-category">Strategy 4</span>
+                                <h2 class="slide-title" style="margin-bottom: 0.25rem;">Statistical Arbitrage (Pairs Trading)</h2>
+                            </div>
+                            <div class="strategy-meta-tags">
+                                <span class="badge badge-indigo">Market Neutral</span>
+                                <span class="badge badge-cyan">Low Beta</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="stat-box-value">10% - 25%</div>
+                                <div class="stat-box-label">Expected Return</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">8% - 18%</div>
+                                <div class="stat-box-label">Max Drawdown</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">60% - 75%</div>
+                                <div class="stat-box-label">Win Rate</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">5 - 20 / mo</div>
+                                <div class="stat-box-label">Trade Frequency</div>
+                            </div>
+                        </div>
+
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" onclick="switchStrategyTab(this, 's4-edge')">Core Edge</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's4-logic')">Logic & Rules</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's4-risk')">Risk Management</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's4-code')">Implementation</button>
+                        </div>
+
+                        <div class="tab-content active" id="s4-edge">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Market Behavior Exploited</div>
+                                        <div class="desc-value">Temporary pricing deviations between cointegrated pairs (e.g. BTC-ETH, NIFTY-BANKNIFTY) from their long-term equilibrium.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Why the Edge Exists</div>
+                                        <div class="desc-value">Securities tied to common fundamentals and risk exposures must share statistical relationships; non-fundamental flows cause short-term cointegration breakdowns that quickly self-correct.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Works Best</div>
+                                        <div class="desc-value">Stable market regimes, high sector liquidity, and low transaction-cost platforms.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Fails</div>
+                                        <div class="desc-value">Structural breaks, corporate events/delistings, and systemic liquidity flight across exchanges.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s4-logic">
+                            <div class="grid-2">
+                                <div class="logic-card buy">
+                                    <div class="logic-card-title buy">Spread Entry Conditions</div>
+                                    <ul>
+                                        <li>Z-score of pricing ratio > +2.0 (under/over performer divergence)</li>
+                                        <li>Augmented Dickey-Fuller (ADF) test p-value < 0.05 (confirming cointegration)</li>
+                                        <li>Estimated half-life of mean reversion < 20 days</li>
+                                    </ul>
+                                </div>
+                                <div class="logic-card sell">
+                                    <div class="logic-card-title sell">Spread Exit Conditions</div>
+                                    <ul>
+                                        <li>Z-score returns to target mean area (0.5)</li>
+                                        <li>Stop Loss: Z-score expands beyond ±3.5</li>
+                                        <li>Time Stop: Exit if held longer than 2.0x of the estimated half-life</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s4-risk">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Position Sizing</div>
+                                        <div class="desc-value">Dollar-neutral. Maintain identical notional capital allocations on both long and short legs of the pair.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Risk Controls</div>
+                                        <div class="desc-value">Max risk per spread trade: 1.0% of capital. Max daily drawdown: 2.0%. Hard stop out at 15%.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Model Maintenance</div>
+                                        <div class="desc-value">Recalculate all cointegration matrices, residuals, and half-lives on a rolling monthly interval.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Backtesting Frame</div>
+                                        <div class="desc-value">5+ years covering diverse correlation regimes and pricing divergence history.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s4-code">
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span>Pine Script v5 (Z-Score Indicator for Pairs)</span>
+                                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code class="language-pinescript">//@version=5
+strategy("Pairs Trading - Z-Score", overlay=false)
+
+lookback = input.int(60, "Lookback Period")
+entryZ = input.float(2.0, "Entry Z-Score")
+exitZ = input.float(0.5, "Exit Z-Score")
+stopZ = input.float(3.5, "Stop Z-Score")
+assetB = input.symbol("BINANCE:ETHUSDT", "Asset B")
+
+[openB, highB, lowB, closeB] = request.security(assetB, timeframe.period, [open, high, low, close])
+
+spread = close / closeB
+spreadSMA = ta.sma(spread, lookback)
+spreadSTD = ta.stdev(spread, lookback)
+zScore = (spread - spreadSMA) / spreadSTD
+
+longSpread = zScore < -entryZ
+shortSpread = zScore > entryZ
+exitLong = zScore > -exitZ or zScore < -stopZ
+exitShort = zScore < exitZ or zScore > stopZ
+
+plot(zScore, "Z-Score", color=color.blue)
+hline(entryZ, "Entry+", color=color.red)
+hline(-entryZ, "Entry-", color=color.green)
+hline(0, "Mean", color=color.gray)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 7: Strategy 5 -->
+                <div class="slide-card" data-slide="7" data-search="vwap reversion institutional rsi std">
+                    <div class="strategy-layout">
+                        <div class="strategy-header">
+                            <div>
+                                <span class="slide-category">Strategy 5</span>
+                                <h2 class="slide-title" style="margin-bottom: 0.25rem;">VWAP Reversion (Institutional Flow)</h2>
+                            </div>
+                            <div class="strategy-meta-tags">
+                                <span class="badge badge-indigo">Intraday</span>
+                                <span class="badge badge-cyan">Equities Focus</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="stat-box-value">15% - 35%</div>
+                                <div class="stat-box-label">Expected Return</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">8% - 15%</div>
+                                <div class="stat-box-label">Max Drawdown</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">55% - 65%</div>
+                                <div class="stat-box-label">Win Rate</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">1 - 3 / day</div>
+                                <div class="stat-box-label">Trade Frequency</div>
+                            </div>
+                        </div>
+
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" onclick="switchStrategyTab(this, 's5-edge')">Core Edge</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's5-logic')">Logic & Rules</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's5-risk')">Risk Management</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's5-code')">Implementation</button>
+                        </div>
+
+                        <div class="tab-content active" id="s5-edge">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Market Behavior Exploited</div>
+                                        <div class="desc-value">Intraday over-extensions from the Volume Weighted Average Price (VWAP) driven by large institutional execution programs.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Why the Edge Exists</div>
+                                        <div class="desc-value">Institutions executing large blocks push prices away from VWAP due to lack of immediate liquidity. Once execution pauses, arbitrageurs revert the price back. Especially reliable in Indian Equities (NIFTY/BANKNIFTY).</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Works Best</div>
+                                        <div class="desc-value">High-volume non-trending sessions, large-cap liquid equities.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Fails</div>
+                                        <div class="desc-value">Strong directional "trend days", major gap-up/gap-down openings, low liquidity periods.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s5-logic">
+                            <div class="grid-2">
+                                <div class="logic-card buy">
+                                    <div class="logic-card-title buy">BUY Signal Conditions</div>
+                                    <ul>
+                                        <li>Price falls below VWAP - 0.3x Standard Deviation(VWAP)</li>
+                                        <li>RSI(14) < 40</li>
+                                        <li>Volume > 1.2x average (indicating institutional block activity)</li>
+                                        <li>Current time > 10:15 AM (after initial open range settles)</li>
+                                    </ul>
+                                </div>
+                                <div class="logic-card sell">
+                                    <div class="logic-card-title sell">SELL / Exit Conditions</div>
+                                    <ul>
+                                        <li>Price crosses above the VWAP line</li>
+                                        <li>RSI(14) > 60</li>
+                                        <li>Current time > 3:15 PM (intraday cut-off)</li>
+                                        <li>Stop Loss: VWAP - 1.0x SD(VWAP)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s5-risk">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Position Sizing</div>
+                                        <div class="desc-value">Fixed notional allocation per equity trade to manage institutional fill risks.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Risk Limits</div>
+                                        <div class="desc-value">Max risk per trade: 0.5%. Max daily loss: 2.0%. Portfolio drawdown halt: 10%.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Execution Controls</div>
+                                        <div class="desc-value">Intraday square-off strictly enforced at 3:15 PM (NSE) or equivalent session boundary. No overnight carry.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Backtesting Frame</div>
+                                        <div class="desc-value">3+ years of high-resolution intraday historical data with realistic slippage estimates.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s5-code">
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span>Pine Script v5 (VWAP Reversion)</span>
+                                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code class="language-pinescript">//@version=5
+strategy("VWAP Reversion", overlay=true)
+
+vwapDev = input.float(0.3, "VWAP Deviation Entry")
+rsiLength = input.int(14, "RSI Length")
+rsiEntry = input.int(40, "RSI Entry Threshold")
+timeStart = input.time("1015", "Start Time")
+timeEnd = input.time("1515", "End Time")
+riskPct = input.float(0.5, "Risk %") / 100
+
+vwapValue = ta.vwap(hlc3)
+vwapDevValue = ta.stdev(close - vwapValue, 20)
+rsi = ta.rsi(close, rsiLength)
+volAvg = ta.sma(volume, 20)
+
+timeAllowed = time >= timeStart and time <= timeEnd
+belowVWAP = close < vwapValue - vwapDevValue * vwapDev
+oversold = rsi < rsiEntry
+volumeOK = volume > volAvg * 1.2
+
+longCondition = belowVWAP and oversold and volumeOK and timeAllowed
+
+if longCondition and strategy.position_size == 0
+    stopPrice = vwapValue - vwapDevValue
+    qty = (strategy.equity * riskPct) / (close - stopPrice)
+    strategy.entry("VWAP_Long", strategy.long, qty=qty)
+    strategy.exit("VWAP_Exit", "VWAP_Long", limit=vwapValue, stop=stopPrice)
+
+if time > timeEnd and strategy.position_size > 0
+    strategy.close("VWAP_Long", comment="Session End")</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 8: Strategy 6 -->
+                <div class="slide-card" data-slide="8" data-search="market making crypto order book skew atr">
+                    <div class="strategy-layout">
+                        <div class="strategy-header">
+                            <div>
+                                <span class="slide-category">Strategy 6</span>
+                                <h2 class="slide-title" style="margin-bottom: 0.25rem;">Market Making (Crypto-Focused)</h2>
+                            </div>
+                            <div class="strategy-meta-tags">
+                                <span class="badge badge-indigo">High Frequency</span>
+                                <span class="badge badge-cyan">Inventory Hedged</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="stat-box-value">15% - 40%</div>
+                                <div class="stat-box-label">Expected Return</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">5% - 12%</div>
+                                <div class="stat-box-label">Max Drawdown</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">60% - 80%</div>
+                                <div class="stat-box-label">Win Rate (per RT)</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">100 - 1000+</div>
+                                <div class="stat-box-label">Trades / Day</div>
+                            </div>
+                        </div>
+
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" onclick="switchStrategyTab(this, 's6-edge')">Core Edge</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's6-logic')">Logic & Rules</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's6-risk')">Risk Management</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's6-code')">Implementation</button>
+                        </div>
+
+                        <div class="tab-content active" id="s6-edge">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Market Behavior Exploited</div>
+                                        <div class="desc-value">Capturing the bid-ask spread and optimizing skew parameters to hedge asset inventory variance in highly liquid markets.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Why the Edge Exists</div>
+                                        <div class="desc-value">Persistent retail order flow creates continuous execution spreads (0.01% - 0.10%). By providing liquidity to the order book, market makers capture these spreads while managing positional inventory risks.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Works Best</div>
+                                        <div class="desc-value">High volume, sideways range-bound conditions on liquid primary pairs (e.g. BTC-USDT, ETH-USDT).</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Fails</div>
+                                        <div class="desc-value">Extreme breakout trends (volatility spikes), adverse selection (toxic flow), exchange API halts or sudden latency issues.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s6-logic">
+                            <div class="grid-2">
+                                <div class="logic-card buy">
+                                    <div class="logic-card-title buy">Order Placement Triggers</div>
+                                    <ul>
+                                        <li>Bid-Ask Spread > minimum threshold limit (0.02%)</li>
+                                        <li>Inventory skew is below 50% of the maximum allowed capacity</li>
+                                        <li>Volatility (ATR / price) is low (< 2.0%)</li>
+                                        <li>Perpetual funding rate is neutral (within ±0.01%)</li>
+                                    </ul>
+                                </div>
+                                <div class="logic-card sell">
+                                    <div class="logic-card-title sell">Cancellation & Adjustments</div>
+                                    <ul>
+                                        <li>Inventory skew rises above 70% (forces aggressive skew modification)</li>
+                                        <li>ATR volatility expands beyond 3.0%</li>
+                                        <li>Perpetual funding rate goes above 0.05% (adverse carry)</li>
+                                        <li>Round-trip order execution latency exceeds 50ms</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s6-risk">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Inventory Management</div>
+                                        <div class="desc-value">Max allocation limit: 20% of capital in any single asset. Skew order prices to encourage inventory reduction when net delta accumulates.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Trade Protection</div>
+                                        <div class="desc-value">Max risk per filled round-trip: 0.1%. Max daily loss: 1.0%. Drawdown threshold halt: 8.0%.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Adverse Selection Filter</div>
+                                        <div class="desc-value">Integrate order book imbalance and toxic flow markers (VPIN). Pause quotes if aggressive buyer/seller imbalance exceeds 75%.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Backtesting Frame</div>
+                                        <div class="desc-value">1+ years using high-frequency tick data containing full order book L2/L3 dynamics.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s6-code">
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span>Pine Script v5 (Market Making Skew Mock)</span>
+                                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code class="language-pinescript">//@version=5
+indicator("Market Making Skew", overlay=true)
+
+spreadPct = input.float(0.02, "Target Spread %")
+maxInventory = input.float(20.0, "Max Inventory %")
+volThreshold = input.float(2.0, "Volatility Threshold %")
+
+mid = (high + low) / 2
+spread = close * spreadPct / 100
+atrPct = ta.atr(14) / close * 100
+
+inventory = input.float(0, "Current Inventory %")
+skew = inventory / maxInventory * spread
+
+bid = mid - spread/2 - skew
+ask = mid + spread/2 - skew
+
+plot(bid, "Bid", color=color.green)
+plot(ask, "Ask", color=color.red)
+plot(mid, "Fair Value", color=color.blue)
+bgcolor(atrPct > volThreshold ? color.new(color.red, 90) : na, title="High Vol Alert")</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 9: Strategy 7 -->
+                <div class="slide-card" data-slide="9" data-search="funding rate arbitrage crypto perp spot">
+                    <div class="strategy-layout">
+                        <div class="strategy-header">
+                            <div>
+                                <span class="slide-category">Strategy 7</span>
+                                <h2 class="slide-title" style="margin-bottom: 0.25rem;">Funding Rate Arbitrage (Crypto)</h2>
+                            </div>
+                            <div class="strategy-meta-tags">
+                                <span class="badge badge-indigo">Yield</span>
+                                <span class="badge badge-cyan">Delta Neutral</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="stat-box-value">10% - 25%</div>
+                                <div class="stat-box-label">Expected Return</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">3% - 8%</div>
+                                <div class="stat-box-label">Max Drawdown</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">90%+</div>
+                                <div class="stat-box-label">Win Rate (per payment)</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">3 / day</div>
+                                <div class="stat-box-label">Trade Frequency</div>
+                            </div>
+                        </div>
+
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" onclick="switchStrategyTab(this, 's7-edge')">Core Edge</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's7-logic')">Logic & Rules</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's7-risk')">Risk Management</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's7-code')">Implementation</button>
+                        </div>
+
+                        <div class="tab-content active" id="s7-edge">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Market Behavior Exploited</div>
+                                        <div class="desc-value">Capturing yield differentials between perpetual futures and underlying spot prices during speculative periods.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Why the Edge Exists</div>
+                                        <div class="desc-value">Perpetual funding rates adjust every 8 hours to force futures prices to track spot prices. Bullish speculation pushes funding rates extremely high (often > 30% annualized), enabling risk-free yield capture.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Works Best</div>
+                                        <div class="desc-value">High leverage directional speculation, extremely bullish or bearish funding regimes.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Fails</div>
+                                        <div class="desc-value">Funding rate reversals, exchange counterparty failures, platform borrow rate increases.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s7-logic">
+                            <div class="grid-2">
+                                <div class="logic-card buy">
+                                    <div class="logic-card-title buy">Arbitrage Entry Rules</div>
+                                    <ul>
+                                        <li>Funding rate > 0.10% per 8h period (or < -0.10% for short arbitrage)</li>
+                                        <li>Spot-to-Perp basis spreads exceed 0.05%</li>
+                                        <li>Borrow rates (if shorting spot) are low enough to preserve margins</li>
+                                    </ul>
+                                </div>
+                                <div class="logic-card sell">
+                                    <div class="logic-card-title sell">Hedge Execution</div>
+                                    <ul>
+                                        <li><strong>Positive Funding:</strong> Long Spot Asset + Short Perp Future</li>
+                                        <li><strong>Negative Funding:</strong> Short Spot Asset + Long Perp Future</li>
+                                        <li><strong>Exit:</strong> Close spread when funding rate falls below 0.02% per 8h</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s7-risk">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Position Sizing</div>
+                                        <div class="desc-value">Maintain equal notional sizes on both spot and futures legs to protect against delta exposure.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Risk Protections</div>
+                                        <div class="desc-value">Max risk per trade: 0.5% (exchange custody default). Max daily loss: 1.0%. Target max drawdown constraint: 5.0%.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Liquidation Guard</div>
+                                        <div class="desc-value">Monitor margin ratios dynamically. Rebalance collaterals to protect futures leg from sudden mark-price spikes.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Backtesting Frame</div>
+                                        <div class="desc-value">2+ years of historical funding logs across multiple global exchange platforms.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s7-code">
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span>Arbitrage Execution Logic (Pseudocode)</span>
+                                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code class="language-javascript">for exchange in exchanges:
+    funding_rate = get_current_funding(exchange)
+    basis = perp_price - spot_price
+    
+    if funding_rate > threshold_limit and basis > minimum_basis:
+        # positive funding rate arbitrage entry
+        spot_order_id = execute_buy_spot(size)
+        perp_order_id = execute_sell_perp(size, leverage=1)
+        
+        monitor_position_until_payment()
+        
+    elif funding_rate < -threshold_limit and basis < -minimum_basis:
+        # negative funding rate arbitrage entry
+        spot_order_id = execute_short_spot(size)
+        perp_order_id = execute_buy_perp(size, leverage=1)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 10: Strategy 8 -->
+                <div class="slide-card" data-slide="10" data-search="grid trading range atr bollinger bands">
+                    <div class="strategy-layout">
+                        <div class="strategy-header">
+                            <div>
+                                <span class="slide-category">Strategy 8</span>
+                                <h2 class="slide-title" style="margin-bottom: 0.25rem;">Grid Trading (Range-Bound Markets)</h2>
+                            </div>
+                            <div class="strategy-meta-tags">
+                                <span class="badge badge-indigo">Non-Directional</span>
+                                <span class="badge badge-cyan">Crypto Focus</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="stat-box-value">15% - 40%</div>
+                                <div class="stat-box-label">Expected Return</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">15% - 30%</div>
+                                <div class="stat-box-label">Max Drawdown</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">50% - 60%</div>
+                                <div class="stat-box-label">Win Rate (per Grid)</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">10 - 100+</div>
+                                <div class="stat-box-label">Trades / Day</div>
+                            </div>
+                        </div>
+
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" onclick="switchStrategyTab(this, 's8-edge')">Core Edge</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's8-logic')">Logic & Rules</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's8-risk')">Risk Management</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's8-code')">Implementation</button>
+                        </div>
+
+                        <div class="tab-content active" id="s8-edge">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Market Behavior Exploited</div>
+                                        <div class="desc-value">Persistent price oscillations within fixed horizontal trading channels in consolidating markets.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Why the Edge Exists</div>
+                                        <div class="desc-value">Crypto markets spend 60-70% of their time consolidations rather than trends. Grid trading automates buying low and selling high at defined price intervals within this noise.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Works Best</div>
+                                        <div class="desc-value">High volatility range-bound sideways markets.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Fails</div>
+                                        <div class="desc-value">Strong directional trends (leading to inventory skew build-up and loss), exchange fee structures eroding margin.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s8-logic">
+                            <div class="grid-2">
+                                <div class="logic-card buy">
+                                    <div class="logic-card-title buy">Setup Rules</div>
+                                    <ul>
+                                        <li>Identify channel range bounds (typically ±10% around mid-price)</li>
+                                        <li>Place 10-20 equidistant grid purchase levels</li>
+                                        <li>Buy orders queued below current market price; sell orders queued above</li>
+                                    </ul>
+                                </div>
+                                <div class="logic-card sell">
+                                    <div class="logic-card-title sell">Rebalance Executions</div>
+                                    <ul>
+                                        <li>When a limit buy is filled, immediately post a limit sell one grid size above</li>
+                                        <li>When a limit sell is filled, post a limit buy one grid size below</li>
+                                        <li>Shift the channel center if price drifts > 15% from the original midpoint</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s8-risk">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Position Sizing</div>
+                                        <div class="desc-value">Equal capital allocation distributed across each grid level.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Risk Protections</div>
+                                        <div class="desc-value">Max risk per grid level: 0.5%. Max daily loss: 3.0%. Global stop out: 20% drawdown.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Grid Shift Management</div>
+                                        <div class="desc-value">If prices break clean out of the horizontal bounds, close all open grid items immediately to avoid holding toxic inventory.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Backtesting Frame</div>
+                                        <div class="desc-value">2+ years covering volatile and trending regimes.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s8-code">
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span>Grid Trading Algorithm (Pseudocode)</span>
+                                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code class="language-javascript">grid_levels = 20
+grid_size = (range_upper - range_lower) / grid_levels
+
+for i in range(grid_levels):
+    price_target = range_lower + i * grid_size
+    if current_price > price_target:
+        queue_limit_buy(price_target, size_per_level)
+    else:
+        queue_limit_sell(price_target, size_per_level)
+        
+# Event Loop on execution
+on_order_fill(filled_order):
+    if filled_order.side == "BUY":
+        queue_limit_sell(filled_order.price + grid_size, size)
+    elif filled_order.side == "SELL":
+        queue_limit_buy(filled_order.price - grid_size, size)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 11: Strategy 9 -->
+                <div class="slide-card" data-slide="11" data-search="multi-factor momentum macd rsi atr volume sma">
+                    <div class="strategy-layout">
+                        <div class="strategy-header">
+                            <div>
+                                <span class="slide-category">Strategy 9</span>
+                                <h2 class="slide-title" style="margin-bottom: 0.25rem;">Multi-Factor Momentum (AI-Enhanced)</h2>
+                            </div>
+                            <div class="strategy-meta-tags">
+                                <span class="badge badge-indigo">Ensemble</span>
+                                <span class="badge badge-cyan">Quant & AI</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="stat-box-value">25% - 55%</div>
+                                <div class="stat-box-label">Expected Return</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">15% - 25%</div>
+                                <div class="stat-box-label">Max Drawdown</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">45% - 55%</div>
+                                <div class="stat-box-label">Win Rate</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">1.69 - 2.04</div>
+                                <div class="stat-box-label">Sharpe Ratio</div>
+                            </div>
+                        </div>
+
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" onclick="switchStrategyTab(this, 's9-edge')">Core Edge</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's9-logic')">Logic & Rules</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's9-risk')">Risk Management</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's9-code')">Implementation</button>
+                        </div>
+
+                        <div class="tab-content active" id="s9-edge">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Market Behavior Exploited</div>
+                                        <div class="desc-value">Composite alignment of trend momentum, liquidity expansion, and low-volatility regimes across multi-asset categories.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Why the Edge Exists</div>
+                                        <div class="desc-value">Single-factor models generate high noise and whipsaw. Multi-factor filters reduce false breakout entries by verifying volume and macro volatility filters. Ratios and drawdowns are highly optimized (drawdown reduced to 23% vs. 57%).</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Works Best</div>
+                                        <div class="desc-value">Dynamic trends, high liquid sectors, and periods of clear risk-on flow.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Fails</div>
+                                        <div class="desc-value">Sudden macro regime rotations, factor crowding, and out-of-sample overfitting structures.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s9-logic">
+                            <div class="grid-2">
+                                <div class="logic-card buy">
+                                    <div class="logic-card-title buy">BUY Rules (Requires >= 5/6 Score)</div>
+                                    <ul>
+                                        <li>Price > SMA(50) AND SMA(50) > SMA(200) (trend alignment)</li>
+                                        <li>RSI(14) is between 50 and 70 (not overbought)</li>
+                                        <li>MACD Histogram > 0 and expanding</li>
+                                        <li>ATR(14) / Close < 3.0% (volatility filter: avoid high-noise zones)</li>
+                                        <li>Volume > 1.3x average volume</li>
+                                    </ul>
+                                </div>
+                                <div class="logic-card sell">
+                                    <div class="logic-card-title sell">SELL / Exit Conditions</div>
+                                    <ul>
+                                        <li>Overall composite score drops below 3.0</li>
+                                        <li>Trailing Stop-Loss: set at 2.5x ATR</li>
+                                        <li>Time Stop: Exit position after 10 days if targets not hit</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s9-risk">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Position Sizing</div>
+                                        <div class="desc-value">Quarter-Kelly Criterion ($0.25 \times f^*$) to account for parameter variance and model errors.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Risk Limits</div>
+                                        <div class="desc-value">Max risk per trade: 2.0%. Max daily loss: 4.0%. Hard stop threshold: 18%.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">AI Enhancement Path</div>
+                                        <div class="desc-value">Incorporate Bi-LSTM structures for signal verification, Gaussian Mixture Models for macro regime detection, and alternative sentiment data.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Backtesting Frame</div>
+                                        <div class="desc-value">5-10 years minimum using out-of-sample datasets to mitigate overfitting.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s9-code">
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span>Pine Script v5 (Multi-Factor Momentum)</span>
+                                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code class="language-pinescript">//@version=5
+strategy("Multi-Factor Momentum", overlay=true)
+
+riskPct = input.float(2.0, "Risk %") / 100
+
+sma50 = ta.sma(close, 50)
+sma200 = ta.sma(close, 200)
+rsi = ta.rsi(close, 14)
+[macdLine, signalLine, macdHist] = ta.macd(close, 12, 26, 9)
+atr = ta.atr(14)
+atrPct = atr / close
+volAvg = ta.sma(volume, 20)
+
+score = 0
+score += close > sma50 ? 1 : 0
+score += sma50 > sma200 ? 1 : 0
+score += (rsi > 50 and rsi < 70) ? 1 : 0
+score += (macdHist > 0 and macdHist > macdHist[1]) ? 1 : 0
+score += atrPct < 0.03 ? 1 : 0
+score += volume > volAvg * 1.3 ? 1 : 0
+
+if score >= 5 and strategy.position_size == 0
+    stopDist = atr * 2.5
+    qty = (strategy.equity * riskPct) / stopDist
+    strategy.entry("MF_Long", strategy.long, qty=qty)
+    strategy.exit("MF_Exit", "MF_Long", trail_points=atr*10, trail_offset=atr*2.5)
+
+if score < 3 and strategy.position_size > 0
+    strategy.close("MF_Long", comment="Score Drop")</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 12: Strategy 10 -->
+                <div class="slide-card" data-slide="12" data-search="smart money order flow cvd liquidation volume delta">
+                    <div class="strategy-layout">
+                        <div class="strategy-header">
+                            <div>
+                                <span class="slide-category">Strategy 10</span>
+                                <h2 class="slide-title" style="margin-bottom: 0.25rem;">Smart Money / Order Flow (Advanced)</h2>
+                            </div>
+                            <div class="strategy-meta-tags">
+                                <span class="badge badge-indigo">Microstructure</span>
+                                <span class="badge badge-cyan">Order Flow</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="stat-box-value">30% - 80%</div>
+                                <div class="stat-box-label">Expected Return</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">20% - 35%</div>
+                                <div class="stat-box-label">Max Drawdown</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">50% - 60%</div>
+                                <div class="stat-box-label">Win Rate</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-box-value">3 - 10 / day</div>
+                                <div class="stat-box-label">Trade Frequency</div>
+                            </div>
+                        </div>
+
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" onclick="switchStrategyTab(this, 's10-edge')">Core Edge</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's10-logic')">Logic & Rules</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's10-risk')">Risk Management</button>
+                            <button class="tab-btn" onclick="switchStrategyTab(this, 's10-code')">Implementation</button>
+                        </div>
+
+                        <div class="tab-content active" id="s10-edge">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Market Behavior Exploited</div>
+                                        <div class="desc-value">Tracking footprint dynamics left by institutional players: cumulative volume delta (CVD) divergence, order book imbalances, and liquidation cascades.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Why the Edge Exists</div>
+                                        <div class="desc-value">Institutions act as the primary liquidity sinks. Tracking the flow imbalances and liquidations allows models to entry before major momentum cascades.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Works Best</div>
+                                        <div class="desc-value">High volume, liquid trading sessions, major support/resistance zones, and high futures liquidation events.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">When It Fails</div>
+                                        <div class="desc-value">Low volume conditions, persistent order spoofing, and delayed exchange API data streams.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s10-logic">
+                            <div class="grid-2">
+                                <div class="logic-card buy">
+                                    <div class="logic-card-title buy">BUY Signal Conditions</div>
+                                    <ul>
+                                        <li>CVD registers a positive divergence relative to spot prices</li>
+                                        <li>Aggressive buy volume imbalances detected (> 5.0x normal block sizes)</li>
+                                        <li>Futures liquidation cascade completes (Open Interest drops, funding rates drop)</li>
+                                        <li>Price exhibits liquidity absorption at key support levels</li>
+                                    </ul>
+                                </div>
+                                <div class="logic-card sell">
+                                    <div class="logic-card-title sell">SELL / Exit Conditions</div>
+                                    <ul>
+                                        <li>CVD registers a negative divergence relative to spot prices</li>
+                                        <li>Large institutional limit offers block overhead resistance</li>
+                                        <li>Funding rate rises above positive extremes (> 0.10%)</li>
+                                        <li>Stop Loss: Set at recent swing low minus 1.0x ATR</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s10-risk">
+                            <div class="grid-2">
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Position Sizing</div>
+                                        <div class="desc-value">Aggressive scaling when institutional order flow confirms; conservative or flat when signals diverge.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Risk Limits</div>
+                                        <div class="desc-value">Max risk per trade: 1.5%. Max daily loss: 3.0%. Hard stop threshold: 15%.</div>
+                                    </div>
+                                </div>
+                                <div class="desc-list">
+                                    <div class="desc-item">
+                                        <div class="desc-label">Execution Controls</div>
+                                        <div class="desc-value">Strict latency controls: reject entries if market feed lag exceeds 100ms. Keep orders hidden using iceberg features when possible.</div>
+                                    </div>
+                                    <div class="desc-item">
+                                        <div class="desc-label">Backtesting Frame</div>
+                                        <div class="desc-value">2+ years using high-frequency historical tick and L3 data streams.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="s10-code">
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span>Order Flow Calculation (Pseudocode)</span>
+                                    <button class="btn-copy" onclick="copyCode(this)">Copy</button>
+                                </div>
+                                <pre><code class="language-javascript">cvd = sum(buy_volume - sell_volume, lookback)
+bid_ask_imbalance = bid_volume / ask_volume
+liquidation_spikes = liquidations > mean(liquidations, 20) * 3
+
+if cvd_divergence_bullish and bid_ask_imbalance > 2.0 and liquidation_spikes:
+    open_long_position(size)
+    set_stop_loss(recent_swing_low - atr)
+    set_take_profit(recent_swing_high + (recent_swing_high - recent_swing_low) * 2)</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 13: Strategy Ranking Table -->
+                <div class="slide-card" data-slide="13">
+                    <span class="slide-category">Comparison</span>
+                    <h2 class="slide-title">Strategy Ranking Table</h2>
+                    
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                        Click column headers to sort the quantitative models by metrics.
+                    </p>
+
+                    <div class="table-container">
+                        <table class="custom-table" id="rankingTable">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" onclick="sortTable(0)">Rank <span class="sort-icon"></span></th>
+                                    <th class="sortable" onclick="sortTable(1)">Strategy <span class="sort-icon"></span></th>
+                                    <th class="sortable" onclick="sortTable(2)">Expected Return <span class="sort-icon"></span></th>
+                                    <th class="sortable" onclick="sortTable(3)">Max Drawdown <span class="sort-icon"></span></th>
+                                    <th class="sortable" onclick="sortTable(4)">Complexity <span class="sort-icon"></span></th>
+                                    <th class="sortable" onclick="sortTable(5)">Automation Score <span class="sort-icon"></span></th>
+                                    <th class="sortable" onclick="sortTable(6)">Best Market <span class="sort-icon"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS Populates sorting items -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Slide 14: Final Recommendations -->
+                <div class="slide-card" data-slide="14">
+                    <span class="slide-category">Recommendations</span>
+                    <h2 class="slide-title">Final Recommendations</h2>
+                    
+                    <div class="grid-2" style="margin-bottom: 1.5rem;">
+                        <div class="recom-card">
+                            <div>
+                                <div class="recom-title">
+                                    <svg width="20" height="20" fill="var(--accent-primary)" viewBox="0 0 24 24"><path d="M12 2A10 10 0 1 0 22 12A10 10 0 0 0 12 2M12 18A6 6 0 1 1 18 12A6 6 0 0 1 12 18M10 8.5L16 12L10 15.5Z"/></svg>
+                                    Crypto Automation
+                                </div>
+                                <div class="recom-strategy">Multi-Factor Momentum & Vol Filtering</div>
+                                <p class="recom-body">Crypto trends exhibit strong momentum with extreme noise. The multi-factor framework reduces whipsaw signals and achieves Sharpe ratios up to 2.04 while keeping drawdown constrained below 23%.</p>
+                            </div>
+                            <div>
+                                <div class="recom-ai-title">AI Enhancement Path</div>
+                                <ul class="recom-ai-list">
+                                    <li>Bi-LSTM network overlays for direction verification</li>
+                                    <li>Integrate on-chain wallet and exchange flows</li>
+                                    <li>GMM regime switches for dynamic asset scaling</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="recom-card">
+                            <div>
+                                <div class="recom-title">
+                                    <svg width="20" height="20" fill="var(--accent-success)" viewBox="0 0 24 24"><path d="M16 6L18.29 8.29L13.41 13.17L9.41 9.17L2 16.59L3.41 18L9.41 12L13.41 16L19.71 9.71L22 12V6H16Z"/></svg>
+                                    Indian Stock Market
+                                </div>
+                                <div class="recom-strategy">VWAP Reversion with Sector Rotation</div>
+                                <p class="recom-body">High institutional flow dominates the NSE. Intraday VWAP reversion captures mean-reverting institutional flow patterns in NIFTY/BANKNIFTY large-caps with low overnight carry risks.</p>
+                            </div>
+                            <div>
+                                <div class="recom-ai-title">AI Enhancement Path</div>
+                                <ul class="recom-ai-list">
+                                    <li>Sector momentum relative strength weighting</li>
+                                    <li>Options put-call ratio & implied volatility overlays</li>
+                                    <li>Macro RBI policy dynamic position adjustments</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="recom-card">
+                            <div>
+                                <div class="recom-title">
+                                    <svg width="20" height="20" fill="var(--accent-info)" viewBox="0 0 24 24"><path d="M12 20C16.4 20 20 16.4 20 12S16.4 4 12 4 4 7.6 4 12 7.6 20 12 20M12 2C17.5 2 22 6.5 22 12S17.5 22 22 22H2C1.1 22 0 20.9 0 20S1.1 18 2 18H2.1C1.4 16.3 1 14.2 1 12C1 6.5 5.5 2 12 2M12.5 7V12.2L17 14.8L16.2 16L11 13V7H12.5Z"/></svg>
+                                    Intraday Trading
+                                </div>
+                                <div class="recom-strategy">Adaptive Mean Reversion</div>
+                                <p class="recom-body">Short-term intraday dynamics are dominated by market noise. The confidence-weighted mean reversion approach targets oversold conditions and achieves high historical win rates (~70%).</p>
+                            </div>
+                            <div>
+                                <div class="recom-ai-title">AI Enhancement Path</div>
+                                <ul class="recom-ai-list">
+                                    <li>Real-time sentiment indices and news scraping</li>
+                                    <li>VPIN & microstructure order toxicity inputs</li>
+                                    <li>Dynamic half-life updates using Kalman filters</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="recom-card">
+                            <div>
+                                <div class="recom-title">
+                                    <svg width="20" height="20" fill="var(--accent-warning)" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 4C13.9 4 15.6 4.7 16.9 5.9L10.9 11.9C9.7 10.6 9 8.9 9 7S9.7 3.4 10.9 2.1C11.3 2 11.6 2 12 2M7 12C7 10.1 7.7 8.4 9 7.1L15 13.1C13.7 14.4 13 16.1 13 18C13 19.9 12.3 21.6 11.1 22.9C10.7 23 10.4 23 10 23M17 12C17 13.9 16.3 15.6 15.1 16.9L9.1 10.9C10.3 9.6 11 7.9 11 6C11 4.1 11.7 2.4 12.9 1.1C13.3 1 13.6 1 14 1M12 20C10.1 20 8.4 19.3 7.1 18.1L13.1 12.1C14.4 13.4 15 15.1 15 17S14.3 20.6 13.1 21.9C12.7 22 12.4 22 12 20Z"/></svg>
+                                    Long-Term Investing
+                                </div>
+                                <div class="recom-strategy">Multi-Factor Momentum & Trend</div>
+                                <p class="recom-body">Combines the absolute alpha generation of momentum factor models with the tail-risk protection of multi-timeframe trend indicators, yielding high risk-adjusted consistency.</p>
+                            </div>
+                            <div>
+                                <div class="recom-ai-title">AI Enhancement Path</div>
+                                <ul class="recom-ai-list">
+                                    <li>Multiple timeframe trend validation algorithms</li>
+                                    <li>Dynamic factor-exposure weighting based on GMM</li>
+                                    <li>ESG metric scoring integrations for sustainable alpha</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 15: Mathematical & Risk Management Framework -->
+                <div class="slide-card" data-slide="15">
+                    <span class="slide-category">Framework</span>
+                    <h2 class="slide-title">Mathematical & Risk Framework</h2>
+                    
+                    <div class="grid-2">
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem;">Quantitative Formulations</h3>
+                            
+                            <div class="formula-card">
+                                <div class="formula-title">Kelly Criterion Sizing</div>
+                                <div class="formula-display" id="math-kelly">
+                                    f^* = (p \cdot b - q) / b
+                                </div>
+                                <div class="formula-desc">Used as Quarter-Kelly (0.25 × f*) to offset parameter errors.</div>
+                            </div>
+
+                            <div class="formula-card">
+                                <div class="formula-title">Sharpe Ratio Calculation</div>
+                                <div class="formula-display" id="math-sharpe">
+                                    S = (R_p - R_f) / \sigma_p
+                                </div>
+                                <div class="formula-desc">Target target: S > 0.75 minimum, S > 1.50 institutional-grade.</div>
+                            </div>
+
+                            <div class="formula-card">
+                                <div class="formula-title">Volatility Sizing Constraint</div>
+                                <div class="formula-display" id="math-vol">
+                                    \text{Size} = \frac{\text{Account} \times \text{Risk\%}}{\text{ATR} \times \text{Mult}}
+                                </div>
+                                <div class="formula-desc">Normalizes trade risk dynamically against asset volatility.</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem;">Risk Management Layers</h3>
+                            
+                            <div class="table-container">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Layer</th>
+                                            <th>Rule Control</th>
+                                            <th>Operational Objective</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="font-weight: 600; color: var(--accent-primary);">Trade Level</td>
+                                            <td>Max 2.0% risk per trade</td>
+                                            <td>Prevents terminal ruin from single errors</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: 600; color: var(--accent-info);">Daily Level</td>
+                                            <td>Max 4.0% daily loss limit</td>
+                                            <td>Halts execution during toxic market spikes</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: 600; color: var(--accent-warning);">Weekly Level</td>
+                                            <td>Max 8.0% weekly loss limit</td>
+                                            <td>Acts as macro circuit breaker for regime drift</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: 600; color: var(--accent-danger);">Strategy Level</td>
+                                            <td>Max 20% drawdown limit</td>
+                                            <td>Triggers strategy offline retirement threshold</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-weight: 600; color: var(--accent-success);">Portfolio Level</td>
+                                            <td>Max 15% model correlation</td>
+                                            <td>Ensures genuine diversification benefits</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Slide 16: Checklist & Conclusion -->
+                <div class="slide-card" data-slide="16">
+                    <span class="slide-category">Execution</span>
+                    <h2 class="slide-title">Implementation Checklist</h2>
+                    
+                    <div class="grid-2">
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem;">Operational Tasks</h3>
+                            
+                            <div class="checklist-item" onclick="toggleChecklist(this)">
+                                <input type="checkbox" class="checklist-checkbox" onclick="event.stopPropagation()">
+                                <div class="checklist-text"><strong>Data Infrastructure:</strong> Establish historical OHLCV feeds (5+ yrs) & tick data</div>
+                            </div>
+                            
+                            <div class="checklist-item" onclick="toggleChecklist(this)">
+                                <input type="checkbox" class="checklist-checkbox" onclick="event.stopPropagation()">
+                                <div class="checklist-text"><strong>Backtest Engine:</strong> Build walk-forward analysis & out-of-sample splits</div>
+                            </div>
+
+                            <div class="checklist-item" onclick="toggleChecklist(this)">
+                                <input type="checkbox" class="checklist-checkbox" onclick="event.stopPropagation()">
+                                <div class="checklist-text"><strong>Execution Layer:</strong> Establish REST/WS API connections (< 100ms latency)</div>
+                            </div>
+
+                            <div class="checklist-item" onclick="toggleChecklist(this)">
+                                <input type="checkbox" class="checklist-checkbox" onclick="event.stopPropagation()">
+                                <div class="checklist-text"><strong>Risk Controls:</strong> Deploy real-time P&L trackers & hard kill-switches</div>
+                            </div>
+
+                            <div class="checklist-item" onclick="toggleChecklist(this)">
+                                <input type="checkbox" class="checklist-checkbox" onclick="event.stopPropagation()">
+                                <div class="checklist-text"><strong>Monitoring:</strong> Build equity curve variance alerts & regime indicators</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; margin-bottom: 1.25rem;">Next Steps</h3>
+                            <div class="info-card accent-indigo" style="margin-bottom: 1rem;">
+                                <div class="info-card-title">1. Select Initial Models</div>
+                                <div class="info-card-desc">Deploy 2-3 uncorrelated strategy systems (e.g. Trend Following + Mean Reversion) to balance out equity drawdowns.</div>
+                            </div>
+                            <div class="info-card accent-info" style="margin-bottom: 1rem;">
+                                <div class="info-card-title">2. Dry Run Phase</div>
+                                <div class="info-card-desc">Paper trade for 3-6 months. Validate that live execution match historical slippage and fee assumptions.</div>
+                            </div>
+                            <div class="info-card accent-success">
+                                <div class="info-card-title">3. Capital Scaling</div>
+                                <div class="info-card-desc">Begin with 10% of planned capital, scaling up iteratively as live Sharpe metrics track backtest performance.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer slide navigator -->
+        <footer>
+            <div class="keyboard-legend">
+                <span>Navigate: <kbd>←</kbd> / <kbd>→</kbd> or <kbd>Space</kbd></span>
+                <span>Fullscreen: <kbd>F</kbd></span>
+            </div>
+
+            <div class="footer-controls">
+                <button class="btn-nav btn-nav-secondary" id="btnPrev" onclick="navigateSlide(-1)">
+                    ← Previous
+                </button>
+                <div class="progress-dots" id="progressDots">
+                    <!-- Javascript populates this -->
+                </div>
+                <button class="btn-nav" id="btnNext" onclick="navigateSlide(1)">
+                    Next →
+                </button>
+            </div>
+
+            <div class="slide-counter" id="slideCounter">
+                Slide 1 of 16
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Presentation State
+        const state = {
+            currentSlide: 1,
+            totalSlides: 16,
+            autoplayInterval: null,
+            autoplayDelay: 5000, // 5 seconds
+            sidebarCollapsed: false,
+            documentView: false,
+            theme: 'dark',
+            
+            // Strategy Data
+            strategies: [
+                { rank: 1, name: "Mean Reversion (Adaptive)", return: "20-50%", drawdown: "12-25%", returnVal: 35, ddVal: 18, complexity: "Medium", automation: 9, market: "Crypto, Tech Stocks" },
+                { rank: 2, name: "Multi-Factor Momentum", return: "25-55%", drawdown: "15-25%", returnVal: 40, ddVal: 20, complexity: "High", automation: 8, market: "All Markets" },
+                { rank: 3, name: "Funding Rate Arbitrage", return: "10-25%", drawdown: "3-8%", returnVal: 17.5, ddVal: 5.5, complexity: "Low", automation: 9, market: "Crypto Only" },
+                { rank: 4, name: "VWAP Reversion", return: "15-35%", drawdown: "8-15%", returnVal: 25, ddVal: 11.5, complexity: "Medium", automation: 8, market: "Indian Equities" },
+                { rank: 5, name: "Trend Following", return: "15-35%", drawdown: "15-30%", returnVal: 25, ddVal: 22.5, complexity: "Low", automation: 9, market: "All Markets" },
+                { rank: 6, name: "Market Making", return: "15-40%", drawdown: "5-12%", returnVal: 27.5, ddVal: 8.5, complexity: "Very High", automation: 7, market: "Crypto" },
+                { rank: 7, name: "Momentum Breakout", return: "25-60%", drawdown: "20-35%", returnVal: 42.5, ddVal: 27.5, complexity: "Medium", automation: 7, market: "All Markets" },
+                { rank: 8, name: "Statistical Arbitrage", return: "10-25%", drawdown: "8-18%", returnVal: 17.5, ddVal: 13, complexity: "High", automation: 6, market: "Pairs/Portfolios" },
+                { rank: 9, name: "Smart Money/Order Flow", return: "30-80%", drawdown: "20-35%", returnVal: 55, ddVal: 27.5, complexity: "Very High", automation: 5, market: "Crypto, Futures" },
+                { rank: 10, name: "Grid Trading", return: "15-40%", drawdown: "15-30%", returnVal: 27.5, ddVal: 22.5, complexity: "Low", automation: 8, market: "Crypto" }
+            ],
+            
+            // Current sort config
+            sortKey: 'rank',
+            sortAsc: true
+        };
+
+        // Slide Titles for sidebar
+        const slideNames = [
+            "Executive Cover",
+            "Executive Summary",
+            "S1: Trend Following",
+            "S2: Momentum Breakout",
+            "S3: Mean Reversion",
+            "S4: Statistical Arb",
+            "S5: VWAP Reversion",
+            "S6: Market Making",
+            "S7: Funding Rate Arb",
+            "S8: Grid Trading",
+            "S9: Multi-Factor Mom",
+            "S10: Smart Money",
+            "Strategy Rankings",
+            "Recommendations",
+            "Mathematical Framework",
+            "Execution Checklist"
+        ];
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            initSidebar();
+            initProgressDots();
+            renderTable();
+            initKaTeX();
+            initKeyboardEvents();
+            initTheme();
+            
+            // Set initial state
+            updateSlideView();
+        });
+
+        // Initialize Sidebar List
+        function initSidebar() {
+            const listContainer = document.getElementById('slideList');
+            listContainer.innerHTML = '';
+            
+            slideNames.forEach((name, index) => {
+                const li = document.createElement('li');
+                li.className = `slide-item ${index + 1 === state.currentSlide ? 'active' : ''}`;
+                li.setAttribute('data-slide-index', index + 1);
+                li.onclick = () => jumpToSlide(index + 1);
+                
+                li.innerHTML = `
+                    <span class="slide-item-num">${String(index + 1).padStart(2, '0')}</span>
+                    <span class="slide-item-name">${name}</span>
+                `;
+                listContainer.appendChild(li);
+            });
+
+            // Set up search filter
+            document.getElementById('searchSlides').addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                const items = listContainer.querySelectorAll('.slide-item');
+                
+                items.forEach(item => {
+                    const slideIndex = parseInt(item.getAttribute('data-slide-index'));
+                    const name = slideNames[slideIndex - 1].toLowerCase();
+                    const card = document.querySelector(`.slide-card[data-slide="${slideIndex}"]`);
+                    const searchTags = card ? (card.getAttribute('data-search') || '') : '';
+                    
+                    if (name.includes(query) || searchTags.includes(query) || query === '') {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Initialize Progress Dots
+        function initProgressDots() {
+            const dotsContainer = document.getElementById('progressDots');
+            dotsContainer.innerHTML = '';
+            
+            for (let i = 1; i <= state.totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = `progress-dot ${i === state.currentSlide ? 'active' : ''}`;
+                dot.onclick = () => jumpToSlide(i);
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // Render sorted strategy table
+        function renderTable() {
+            const tbody = document.querySelector('#rankingTable tbody');
+            tbody.innerHTML = '';
+            
+            // Sort data
+            const sortedData = [...state.strategies].sort((a, b) => {
+                let valA = a[state.sortKey];
+                let valB = b[state.sortKey];
+                
+                if (typeof valA === 'string') {
+                    valA = valA.toLowerCase();
+                    valB = valB.toLowerCase();
+                }
+                
+                if (valA < valB) return state.sortAsc ? -1 : 1;
+                if (valA > valB) return state.sortAsc ? 1 : -1;
+                return 0;
+            });
+            
+            sortedData.forEach(strat => {
+                const tr = document.createElement('tr');
+                
+                // Color badges for complexity
+                let compBadge = '';
+                if (strat.complexity === 'Low') compBadge = '<span class="badge badge-success">Low</span>';
+                else if (strat.complexity === 'Medium') compBadge = '<span class="badge badge-cyan">Medium</span>';
+                else if (strat.complexity === 'High') compBadge = '<span class="badge badge-indigo">High</span>';
+                else compBadge = '<span class="badge badge-warning">Very High</span>';
+
+                // Return progress color
+                const returnColor = 'var(--accent-success)';
+                const ddColor = 'var(--accent-danger)';
+                const autoColor = 'var(--accent-primary)';
+
+                tr.innerHTML = `
+                    <td style="font-family: var(--font-mono); font-weight: 600;">${strat.rank}</td>
+                    <td style="font-weight: 600; color: var(--text-primary);">${strat.name}</td>
+                    <td>
+                        <div class="table-progress-container">
+                            <div class="table-progress-bar" style="width: ${strat.returnVal}%; background: ${returnColor};"></div>
+                        </div>
+                        <span style="font-family: var(--font-mono);">${strat.return}</span>
+                    </td>
+                    <td>
+                        <div class="table-progress-container">
+                            <div class="table-progress-bar" style="width: ${strat.ddVal}%; background: ${ddColor};"></div>
+                        </div>
+                        <span style="font-family: var(--font-mono);">${strat.drawdown}</span>
+                    </td>
+                    <td>${compBadge}</td>
+                    <td>
+                        <div class="table-progress-container" style="max-width: 60px;">
+                            <div class="table-progress-bar" style="width: ${strat.automation * 10}%; background: ${autoColor};"></div>
+                        </div>
+                        <span style="font-family: var(--font-mono);">${strat.automation}/10</span>
+                    </td>
+                    <td style="font-weight: 500; font-size: 0.8rem;">${strat.market}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update header sorting indicator icons
+            const headers = document.querySelectorAll('#rankingTable th');
+            const cols = ['rank', 'name', 'returnVal', 'ddVal', 'complexity', 'automation', 'market'];
+            
+            headers.forEach((th, idx) => {
+                th.className = 'sortable';
+                const icon = th.querySelector('.sort-icon') || document.createElement('span');
+                icon.className = 'sort-icon';
+                
+                if (cols[idx] === state.sortKey) {
+                    icon.className = state.sortAsc ? 'sort-icon sort-asc' : 'sort-icon sort-desc';
+                }
+                
+                if (!th.querySelector('.sort-icon')) {
+                    th.appendChild(icon);
+                }
+            });
+        }
+
+        // Sort table trigger
+        window.sortTable = function(columnIndex) {
+            const cols = ['rank', 'name', 'returnVal', 'ddVal', 'complexity', 'automation', 'market'];
+            const targetKey = cols[columnIndex];
+            
+            if (state.sortKey === targetKey) {
+                state.sortAsc = !state.sortAsc;
+            } else {
+                state.sortKey = targetKey;
+                state.sortAsc = true;
+            }
+            
+            renderTable();
+        };
+
+        // Render beautiful mathematical equations with KaTeX
+        function initKaTeX() {
+            if (typeof katex === 'undefined') {
+                console.warn("KaTeX loading failed. Displaying plain text formulas.");
+                return;
+            }
+            
+            try {
+                katex.render("f^* = \\frac{p \\cdot b - q}{b}", document.getElementById('math-kelly'), { displayMode: true });
+                katex.render("S = \\frac{R_p - R_f}{\\sigma_p}", document.getElementById('math-sharpe'), { displayMode: true });
+                katex.render("\\text{Position Size} = \\frac{\\text{Account} \\times \\text{Risk\\%}}{\\text{ATR} \\times \\text{Multiplier}}", document.getElementById('math-vol'), { displayMode: true });
+            } catch (err) {
+                console.error("KaTeX rendering error: ", err);
+            }
+        }
+
+        // Navigate slides
+        function navigateSlide(direction) {
+            let nextIndex = state.currentSlide + direction;
+            if (nextIndex < 1) nextIndex = 1;
+            if (nextIndex > state.totalSlides) nextIndex = state.totalSlides;
+            jumpToSlide(nextIndex);
+        }
+
+        // Jump directly to slide
+        function jumpToSlide(index) {
+            state.currentSlide = index;
+            updateSlideView();
+        }
+
+        // Update presentation view layout based on states
+        function updateSlideView() {
+            if (state.documentView) return;
+
+            // Hide/Show cards
+            const cards = document.querySelectorAll('.slide-card');
+            cards.forEach(card => {
+                const sNum = parseInt(card.getAttribute('data-slide'));
+                if (sNum === state.currentSlide) {
+                    card.classList.add('active');
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+
+            // Update sidebar active highlights
+            const sidebarItems = document.querySelectorAll('.slide-item');
+            sidebarItems.forEach(item => {
+                const sIdx = parseInt(item.getAttribute('data-slide-index'));
+                if (sIdx === state.currentSlide) {
+                    item.classList.add('active');
+                    // Scroll sidebar item into view
+                    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            // Update Progress dots
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach((dot, idx) => {
+                if (idx + 1 === state.currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+
+            // Update footer info
+            document.getElementById('slideCounter').textContent = `Slide ${state.currentSlide} of ${state.totalSlides}`;
+            
+            // Enable/Disable buttons
+            document.getElementById('btnPrev').disabled = (state.currentSlide === 1);
+            document.getElementById('btnNext').disabled = (state.currentSlide === state.totalSlides);
+            
+            // Apply ambient background glow based on slide index
+            const glow1 = document.querySelector('.bg-glow-1');
+            const glow2 = document.querySelector('.bg-glow-2');
+            
+            if (state.currentSlide === 1) {
+                glow1.style.background = 'var(--accent-primary)';
+                glow2.style.background = 'var(--accent-info)';
+            } else if (state.currentSlide % 3 === 0) {
+                glow1.style.background = 'var(--accent-success)';
+                glow2.style.background = 'var(--accent-indigo)';
+            } else if (state.currentSlide % 2 === 0) {
+                glow1.style.background = 'var(--accent-info)';
+                glow2.style.background = 'var(--accent-warning)';
+            } else {
+                glow1.style.background = 'var(--accent-primary)';
+                glow2.style.background = 'var(--accent-danger)';
+            }
+        }
+
+        // Tabs Navigation within Strategy Slides
+        window.switchStrategyTab = function(button, tabId) {
+            const container = button.closest('.strategy-layout');
+            
+            // Toggle active tabs buttons
+            const tabBtns = container.querySelectorAll('.tab-btn');
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Toggle active contents
+            const contents = container.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                if (content.id === tabId) {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+        };
+
+        // Interactive Checklist
+        window.toggleChecklist = function(card) {
+            const checkbox = card.querySelector('.checklist-checkbox');
+            checkbox.checked = !checkbox.checked;
+        };
+
+        // Copy code helper
+        window.copyCode = function(button) {
+            const pre = button.closest('.code-container').querySelector('pre');
+            const code = pre.textContent;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = "Copied!";
+                button.style.color = "var(--accent-success)";
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.color = "";
+                }, 2000);
+            }).catch(err => {
+                console.error("Clipboard copy failed: ", err);
+            });
+        };
+
+        // Keyboard Controls
+        function initKeyboardEvents() {
+            document.addEventListener('keydown', (e) => {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+                if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                    e.preventDefault();
+                    navigateSlide(1);
+                } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                    e.preventDefault();
+                    navigateSlide(-1);
+                } else if (e.key.toLowerCase() === 'f') {
+                    e.preventDefault();
+                    toggleFullscreen();
+                } else if (e.key === 'Escape') {
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen();
+                    }
+                }
+            });
+        }
+
+        // Toggle Fullscreen Mode
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error("Fullscreen request failed: ", err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Setup theme toggle
+        function initTheme() {
+            const btn = document.getElementById('toggleTheme');
+            const icon = document.getElementById('themeIcon');
+            
+            btn.onclick = () => {
+                if (state.theme === 'dark') {
+                    state.theme = 'light';
+                    document.body.classList.add('light-mode');
+                    icon.innerHTML = `<path d="M12,18C11.11,18 10.26,17.8 9.5,17.45C11.56,16.5 13,14.42 13,12C13,9.58 11.56,7.5 9.5,6.55C10.26,6.2 11.11,6 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31L23.31,12L20,8.69Z" />`;
+                } else {
+                    state.theme = 'dark';
+                    document.body.classList.remove('light-mode');
+                    icon.innerHTML = `<path d="M12,3A9,9 0 1,0 21,12A9,9 0 0,0 12,3M12,19A7,7 0 1,1 19,12A7,7 0 0,1 12,19Z" />`;
+                }
+            };
+        }
+
+        // Layout View: Slide view vs continuous document view
+        document.getElementById('toggleLayout').onclick = () => {
+            const wrapper = document.getElementById('deckWrapper');
+            state.documentView = !state.documentView;
+            
+            if (state.documentView) {
+                wrapper.classList.add('document-view');
+                document.getElementById('toggleLayout').querySelector('svg').innerHTML = `
+                    <path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-4 6H8v2h7V9m0 4H8v2h7v-2z"/>
+                `;
+            } else {
+                wrapper.classList.remove('document-view');
+                document.getElementById('toggleLayout').querySelector('svg').innerHTML = `
+                    <path d="M19,3H5C3.89,3 3,3.89 3,5V19C3,20.11 3.89,21 5,21H19C20.11,21 21,20.11 21,19V5C21,3.89 20.11,3 19,3M19,5V19H5V5H19Z" />
+                `;
+                updateSlideView();
+            }
+        };
+
+        // Autoplay Slides Toggle
+        document.getElementById('toggleAutoplay').onclick = () => {
+            const btn = document.getElementById('toggleAutoplay');
+            const icon = document.getElementById('autoplayIcon');
+            
+            if (state.autoplayInterval) {
+                // Pause autoplay
+                clearInterval(state.autoplayInterval);
+                state.autoplayInterval = null;
+                btn.style.color = "";
+                btn.style.background = "";
+                icon.innerHTML = `<path d="M8,5.14V19.14L19,12.14L8,5.14Z" />`;
+            } else {
+                // Start autoplay
+                btn.style.color = "var(--accent-success)";
+                btn.style.background = "rgba(16, 185, 129, 0.1)";
+                icon.innerHTML = `<path d="M14,19H18V5H14M6,19H10V5H6V19Z" />`;
+                
+                state.autoplayInterval = setInterval(() => {
+                    let next = state.currentSlide + 1;
+                    if (next > state.totalSlides) next = 1;
+                    jumpToSlide(next);
+                }, state.autoplayDelay);
+            }
+        };
+
+        // Sidebar Collapse Toggle
+        document.getElementById('toggleSidebar').onclick = () => {
+            const sidebar = document.getElementById('sidebar');
+            state.sidebarCollapsed = !state.sidebarCollapsed;
+            
+            if (state.sidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+            }
+        };
+    </script>
+</body>
+</html>

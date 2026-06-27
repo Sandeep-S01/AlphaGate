@@ -1,0 +1,138 @@
+x-app-env: &app-env
+  APP_ENV: ${APP_ENV:-local}
+  HTTP_ADDR: ${HTTP_ADDR:-:8080}
+  POSTGRES_DSN: ${POSTGRES_DSN:-postgres://sentra:sentra_password@postgres:5432/sentra?sslmode=disable}
+  REDIS_ADDR: ${REDIS_ADDR:-redis:6379}
+  REDIS_PASSWORD: ${REDIS_PASSWORD:-}
+  REDIS_DB: ${REDIS_DB:-0}
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+  SHUTDOWN_TIMEOUT: ${SHUTDOWN_TIMEOUT:-10s}
+  BINANCE_REST_BASE_URL: ${BINANCE_REST_BASE_URL:-https://api.binance.com}
+  BINANCE_WS_BASE_URL: ${BINANCE_WS_BASE_URL:-wss://stream.binance.com:9443/ws}
+  MARKET_DATA_ENABLED: ${MARKET_DATA_ENABLED:-false}
+  MARKET_DATA_PERSISTENCE_ENABLED: ${MARKET_DATA_PERSISTENCE_ENABLED:-false}
+  MARKET_DATA_SYMBOL: ${MARKET_DATA_SYMBOL:-BTCUSDT}
+  MARKET_DATA_INTERVAL: ${MARKET_DATA_INTERVAL:-1m}
+  MARKET_DATA_REDIS_STREAM: ${MARKET_DATA_REDIS_STREAM:-stream:market-data}
+  MARKET_DATA_CONSUMER_GROUP: ${MARKET_DATA_CONSUMER_GROUP:-market-data-persistence}
+  MARKET_DATA_CONSUMER_NAME: ${MARKET_DATA_CONSUMER_NAME:-worker-1}
+  MARKET_DATA_MAX_RECONNECTS: ${MARKET_DATA_MAX_RECONNECTS:-100}
+  MARKET_DATA_RECONNECT_DELAY: ${MARKET_DATA_RECONNECT_DELAY:-5s}
+  STRATEGY_ENABLED: ${STRATEGY_ENABLED:-false}
+  STRATEGY_NAME: ${STRATEGY_NAME:-sma-crossover}
+  STRATEGY_VERSION: ${STRATEGY_VERSION:-v1}
+  STRATEGY_SYMBOL: ${STRATEGY_SYMBOL:-BTCUSDT}
+  STRATEGY_INTERVAL: ${STRATEGY_INTERVAL:-1m}
+  STRATEGY_FAST_PERIOD: ${STRATEGY_FAST_PERIOD:-9}
+  STRATEGY_SLOW_PERIOD: ${STRATEGY_SLOW_PERIOD:-21}
+  STRATEGY_LOOKBACK_LIMIT: ${STRATEGY_LOOKBACK_LIMIT:-100}
+  STRATEGY_SIGNAL_STREAM: ${STRATEGY_SIGNAL_STREAM:-stream:strategy-signals}
+  RISK_ENABLED: ${RISK_ENABLED:-false}
+  RISK_MAX_SIGNAL_STRENGTH: ${RISK_MAX_SIGNAL_STRENGTH:-100}
+  RISK_ALLOW_BUY: ${RISK_ALLOW_BUY:-true}
+  RISK_ALLOW_SELL: ${RISK_ALLOW_SELL:-true}
+  RISK_SYMBOL: ${RISK_SYMBOL:-BTCUSDT}
+  RISK_DECISION_STREAM: ${RISK_DECISION_STREAM:-stream:risk-decisions}
+  EXECUTION_ENABLED: ${EXECUTION_ENABLED:-false}
+  EXECUTION_SYMBOL: ${EXECUTION_SYMBOL:-BTCUSDT}
+  EXECUTION_INTERVAL: ${EXECUTION_INTERVAL:-1m}
+  EXECUTION_BASE_ASSET: ${EXECUTION_BASE_ASSET:-BTC}
+  EXECUTION_QUOTE_ASSET: ${EXECUTION_QUOTE_ASSET:-USDT}
+  EXECUTION_QUOTE_ORDER_AMOUNT: ${EXECUTION_QUOTE_ORDER_AMOUNT:-100}
+  EXECUTION_FEE_RATE: ${EXECUTION_FEE_RATE:-0.001}
+  EXECUTION_STREAM: ${EXECUTION_STREAM:-stream:execution-results}
+  ORCHESTRATION_ENABLED: ${ORCHESTRATION_ENABLED:-false}
+  ORCHESTRATION_CONSUMER_GROUP: ${ORCHESTRATION_CONSUMER_GROUP:-paper-pipeline}
+  ORCHESTRATION_CONSUMER_NAME: ${ORCHESTRATION_CONSUMER_NAME:-worker-1}
+  AUTH_ENABLED: ${AUTH_ENABLED:-false}
+  ADMIN_API_KEY: ${ADMIN_API_KEY:-}
+  MAX_REQUEST_BODY_BYTES: ${MAX_REQUEST_BODY_BYTES:-1048576}
+  RATE_LIMIT_REQUESTS_PER_MINUTE: ${RATE_LIMIT_REQUESTS_PER_MINUTE:-120}
+
+x-app-service: &app-service
+  build:
+    context: .
+  environment:
+    <<: *app-env
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+  profiles:
+    - app
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: sentra
+      POSTGRES_PASSWORD: sentra_password
+      POSTGRES_DB: sentra
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sentra -d sentra"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    <<: *app-service
+    command: ["/app/migrate"]
+    restart: "no"
+
+  api:
+    <<: *app-service
+    command: ["/app/api"]
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  worker:
+    <<: *app-service
+    command: ["/app/worker"]
+    restart: unless-stopped
+
+  backfill:
+    <<: *app-service
+    entrypoint: ["/app/backfill"]
+    restart: "no"
+
+  strategy:
+    <<: *app-service
+    command: ["/app/strategy"]
+    restart: "no"
+
+  risk:
+    <<: *app-service
+    command: ["/app/risk"]
+    restart: "no"
+
+  execution:
+    <<: *app-service
+    command: ["/app/execution"]
+    restart: "no"
+
+volumes:
+  postgres_data:
+  redis_data:

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">AlphaGate favicon</title>
+  <desc id="desc">A stylized AlphaGate gateway mark with an alpha-shaped trading signal.</desc>
+  <defs>
+    <linearGradient id="gate" x1="10" y1="58" x2="54" y2="6" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2cf6b3"/>
+      <stop offset="0.52" stop-color="#56ccff"/>
+      <stop offset="1" stop-color="#9b8cff"/>
+    </linearGradient>
+    <linearGradient id="core" x1="20" y1="46" x2="45" y2="18" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#11131d"/>
+      <stop offset="1" stop-color="#1d2233"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0b0d14"/>
+  <path d="M14 52 28 12h8l14 40h-9l-3-9H26l-3 9h-9Z" fill="url(#gate)"/>
+  <path d="M28.5 35h7L32 24.5 28.5 35Z" fill="url(#core)"/>
+  <path d="M20 52V39h8v13h-8Zm16 0V39h8v13h-8Z" fill="#0b0d14"/>
+  <path d="M19 42h26" stroke="#f7fafc" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M24 31h6l3-7 5 18 3-8h5" fill="none" stroke="#2cf6b3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,1 @@
+ALTER TABLE backtest_runs ADD COLUMN shorting_enabled BOOLEAN NOT NULL DEFAULT FALSE;

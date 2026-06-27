@@ -1,0 +1,32 @@
+ALTER TABLE strategy_comparisons
+    ADD COLUMN train_test_enabled BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN train_ratio NUMERIC(18, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN train_from TIMESTAMPTZ NOT NULL DEFAULT '0001-01-01T00:00:00Z',
+    ADD COLUMN train_to TIMESTAMPTZ NOT NULL DEFAULT '0001-01-01T00:00:00Z',
+    ADD COLUMN test_from TIMESTAMPTZ NOT NULL DEFAULT '0001-01-01T00:00:00Z',
+    ADD COLUMN test_to TIMESTAMPTZ NOT NULL DEFAULT '0001-01-01T00:00:00Z',
+    ADD COLUMN walk_forward_enabled BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN walk_forward_folds INTEGER NOT NULL DEFAULT 0;
+
+ALTER TABLE strategy_comparison_results
+    ADD COLUMN train_return_percent NUMERIC(30, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN train_excess_return_percent NUMERIC(30, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN train_profit_factor NUMERIC(30, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN train_max_drawdown NUMERIC(30, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN train_total_trades INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN train_validation_status TEXT NOT NULL DEFAULT '',
+    ADD COLUMN train_validation_reason TEXT NOT NULL DEFAULT '',
+    ADD COLUMN test_return_percent NUMERIC(30, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN test_excess_return_percent NUMERIC(30, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN test_profit_factor NUMERIC(30, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN test_max_drawdown NUMERIC(30, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN test_total_trades INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN test_validation_status TEXT NOT NULL DEFAULT '',
+    ADD COLUMN test_validation_reason TEXT NOT NULL DEFAULT '',
+    ADD COLUMN walk_forward_folds INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN walk_forward_passes INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN walk_forward_average_return NUMERIC(30, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN walk_forward_average_excess NUMERIC(30, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN walk_forward_worst_drawdown NUMERIC(30, 12) NOT NULL DEFAULT 0,
+    ADD COLUMN walk_forward_validation_status TEXT NOT NULL DEFAULT '',
+    ADD COLUMN walk_forward_validation_reason TEXT NOT NULL DEFAULT '';

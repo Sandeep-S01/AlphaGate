@@ -1,0 +1,17 @@
+ALTER TABLE backtest_runs
+    ADD COLUMN trend_filter_enabled BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN trend_period INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN cooldown_bars INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN min_holding_bars INTEGER NOT NULL DEFAULT 0;
+
+ALTER TABLE strategy_comparisons
+    ADD COLUMN trend_filter_enabled BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN trend_period INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN cooldown_bars INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN min_holding_bars INTEGER NOT NULL DEFAULT 0;
+
+ALTER TABLE strategy_comparison_results
+    ADD COLUMN trend_filter_enabled BOOLEAN NOT NULL DEFAULT FALSE,
+    ADD COLUMN trend_period INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN cooldown_bars INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN min_holding_bars INTEGER NOT NULL DEFAULT 0;
