@@ -114,3 +114,46 @@ Safety and reconciliation:
 Next observation target:
 - Continue paper proving on the corrected `15m` runtime path.
 - Wait for a natural `buy` or `sell` signal from `btc-trend-pullback`, then verify risk, paper order lifecycle, trade persistence, account update, and reconciliation again.
+
+## Checkpoint 4 - 2026-06-28 00:21 IST
+
+Status: PASS with strategy strength-scaling fix
+
+Runtime:
+- API process rebuilt and restarted.
+- Worker process rebuilt and restarted.
+- Worker market-data interval: `15m`
+- Dashboard/API URL: `http://localhost:8080`
+- Execution mode: paper
+- Paper execution enabled: true
+- Exchange adapter: `binance_disabled`
+- Live trading enabled: false
+
+Defect found and fixed:
+- `btc-trend-pullback` signal strength mixed a raw BTC price gap with RSI values.
+- Evidence before fix: the same active strategy signal produced strength `1144.202386`, causing risk rejection against max strength `100`.
+- Root cause: `abs(currentClose - currentPullback)` was measured in price units, so BTC-scale prices produced strength values in the thousands.
+- Fix: normalize the price-gap component as a percentage of current close before adding RSI components.
+- Regression: `TestBTCTrendPullbackStrengthIsPriceScaleInvariant` proves the same candle pattern has the same strength at low and BTC-like price scales.
+
+Controlled active-strategy paper lifecycle test:
+- Strategy: `btc-trend-pullback`, `BTCUSDT`, `15m`
+- Trigger: `POST /api/v1/paper/cycles`
+- Signal: `sell`
+- Strength after fix: `35.289679`
+- Risk decision: `approved`
+- Risk reason: `approved by risk rules`
+- Result: `executed`
+- Order ID: `6bc0e09c-0647-4cc8-9716-f73a503299df`
+- Order status: `filled`
+- Order lifecycle events persisted: `created -> submitted -> filled`
+- Trade ID: `acbe0ddc-25fb-4807-8eb7-78358b897694`
+- Paper account after sell: `0.0016571242918733613 BTC`, `9899.9 USDT`
+- Reconciliation run: `8429eb69-2f7e-4686-a6a6-4d4829a5f49d`
+- Reconciliation status: `matched`
+- Reconciliation mismatches: `0`
+
+Notes:
+- No risk thresholds were loosened.
+- The fix makes strategy strength compatible with the existing risk threshold model instead of bypassing risk.
+- Continue paper proving to observe the worker-driven path over multiple natural 15m candles.

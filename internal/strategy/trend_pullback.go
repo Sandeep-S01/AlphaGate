@@ -131,10 +131,18 @@ func (b *BTCTrendPullback) Evaluate(candles []marketdata.Candle) (Signal, error)
 		Symbol:       b.cfg.Symbol,
 		Interval:     b.cfg.Interval,
 		Side:         side,
-		Strength:     math.Abs(currentClose-currentPullback) + math.Abs(currentRSI-50) + math.Max(0, currentRSI-previousRSI),
+		Strength:     trendPullbackStrength(currentClose, currentPullback, currentRSI, previousRSI),
 		Reason:       reason,
 		GeneratedAt:  generatedAt,
 	}, nil
+}
+
+func trendPullbackStrength(currentClose float64, currentPullback float64, currentRSI float64, previousRSI float64) float64 {
+	priceGapPercent := 0.0
+	if currentClose != 0 {
+		priceGapPercent = math.Abs(currentClose-currentPullback) / currentClose * 100
+	}
+	return priceGapPercent + math.Abs(currentRSI-50) + math.Max(0, currentRSI-previousRSI)
 }
 
 func (b *BTCTrendPullback) volatilityInRange(candles []marketdata.Candle, currentClose float64) (bool, error) {

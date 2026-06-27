@@ -31,6 +31,37 @@ func TestBTCTrendPullbackBuysOnRecoveryInUptrend(t *testing.T) {
 	}
 }
 
+func TestBTCTrendPullbackStrengthIsPriceScaleInvariant(t *testing.T) {
+	evaluator := NewBTCTrendPullback(TrendPullbackConfig{
+		Name:           StrategyBTCTrendPullback,
+		Version:        "v1",
+		Symbol:         "BTCUSDT",
+		Interval:       "15m",
+		PullbackPeriod: 3,
+		TrendPeriod:    5,
+		RSIPeriod:      3,
+	})
+
+	baseSignal, err := evaluator.Evaluate(candlesForTrendPullback([]string{"100", "104", "108", "112", "116", "110", "108", "117"}))
+	if err != nil {
+		t.Fatalf("Evaluate returned error for base candles: %v", err)
+	}
+	scaledSignal, err := evaluator.Evaluate(candlesForTrendPullback([]string{"60000", "62400", "64800", "67200", "69600", "66000", "64800", "70200"}))
+	if err != nil {
+		t.Fatalf("Evaluate returned error for scaled candles: %v", err)
+	}
+
+	if baseSignal.Side != scaledSignal.Side {
+		t.Fatalf("expected same side after price scaling, got base=%s scaled=%s", baseSignal.Side, scaledSignal.Side)
+	}
+	if diff := absFloat(baseSignal.Strength - scaledSignal.Strength); diff > 0.000001 {
+		t.Fatalf("expected price-scale invariant strength, base=%f scaled=%f diff=%f", baseSignal.Strength, scaledSignal.Strength, diff)
+	}
+	if scaledSignal.Strength > 100 {
+		t.Fatalf("expected scaled strength to remain compatible with 0-100 risk threshold, got %f", scaledSignal.Strength)
+	}
+}
+
 func TestBTCTrendPullbackRequiresRSICrossAboveMidline(t *testing.T) {
 	evaluator := NewBTCTrendPullback(TrendPullbackConfig{
 		Name:           StrategyBTCTrendPullback,
@@ -195,4 +226,11 @@ func candlesForTrendPullback(closes []string) []marketdata.Candle {
 		})
 	}
 	return candles
+}
+
+func absFloat(value float64) float64 {
+	if value < 0 {
+		return -value
+	}
+	return value
 }
