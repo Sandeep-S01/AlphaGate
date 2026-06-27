@@ -31,16 +31,35 @@ type binanceKlineEvent struct {
 }
 
 type binanceKline struct {
-	OpenTime  int64  `json:"t"`
-	CloseTime int64  `json:"T"`
-	Symbol    string `json:"s"`
-	Interval  string `json:"i"`
-	Open      string `json:"o"`
-	Close     string `json:"c"`
-	High      string `json:"h"`
-	Low       string `json:"l"`
-	Volume    string `json:"v"`
-	IsClosed  bool   `json:"x"`
+	OpenTime    int64         `json:"t"`
+	CloseTime   int64         `json:"T"`
+	Symbol      string        `json:"s"`
+	Interval    string        `json:"i"`
+	Open        decimalString `json:"o"`
+	Close       decimalString `json:"c"`
+	High        decimalString `json:"h"`
+	Low         decimalString `json:"l"`
+	Volume      decimalString `json:"v"`
+	QuoteVolume decimalString `json:"q"`
+	TradeCount  int64         `json:"n"`
+	IsClosed    bool          `json:"x"`
+}
+
+type decimalString string
+
+func (d *decimalString) UnmarshalJSON(payload []byte) error {
+	var asString string
+	if err := json.Unmarshal(payload, &asString); err == nil {
+		*d = decimalString(asString)
+		return nil
+	}
+
+	var asNumber json.Number
+	if err := json.Unmarshal(payload, &asNumber); err != nil {
+		return err
+	}
+	*d = decimalString(asNumber.String())
+	return nil
 }
 
 func ParseBinanceKlineEvent(payload []byte) (Candle, error) {
@@ -59,17 +78,19 @@ func ParseBinanceKlineEvent(payload []byte) (Candle, error) {
 	}
 
 	return Candle{
-		Exchange:  "binance",
-		Symbol:    symbol,
-		Interval:  event.Kline.Interval,
-		OpenTime:  time.UnixMilli(event.Kline.OpenTime).UTC(),
-		CloseTime: time.UnixMilli(event.Kline.CloseTime).UTC(),
-		EventTime: time.UnixMilli(event.EventTime).UTC(),
-		Open:      event.Kline.Open,
-		High:      event.Kline.High,
-		Low:       event.Kline.Low,
-		Close:     event.Kline.Close,
-		Volume:    event.Kline.Volume,
-		IsClosed:  event.Kline.IsClosed,
+		Exchange:    "binance",
+		Symbol:      symbol,
+		Interval:    event.Kline.Interval,
+		OpenTime:    time.UnixMilli(event.Kline.OpenTime).UTC(),
+		CloseTime:   time.UnixMilli(event.Kline.CloseTime).UTC(),
+		EventTime:   time.UnixMilli(event.EventTime).UTC(),
+		Open:        string(event.Kline.Open),
+		High:        string(event.Kline.High),
+		Low:         string(event.Kline.Low),
+		Close:       string(event.Kline.Close),
+		Volume:      string(event.Kline.Volume),
+		QuoteVolume: string(event.Kline.QuoteVolume),
+		TradeCount:  event.Kline.TradeCount,
+		IsClosed:    event.Kline.IsClosed,
 	}, nil
 }

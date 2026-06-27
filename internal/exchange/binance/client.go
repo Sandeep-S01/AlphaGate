@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -264,6 +265,7 @@ func (c *Client) SubscribeKlines(ctx context.Context, symbol string, interval st
 	if err != nil {
 		return nil, fmt.Errorf("connect binance kline stream: %w", err)
 	}
+	slog.Info("binance kline websocket connected", "symbol", strings.ToUpper(symbol), "interval", interval, "url", streamURL)
 
 	candles := make(chan marketdata.Candle)
 	go func() {
@@ -278,13 +280,18 @@ func (c *Client) SubscribeKlines(ctx context.Context, symbol string, interval st
 		for {
 			_, payload, err := conn.ReadMessage()
 			if err != nil {
+				if ctx.Err() == nil {
+					slog.Warn("binance kline websocket read failed", "symbol", strings.ToUpper(symbol), "interval", interval, "error", err)
+				}
 				return
 			}
 
 			candle, err := marketdata.ParseBinanceKlineEvent(payload)
 			if err != nil {
+				slog.Warn("binance kline websocket payload ignored", "symbol", strings.ToUpper(symbol), "interval", interval, "error", err)
 				continue
 			}
+			slog.Debug("binance kline websocket message received", "symbol", candle.Symbol, "interval", candle.Interval, "open_time", candle.OpenTime, "closed", candle.IsClosed)
 
 			select {
 			case <-ctx.Done():

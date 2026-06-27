@@ -3,6 +3,7 @@ package marketdata
 import (
 	"context"
 	"fmt"
+	"log/slog"
 	"time"
 )
 
@@ -84,6 +85,7 @@ func (c *Collector) publishWithRetry(ctx context.Context, candle Candle) error {
 	for attempt := 1; attempt <= attempts; attempt++ {
 		if err := c.publisher.PublishCandle(ctx, c.cfg.RedisStream, candle); err != nil {
 			lastErr = err
+			slog.Warn("market data candle publish failed", "stream", c.cfg.RedisStream, "symbol", candle.Symbol, "interval", candle.Interval, "open_time", candle.OpenTime, "attempt", attempt, "error", err)
 			if attempt == attempts {
 				break
 			}
@@ -92,6 +94,7 @@ func (c *Collector) publishWithRetry(ctx context.Context, candle Candle) error {
 			}
 			continue
 		}
+		slog.Debug("market data candle published", "stream", c.cfg.RedisStream, "symbol", candle.Symbol, "interval", candle.Interval, "open_time", candle.OpenTime, "closed", candle.IsClosed)
 		return nil
 	}
 	return fmt.Errorf("publish candle: %w", lastErr)

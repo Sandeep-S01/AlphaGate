@@ -52,3 +52,42 @@ func TestParseBinanceKlineEventRejectsNonKlineEvent(t *testing.T) {
 		t.Fatal("expected non-kline event to fail")
 	}
 }
+
+func TestParseBinanceKlineEventAcceptsNumericDecimalFields(t *testing.T) {
+	payload := []byte(`{
+		"e": "kline",
+		"E": 1672515782136,
+		"s": "BTCUSDT",
+		"k": {
+			"t": 1672515780000,
+			"T": 1672515839999,
+			"s": "BTCUSDT",
+			"i": "1m",
+			"o": 16500.10,
+			"c": 16510.20,
+			"h": 16520.30,
+			"l": 16490.40,
+			"v": 12.345,
+			"q": 203720.10,
+			"n": 42,
+			"x": false
+		}
+	}`)
+
+	candle, err := ParseBinanceKlineEvent(payload)
+	if err != nil {
+		t.Fatalf("ParseBinanceKlineEvent returned error: %v", err)
+	}
+	if candle.Open != "16500.10" || candle.Close != "16510.20" || candle.High != "16520.30" || candle.Low != "16490.40" {
+		t.Fatalf("unexpected numeric OHLC values: %+v", candle)
+	}
+	if candle.Volume != "12.345" || candle.QuoteVolume != "203720.10" {
+		t.Fatalf("unexpected numeric volume values: %+v", candle)
+	}
+	if candle.TradeCount != 42 {
+		t.Fatalf("expected trade count 42, got %d", candle.TradeCount)
+	}
+	if candle.IsClosed {
+		t.Fatal("expected open candle")
+	}
+}
