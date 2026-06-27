@@ -238,6 +238,44 @@ Safety:
 - Exchange adapter: `binance_disabled`
 - Live trading enabled: false
 
+## Checkpoint 8 - 2026-06-28 01:27 IST
+
+Status: PASS with symmetric buy-side balance risk guard
+
+Defect addressed:
+- Risk had a pre-execution balance guard for `sell` orders, but not for `buy` orders.
+- A `buy` signal with insufficient USDT could still reach paper execution and fail there.
+
+Fix:
+- Risk context now includes paper quote balance.
+- Risk evaluator rejects `buy` signals when `quote_balance < quote_order_amount`.
+- Orchestrator and manual paper runner pass quote balance into risk before execution.
+
+Verification:
+- Tests added:
+  - `TestEvaluatorRejectsBuyWhenQuoteBalanceIsInsufficient`
+  - `TestOrchestratorRejectsBuyBeforeExecutionWhenQuoteBalanceIsInsufficient`
+  - `TestManualRunnerRejectsBuyBeforeExecutionWhenQuoteBalanceIsInsufficient`
+- Full verification: `go test ./...`
+
+Runtime evidence:
+- API and worker were rebuilt and restarted with the updated risk guard.
+- Execution mode: paper
+- Exchange adapter: `binance_disabled`
+- Live trading enabled: false
+- Paper account: `0.000006165398438465414 BTC`, `9999.8 USDT`
+- Manual paper cycle on `BTCUSDT` `15m` returned `risk_rejected`.
+- Runtime signal side: `sell`
+- Runtime risk reason: `base balance 0.000006 is below required 0.001662`
+- No new order was created after the previous failed order `953e3785-02fe-4c12-b50c-932e8a316eab`.
+- Reconciliation run: `d16b6dce-b575-44c6-9ace-233759f827b1`
+- Reconciliation status: `matched`
+- Reconciliation mismatches: `0`
+
+Notes:
+- The active paper account currently has enough USDT, so the insufficient-quote runtime case was not forced by mutating account state.
+- The buy-side guard is covered by focused risk, orchestrator, and manual-runner tests.
+
 ## Checkpoint 7 - 2026-06-28 01:13 IST
 
 Status: PASS with pre-execution balance risk guard

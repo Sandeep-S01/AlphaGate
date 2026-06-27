@@ -290,9 +290,10 @@ func (o *Orchestrator) evaluateRisk(ctx context.Context, signal strategy.Signal,
 		return o.deps.RiskEvaluator.Evaluate(signal)
 	}
 	riskContext := risk.Context{
-		QuoteAmount: o.cfg.QuoteOrderAmount,
-		Price:       price,
-		BaseBalance: account.BaseBalance,
+		QuoteAmount:  o.cfg.QuoteOrderAmount,
+		Price:        price,
+		BaseBalance:  account.BaseBalance,
+		QuoteBalance: account.QuoteBalance,
 	}
 	if o.deps.ExecutionStats != nil {
 		if stats, err := o.deps.ExecutionStats.DailyStats(ctx, signal.Symbol, time.Now().UTC()); err == nil {

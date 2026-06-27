@@ -57,6 +57,9 @@ func (e *Evaluator) EvaluateWithContext(signal strategy.Signal, ctx Context) Dec
 	case e.cfg.MaxOrderQuoteAmount > 0 && ctx.QuoteAmount > e.cfg.MaxOrderQuoteAmount:
 		status = DecisionRejected
 		reason = fmt.Sprintf("order quote amount %.6f exceeds max %.6f", ctx.QuoteAmount, e.cfg.MaxOrderQuoteAmount)
+	case signal.Side == strategy.SideBuy && ctx.QuoteAmount > 0 && ctx.QuoteBalance < ctx.QuoteAmount:
+		status = DecisionRejected
+		reason = fmt.Sprintf("quote balance %.6f is below required %.6f", ctx.QuoteBalance, ctx.QuoteAmount)
 	case signal.Side == strategy.SideSell && ctx.Price > 0 && ctx.QuoteAmount > 0 && ctx.BaseBalance < ctx.QuoteAmount/ctx.Price:
 		status = DecisionRejected
 		reason = fmt.Sprintf("base balance %.6f is below required %.6f", ctx.BaseBalance, ctx.QuoteAmount/ctx.Price)

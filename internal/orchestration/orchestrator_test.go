@@ -102,6 +102,31 @@ func TestOrchestratorRejectsSellBeforeExecutionWhenBaseBalanceIsInsufficient(t *
 	}
 }
 
+func TestOrchestratorRejectsBuyBeforeExecutionWhenQuoteBalanceIsInsufficient(t *testing.T) {
+	fixture := newFixture()
+	fixture.accounts.account = execution.Account{BaseBalance: 0, QuoteBalance: 50}
+	orchestrator := fixture.orchestrator()
+	orchestrator.deps.RiskEvaluator = risk.NewEvaluator(risk.Config{Enabled: true, AllowBuy: true, AllowSell: true})
+
+	err := orchestrator.Handle(context.Background(), candleEnvelope(true))
+	if err != nil {
+		t.Fatalf("Handle returned error: %v", err)
+	}
+
+	if len(fixture.decisions.saved) != 1 || fixture.decisions.saved[0].Decision != risk.DecisionRejected {
+		t.Fatalf("expected rejected risk decision, got %+v", fixture.decisions.saved)
+	}
+	if fixture.decisions.saved[0].Reason != "quote balance 50.000000 is below required 100.000000" {
+		t.Fatalf("expected insufficient quote balance reason, got %+v", fixture.decisions.saved[0])
+	}
+	if len(fixture.executions.saved) != 0 {
+		t.Fatalf("expected risk rejection before execution, got %d executions", len(fixture.executions.saved))
+	}
+	if !fixture.idempotency.completed {
+		t.Fatal("expected pipeline to complete after risk rejection")
+	}
+}
+
 func TestOrchestratorBlocksExecutionWhenKillSwitchActive(t *testing.T) {
 	fixture := newFixture()
 	fixture.safety = &fakeSafety{active: true}

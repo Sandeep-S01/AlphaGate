@@ -124,6 +124,22 @@ func TestEvaluatorRejectsSellWhenBaseBalanceIsInsufficient(t *testing.T) {
 	}
 }
 
+func TestEvaluatorRejectsBuyWhenQuoteBalanceIsInsufficient(t *testing.T) {
+	evaluator := NewEvaluator(Config{Enabled: true, AllowBuy: true, AllowSell: true})
+
+	decision := evaluator.EvaluateWithContext(signal(strategy.SideBuy, 10), Context{
+		QuoteAmount:  100,
+		QuoteBalance: 50,
+	})
+
+	if decision.Decision != DecisionRejected {
+		t.Fatalf("expected rejected, got %+v", decision)
+	}
+	if decision.Reason != "quote balance 50.000000 is below required 100.000000" {
+		t.Fatalf("expected insufficient quote balance reason, got %q", decision.Reason)
+	}
+}
+
 func TestEvaluatorRejectsDailyTradeLimit(t *testing.T) {
 	evaluator := NewEvaluator(Config{
 		Enabled:        true,

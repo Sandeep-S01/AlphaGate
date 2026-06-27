@@ -179,9 +179,10 @@ func (r *ManualRunner) executionContext(ctx context.Context, signal strategy.Sig
 
 func (r *ManualRunner) riskContext(ctx context.Context, symbol string, price float64, account execution.Account) risk.Context {
 	riskContext := risk.Context{
-		QuoteAmount: r.cfg.QuoteOrderAmount,
-		Price:       price,
-		BaseBalance: account.BaseBalance,
+		QuoteAmount:  r.cfg.QuoteOrderAmount,
+		Price:        price,
+		BaseBalance:  account.BaseBalance,
+		QuoteBalance: account.QuoteBalance,
 	}
 	if r.deps.ExecutionStats == nil {
 		return riskContext

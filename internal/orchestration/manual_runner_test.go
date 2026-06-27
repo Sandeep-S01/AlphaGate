@@ -153,6 +153,50 @@ func TestManualRunnerRejectsSellBeforeExecutionWhenBaseBalanceIsInsufficient(t *
 	}
 }
 
+func TestManualRunnerRejectsBuyBeforeExecutionWhenQuoteBalanceIsInsufficient(t *testing.T) {
+	fixture := newFixture()
+	fixture.candleReader.candles = manualRunnerCandles()
+	fixture.accounts.account = execution.Account{BaseBalance: 0, QuoteBalance: 50}
+	settings := strategy.DefaultSettings()
+	settings.FastPeriod = 2
+	settings.SlowPeriod = 4
+	settings.LookbackLimit = 6
+	runner := NewManualRunner(ManualRunnerDependencies{
+		CandleReader:     fixture.candleReader,
+		StrategySettings: fixtureStrategySettings{settings: settings},
+		SignalStore:      fixture.signals,
+		RiskSettings:     fixtureRiskSettings{settings: risk.DefaultSettings()},
+		DecisionStore:    fixture.decisions,
+		PriceReader:      fixture.prices,
+		AccountStore:     fixture.accounts,
+		ExecutionStore:   fixture.executions,
+		ExecutionStats:   fixture.executions,
+		Publisher:        fixture.publisher,
+		ExecutionEngine: execution.NewPaperEngine(execution.Config{
+			Enabled:          true,
+			Symbol:           "BTCUSDT",
+			BaseAsset:        "BTC",
+			QuoteAsset:       "USDT",
+			QuoteOrderAmount: 100,
+			FeeRate:          0.001,
+		}),
+	}, Config{QuoteOrderAmount: 100})
+
+	result, err := runner.RunOnce(context.Background(), ManualRunRequest{Symbol: "BTCUSDT", Interval: "1m"})
+	if err != nil {
+		t.Fatalf("RunOnce returned error: %v", err)
+	}
+	if result.Status != "risk_rejected" {
+		t.Fatalf("expected risk_rejected, got %+v", result)
+	}
+	if result.Decision.Reason != "quote balance 50.000000 is below required 100.000000" {
+		t.Fatalf("expected insufficient quote balance reason, got %+v", result.Decision)
+	}
+	if len(fixture.executions.saved) != 0 {
+		t.Fatalf("expected no execution after risk rejection, got %d", len(fixture.executions.saved))
+	}
+}
+
 type fixtureStrategySettings struct {
 	settings strategy.Settings
 }
